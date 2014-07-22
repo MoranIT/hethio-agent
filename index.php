@@ -46,12 +46,10 @@ $app->get('/speedtest(/)(/:format)', function($format = 'html') use($app) {
 
 	$format = strtolower($format);
 	if ($format == "json") {
-		//$app->response->headers->set('Content Type', 'application/json');
-		$app->contentType('application/json');
+		$app->response->headers->set('Content Type', 'application/json');
 		echo json_encode($response);
 	} else if ($format == "xml") {
-		//$app->response->headers->set('Content Type', 'text/xml');
-		$app->contentType('text/xml');
+		$app->response->headers->set('Content Type', 'text/xml');
 		return $app->render('templates/speedtest.xml', array('speedtests' => [$response]));
 	} else {
 		print_r($response);
