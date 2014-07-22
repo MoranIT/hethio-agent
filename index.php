@@ -18,6 +18,7 @@ $app->get('/hello/:name/:format', function ($name, $format = "html") use($app) {
 
 
 $app->get('/speedtest(/)(/:format)', function($format = 'html') use($app) {
+	$response
 	$response['status'] = "Unknown";
 	$response['download'] = null;
 	$response['upload'] = null;
@@ -53,7 +54,7 @@ $app->get('/speedtest(/)(/:format)', function($format = 'html') use($app) {
 		echo json_encode($response);
 	} else if ($format == "xml") {
 		$app->response->headers->set('Content Type', 'text/xml');
-		return $app->render('templates/speedtest.xml', array('speedtests' => [$response]));
+		return $app->render('templates/speedtest.xml', array('speedtests' => array($response)));
 	} else {
 		print_r($response);
 	}
