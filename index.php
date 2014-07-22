@@ -14,7 +14,7 @@ $app->get('/hello/:name/:format', function ($name, $format = "html") use($app) {
 });
 
 
-$app->get('/speedtest/:format', function($format = "html") use($app) {
+$app->get('/speedtest(/)(/:format)', function($format = 'html') use($app) {
 	$response['status'] = "Unknown";
 	$response['download'] = null;
 	$response['upload'] = null;
