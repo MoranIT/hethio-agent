@@ -28,7 +28,7 @@ lighty-enable-mod fastcgi-php
 #chown www-data:www-data /var/www
 #chmod 775 /var/www
 #usermod -a -G www-data pi
-rm /var/www/index.lighttpd.html
+rm -f /var/www/index.lighttpd.html
 
 else
 echo "Updating Existing Minion Installation"
@@ -36,12 +36,15 @@ service lighttpd stop
 
 fi
 
-cp lighttpd.conf /etc/lighttpd/
-service lighttpd start
+cp -f lighttpd.conf /etc/lighttpd/
 
 
 echo "Copying minion-api website into place"
-cp ./index.php /var/www/
-cp ./vendor /var/www/
+cp -f index.php /var/www/
+cp -rf vendor/ /var/www/
+
+
+
+service lighttpd start
 
 echo "Enjoy your Minion!"
