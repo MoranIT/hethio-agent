@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
+require 'libraries/Slim/Slim.php';
 
 $app = new \Slim\Slim(array(
 	'debug' => true
@@ -53,10 +53,15 @@ $app->get('/speedtest(/)(/:format)', function($format = 'html') use($app) {
 	} else if ($format == "xml") {
 		$app->response->headers->set('Content Type', 'text/xml');
 
-		$speedtests = array();
-		array_push($speedtests, $response);
-
-		return $app->render('templates/speedtest.xml', array('speedtests' => $speedtests ));
+		echo '<?xml version="1.0" encoding="UTF-8"?>';
+		echo '<speedtests>';
+		echo '	<speedtest>';
+		echo '		<status>'.$response['status'].'</status>';
+		echo '		<download>'.$response['download'].'</download>';
+		echo '		<upload>'.$response['upload'].'</upload>';
+		echo '		<timestamp>'.$response['timestamp'].'</timestamp>';
+		echo '	</speedtest>';
+		echo '</speedtests>';
 	} else {
 		print_r($response);
 	}
