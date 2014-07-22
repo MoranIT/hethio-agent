@@ -1,8 +1,8 @@
 # Minion-API
 Minions are Raspberry Pi's configured to run a series of roles all controlled by the main minion website.  This API is the one directly installed on the Pi devices.
 
-## Installing the Minion-API Website
-Now that you've setup your Raspberry Pi with a webbrowser and PHP capabilities, it's time to install this api for even more fun!
+
+## Installing or Updating Minions
 
 >$ wget https://github.com/danielheth/minion-api/tarball/master
 
