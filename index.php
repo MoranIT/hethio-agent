@@ -2,10 +2,9 @@
 
 require 'vendor/autoload.php';
 
-$app = new \Slim\Slim();
-$app->config(array(
+$app = new \Slim\Slim(array(
 	'debug' => true,
-	'templates.path' => '../temlates'
+	'templates.path' => '../templates'
 ));
 
 
