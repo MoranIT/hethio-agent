@@ -4,7 +4,7 @@ require 'vendor/autoload.php';
 
 $app = new \Slim\Slim(array(
 	'debug' => true,
-	'templates.path' => './templates/'
+	'templates.path' => 'templates/'
 ));
 
 
