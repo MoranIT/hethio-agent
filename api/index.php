@@ -19,7 +19,33 @@ $app->get('/contact(/)', function () {
 	echo file_get_contents('/opt/minion/api/contact.html');
 });
 
+$app->get('/publicip(/)(/:format)', function($format = 'html') use($app) {
+	$response['ipaddress'] = "Unknown";
+	$response['timestamp'] = null;
 
+	if (is_file('/opt/minion/log/publicip.log')) {
+		$response['ipaddress'] = file_get_contents('/opt/minion/log/publicip.log');
+		$response['timestamp'] = date ("Y-m-d H:i:s.", filemtime('/opt/minion/log/publicip.log'));
+	}
+
+	$format = strtolower($format);
+	if ($format == "json") {
+		$app->response->headers->set('Content Type', 'application/json');
+		echo json_encode($response);
+	} else if ($format == "xml") {
+		$app->response->headers->set('Content Type', 'text/xml');
+
+		echo '<?xml version="1.0" encoding="UTF-8"?>';
+		//echo '<publicips>';
+		echo '	<publicip>';
+		echo '		<ipaddress>'.$response['status'].'</ipaddress>';
+		echo '		<timestamp>'.$response['timestamp'].'</timestamp>';
+		echo '	</publicip>';
+		//echo '</publicips>';
+	} else {
+		print_r($response);
+	}
+});
 
 
 $app->get('/speedtest(/)(/:format)', function($format = 'html') use($app) {
