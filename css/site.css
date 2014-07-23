@@ -417,6 +417,9 @@ body {
 }
 
 @media (max-width: 768px) {
+  .masthead {
+    padding-top: 0px;
+  }
   .resourceDescription {
     display: none;
   }
