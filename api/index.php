@@ -10,19 +10,16 @@ $app = new \Slim\Slim(array(
 
 
 $app->get('/', function () {
-	echo file_get_contents('/var/www/index.html');
+	echo file_get_contents('/opt/minion/api/index.html');
 });
 $app->get('/api(/)', function () {
-	echo file_get_contents('/var/www/api.html');
+	echo file_get_contents('/opt/minion/api/api.html');
 });
 $app->get('/contact(/)', function () {
-	echo file_get_contents('/var/www/contact.html');
+	echo file_get_contents('/opt/minion/api/contact.html');
 });
 
 
-$app->get('/hello/:name/:format', function ($name, $format = "html") use($app) {
-	echo "Hello, $name";
-});
 
 
 $app->get('/speedtest(/)(/:format)', function($format = 'html') use($app) {
@@ -31,9 +28,9 @@ $app->get('/speedtest(/)(/:format)', function($format = 'html') use($app) {
 	$response['upload'] = null;
 	$response['timestamp'] = null;
 
-	if (is_file('/var/log/speedtest.log')) {
+	if (is_file('/opt/minion/log/speedtest.log')) {
 		$line = '';
-		$f = fopen('/var/log/speedtest.log', 'r');
+		$f = fopen('/opt/minion/log/speedtest.log', 'r');
 		$cursor = -1;
 		fseek($f, $cursor, SEEK_END);
 		$char = fgetc($f);
