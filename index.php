@@ -12,6 +12,13 @@ $app = new \Slim\Slim(array(
 $app->get('/', function () {
 	echo file_get_contents('/var/www/index.html');
 });
+$app->get('/features', function () {
+	echo file_get_contents('/var/www/features.html');
+});
+$app->get('/contact', function () {
+	echo file_get_contents('/var/www/contact.html');
+});
+
 
 $app->get('/hello/:name/:format', function ($name, $format = "html") use($app) {
 	echo "Hello, $name";

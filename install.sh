@@ -42,6 +42,8 @@ cp -f lighttpd.conf /etc/lighttpd/
 echo "Copying minion-api website into place"
 cp -f index.php /var/www/
 cp -f index.html /var/www/
+cp -f features.html /var/www/
+cp -f contact.html /var/www/
 rm -rf /var/www/images/
 cp -rf images/ /var/www/
 rm -rf /var/www/css/
