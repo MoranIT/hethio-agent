@@ -38,7 +38,7 @@ useradd -a -G minion www-data
 
 echo "- Creating Minion Directory"
 mkdir -f /opt/minion
-mkdir -f /opt/minion/logs
+mkdir -f /opt/minion/log
 mkdir -f /opt/minion/cache
 mkdir -f /opt/minion/cache/api
 mkdir -f /opt/minion/cache/api/uploads
