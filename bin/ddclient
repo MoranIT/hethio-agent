@@ -36,7 +36,7 @@ my $program   = $programd;
 $program  =~ s/d$//;
 my $now       = time;
 my $hostname  = hostname();
-my $etc       = ($program =~ /test/i) ? './'   : '/opt/minion/conf/ddclient/';
+my $etc       = ($program =~ /test/i) ? './'   : '/opt/minion/conf/';
 my $cachedir  = ($program =~ /test/i) ? './'   : '/opt/minion/cache/ddclient/';
 my $savedir   = ($program =~ /test/i) ? 'URL/' : '/tmp/';
 my $msgs      = '';

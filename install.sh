@@ -40,6 +40,7 @@ echo "- Creating Minion Directory"
 mkdir -f /opt/minion
 mkdir -f /opt/minion/log
 mkdir -f /opt/minion/cache
+mkdir -f /opt/minion/cache/ddclient
 mkdir -f /opt/minion/cache/api
 mkdir -f /opt/minion/cache/api/uploads
 mkdir -f /opt/minion/cache/api/compress

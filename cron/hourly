@@ -1,9 +1,11 @@
+#!/bin/sh
+
 #
 # Minion Hourly Script
 #
 
 # Run Internet Speedtest every hour
-15 */1	* * *	root	/opt/minion/bin/speedtest-wrapper.sh
+/opt/minion/bin/speedtest-wrapper.sh
 
 # Update Dynamic DNS Location
-19 */1	* * *	root	/opt/minion/bin/ddclient-wrapper.sh
+/opt/minion/bin/ddclient-wrapper.sh
