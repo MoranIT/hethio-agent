@@ -52,6 +52,8 @@ service lighttpd stop
 
 fi
 
+cp -f README.md /opt/minion/
+
 echo "- Updating Message of the Day"
 cp -f motd /etc/
 
