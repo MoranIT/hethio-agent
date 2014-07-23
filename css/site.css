@@ -25,6 +25,10 @@
 
 
 
+.rootResource {
+  margin-top: 10px;
+}
+
 
 .rootResource_Title
 {
@@ -399,7 +403,7 @@ body {
   }
   /* Start the vertical centering */
   .site-wrapper-inner {
-    vertical-align: middle;
+    vertical-align: top;
   }
   /* Handle the widths */
   .masthead,
