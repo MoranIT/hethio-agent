@@ -10,7 +10,7 @@ $app = new \Slim\Slim(array(
 
 
 $app->get('/', function () {
-	echo file_get_contents("./index.html");
+	echo file_get_contents('/var/www/index.html');
 });
 
 $app->get('/hello/:name/:format', function ($name, $format = "html") use($app) {
