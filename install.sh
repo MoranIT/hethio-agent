@@ -50,6 +50,9 @@ echo "Updating Existing Minion Installation"
 echo "- Stopping WebServer"
 service lighttpd stop
 
+echo "- Backing up Dynamic DNS Configuration"
+cp -f /opt/minion/conf/ddclient.conf conf/
+
 fi
 
 cp -f README.md /opt/minion/
@@ -57,12 +60,25 @@ cp -f README.md /opt/minion/
 echo "- Updating Message of the Day"
 cp -f motd /etc/
 
-echo "- Removing Old Files"
+echo "- Removing Old Web Files"
 rm -rf /var/www
+
+echo "- Removing Old speedtest-cli Utility"
+if [ -d /etc/speedtest ]; then
 rm -rf /etc/speedtest
+if [ -f /usr/local/bin/speedtest-cli ]; then
 rm -rf /usr/local/bin/speedtest-cli
+fi
+fi
+
+echo "- Removing Old ddclient Utility"
+if [ -d /etc/ddclient ]; then
+cp -f /etc/ddclient/ddclient.conf conf/
 rm -rf /etc/ddclient
+if [ -f /usr/sbin/ddclient ]; then
 rm -rf /usr/sbin/ddclient
+fi
+fi
 
 echo "- Configuring WebServer"
 cp -f lighttpd.conf /etc/lighttpd/
@@ -72,6 +88,10 @@ rm -rf /opt/minion/bin
 cp -rf bin/ /opt/minion/
 
 echo "- Copying Configurations"
+if [ ! -f /opt/minion/conf/ddclient.conf ]; then
+TIMESTAMP=`date +"%s"`
+echo "$TIMESTAMP.minion.moranit.com" >> conf/ddclient.conf
+fi
 rm -rf /opt/minion/conf
 cp -rf conf/ /opt/minion/
 
