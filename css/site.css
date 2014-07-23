@@ -1,0 +1,82 @@
+@font-face {
+  font-family: "open_sansregular";
+  src: url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.eot");
+  src: url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.eot?#iefix") format("embedded-opentype"), url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.woff") format("woff"), url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.ttf") format("truetype"), url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.svg#open_sansregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+input:invalid {
+  border: 1px solid red; }
+
+* {
+  font-family: "open_sansregular", "Arial", "sans-serif";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 0;
+  padding: 0; }
+.tag {
+	margin-left:5px;
+}
+.tagTitle {
+	cursor:pointer;
+	border-radius:5px;
+	margin-top:5px;
+
+	color: #ccc;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    cursor:pointer;
+    width:100%;
+}
+
+.deprecatedTag {
+	color:#999999;
+}
+
+.initcomment {
+	font-size:80%;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+.tagTitle:Hover
+{
+    color: #000;
+}
+
+.subtag {
+	margin-top:5px;
+	margin-left:20px;
+	margin-bottom:17px;
+	border-top:1px solid rgba(0,0,0,0.25);
+}
+.title {
+	font-weight:bold;
+}
+.element {
+	margin-top:5px;
+}
+.subtitle {
+	color: rgba(255,0,0,0.25);
+	font-size:xx-small;
+}
+.notes {
+	font-size:70%;
+	margin-left:15px;
+}
+.example {
+	margin-top:10px;
+	padding:5px;
+	border:1px solid gray;
+	background-color:rgba(0,0,0,0.15);
+}
+
+.selectedTitle {
+	color:#8A0808;
+}
+.selectedTitle:hover {
+	color:#8A0808;
+}
