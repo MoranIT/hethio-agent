@@ -20,6 +20,252 @@
   margin-top: 91;
 }
 
+
+
+
+
+
+.rootResource_Title
+{
+    color: #ccc;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    cursor:pointer;
+    width:100%;
+}
+.rootResource_Title:Hover
+{
+    color: #000;
+}
+
+.resource_content
+{
+    padding:5px;
+    width:980px;
+    overflow: hidden;
+}
+
+.resource_code
+{
+    margin:8px;
+    width:920px;
+    border: 2px dashed #ccc;
+    background-color:#FCF6DB;
+    overflow: hidden;
+}
+
+.resourcecredits
+{
+    padding:0px;
+}
+.resourceauthor
+{
+    padding-top:0px;
+    padding-bottom:0px;
+    margin:0px;
+}
+.resourcedate
+{
+    padding-top:0px;
+    padding-bottom:0px;
+    float:right;
+    margin:0px;
+    padding-right:15px;
+}
+
+.resources
+{
+    display:none;
+}
+
+.resource_subTitle
+{
+    cursor:pointer;
+    padding-left:8px;
+    color:Black;
+}
+.resource_subTitle:Hover
+{
+    text-decoration:underline;
+    color:Black;
+}
+
+.resource_Caption-POST
+{
+    padding-right:8px;
+    color:#10ACAA;
+}
+.resource_Caption-PUT
+{
+    padding-right:8px;
+    color:#CE862B;
+}
+
+.resource_Caption-DELETE
+{
+    padding-right:8px;
+    color:#A41E22;
+}
+
+.resource_Caption-GET
+{
+    padding-right:8px;
+    color:#0F6AB4;
+}
+
+
+
+.resource_Title-POST
+{
+    border: 1px solid #C3E8D1;
+    background: #E7F6EC;
+    margin-top:8px;
+}
+
+.resource_Title-PUT
+{
+    border: 1px solid #F0E0CA;
+    background: #F9F2E9;
+    margin-top:8px;
+}
+
+.resource_Title-DELETE
+{
+    border: 1px solid #E8C6C7;
+    background: #F5E8E8;
+    margin-top:8px;
+}
+
+.resource_Title-GET
+{
+    border: 1px solid #C3D9EC;
+    background: #E7F0F7;
+    margin-top:8px;
+}
+
+.resource-POST
+{
+    border: 1px solid #C3E8D1;
+    border-top:0px;
+    background: #E7F6EC;
+}
+
+.resource-PUT
+{
+    border: 1px solid #F0E0CA;
+    border-top:0px;
+    background: #F9F2E9;
+}
+
+.resource-DELETE
+{
+    border: 1px solid #E8C6C7;
+    border-top:0px;
+    background: #F5E8E8;
+}
+
+.resource-GET
+{
+    border: 1px solid #C3D9EC;
+    border-top:0px;
+    background: #E7F0F7;
+}
+
+.resource_marker-POST
+{
+    border-radius: 3px;
+    background: #10AF4A;
+    width:50px;
+    height:20px;
+    padding-top:6px;
+    
+    font-size: .8em;
+    color:White;
+    text-align:center;
+    vertical-align:middle;
+    
+  -moz-box-shadow: 0 0 5px #888;
+    -webkit-box-shadow: 0 0 5px#888;
+    box-shadow: 0 0 5px #888;
+}
+
+
+.resource_marker-PUT
+{
+    border-radius: 3px;
+    background: #C5862B;
+    width:50px;
+    height:20px;
+    padding-top:6px;
+    
+    font-size: .8em;
+    color:White;
+    text-align:center;
+    vertical-align:middle;
+
+  -moz-box-shadow: 0 0 5px #888;
+    -webkit-box-shadow: 0 0 5px#888;
+    box-shadow: 0 0 5px #888;
+}
+
+
+.resource_marker-DELETE
+{
+    border-radius: 3px;
+    background: #A41E22;
+    width:50px;
+    height:20px;
+    padding-top:6px;
+    
+    font-size: .8em;
+    color:White;
+    text-align:center;
+    vertical-align:middle;
+
+  -moz-box-shadow: 0 0 5px #888;
+    -webkit-box-shadow: 0 0 5px#888;
+    box-shadow: 0 0 5px #888;
+}
+
+
+.resource_marker-GET
+{
+    border-radius: 3px;
+    background: #0F6AB4;
+    width:50px;
+    height:20px;
+    padding-top:6px;
+    
+    font-size: .8em;
+    color:White;
+    text-align:center;
+    vertical-align:middle;
+
+  -moz-box-shadow: 0 0 5px #888;
+    -webkit-box-shadow: 0 0 5px#888;
+    box-shadow: 0 0 5px #888;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
  * Globals
  */
