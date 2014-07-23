@@ -44,8 +44,8 @@ cp -f index.php /var/www/
 cp -f index.html /var/www/
 rm -rf /var/www/images/
 cp -rf images/ /var/www/
-rm -rf /var/www/libraries/
-cp -rf libraries/ /var/www/
+rm -rf /var/www/css/
+cp -rf css/ /var/www/
 rm -rf /var/www/libraries/
 cp -rf libraries/ /var/www/
 

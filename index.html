@@ -13,71 +13,55 @@
 
 <link href="/css/site.css" rel="stylesheet">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="white-translucent">
-
-<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-
-<link rel="apple-touch-icon" href="/images/favicon.png" />
-<link rel="apple-touch-icon-precomposed" href="/images/favicon.png" />
-<link rel="apple-touch-icon" sizes="57x57" href="/images/icon_57x57.png" />
-<link rel="apple-touch-icon" sizes="72√ó72" href="/images/icon_72x72.png" />
+<link rel="stylesheet" href="libraries/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="libraries/bootstrap/css/bootstrap-theme.min.css">
 
 </head>
 <body>
 
-<div id="content">
 
 
-<h2>Minion-API v1.0</h2>
-<h9>API for controlling your world!</h9>
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Cover</h3>
+              <ul class="nav masthead-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Cover your page.</h1>
+            <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+            <p class="lead">
+              <a href="#" class="btn btn-lg btn-default">Learn more</a>
+            </p>
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
 
 
 
 
-<script>
-function showDiv(id, isRoot) {
-	div = document.getElementById(id);
-    if (div.style.display == "none") {
-        $("#" + id).show("fast");
-        //div.style.display = "block";
 
-        if (isRoot) {
-            //$("#" + id.replace("details", "tagTitle")).css('color', '#8A0808');
-            $("#" + id.replace("details", "tagTitle")).addClass("selectedTitle");
-        }
-    }
-    else {
-        $("#" + id).hide("fast");
-        //div.style.display = "none";
-
-        if (isRoot) {
-            //$("#" + id.replace("details", "tagTitle")).hover(function () { $(this).css({ 'color': '#8A0808' }); }, function () { $(this).css({ 'color': '#ccc' }); });
-            $("#" + id.replace("details", "tagTitle")).removeClass("selectedTitle");
-        }
-    }
-}
-
-</script>
-
-	
-
-
-<div class='tag'>
-	<div onclick=\"showDiv('details-test', true)\" id='tagTitle-test' class='tagTitle'>Test</div>
-	<textarea style='border:none; width:100%; height:100px; '>data</textarea>
-</div>
-
-<div id='details-".$i."' class='subtag' style='display:none;'>
-	<div class='element'>
-		<span id='tag-".$i."-".$j."' class='title'>".$name."</span>
-		<span class='subtitle'>(".$type.")</span>
-		<textarea style='border:none; width:100%; height:25px; '>data2</textarea>
-
-		<div class='example'>Example:
-			<textarea style='border:none; width:100%; height:200px; '>data3</textarea>
-		</div>
-
-	</div>
-</div>
+<script src="libraries/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
