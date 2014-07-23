@@ -1,10 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US" ng-app="app">
+<head profile="http://www.w3.org/2005/10/profile">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<html>
-<head>
-	<title>Minion-API v1.0</title>
+<meta name="keywords" content="Tanium, End Point, Management, Control, Enterprise, VBScript, PowerShell, Shell, Script, Windows, Mac, Linux">
+<meta name="description" content="Community centered around the Tanium product and helping customers communicate and collaborate.">
+<meta name="author" content="co-authored by Daniel Heth Moran, Thom Savage">
+
+<title>Minion-API v1.0</title>
+<link href="/css/fonts.css" rel="stylesheet">
+
+<!-- Customized Tanium CSS -->
+<link href="/css/site.css" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="white-translucent">
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+
+<link rel="apple-touch-icon" href="/images/favicon.png" />
+<link rel="apple-touch-icon-precomposed" href="/images/favicon.png" />
+<link rel="apple-touch-icon" sizes="57x57" href="/images/icon_57x57.png" />
+<link rel="apple-touch-icon" sizes="72√ó72" href="/images/icon_72x72.png" />
+
+
 </head>
-<body>
-<h1>Minion-API v1.0</h1>
+<body ng-controller="AppController as appCtrl">
 
-</body>
-</html>
+<div id="content">
+
+
+
+<h2>SOAP API Definition</h2>
+<h9>Dynamically generated from your console.wsdl file.</h9>
+
+
+
+<style>
+.tag {
+	margin-left:5px;
+}
+.tagTitle {
+	cursor:pointer;
+	border-radius:5px;
+	margin-top:5px;
+
+	color: #ccc;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    cursor:pointer;
+    width:100%;
+}
+
+.deprecatedTag {
+	color:#999999;
+}
+
+.initcomment {
+	font-size:80%;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+.tagTitle:Hover
+{
+    color: #000;
+}
+
+.subtag {
+	margin-top:5px;
+	margin-left:20px;
+	margin-bottom:17px;
+	border-top:1px solid rgba(0,0,0,0.25);
+}
+.title {
+	font-weight:bold;
+}
+.element {
+	margin-top:5px;
+}
+.subtitle {
+	color: rgba(255,0,0,0.25);
+	font-size:xx-small;
+}
+.notes {
+	font-size:70%;
+	margin-left:15px;
+}
+.example {
+	margin-top:10px;
+	padding:5px;
+	border:1px solid gray;
+	background-color:rgba(0,0,0,0.15);
+}
+
+.selectedTitle {
+	color:#8A0808;
+}
+.selectedTitle:hover {
+	color:#8A0808;
+}
+</style>
+
+<script>
+function showDiv(id, isRoot) {
+	div = document.getElementById(id);
+    if (div.style.display == "none") {
+        $("#" + id).show("fast");
+        //div.style.display = "block";
+
+        if (isRoot) {
+            //$("#" + id.replace("details", "tagTitle")).css('color', '#8A0808');
+            $("#" + id.replace("details", "tagTitle")).addClass("selectedTitle");
+        }
+    }
+    else {
+        $("#" + id).hide("fast");
+        //div.style.display = "none";
+
+        if (isRoot) {
+            //$("#" + id.replace("details", "tagTitle")).hover(function () { $(this).css({ 'color': '#8A0808' }); }, function () { $(this).css({ 'color': '#ccc' }); });
+            $("#" + id.replace("details", "tagTitle")).removeClass("selectedTitle");
+        }
+    }
+}
+
+</script>
+
+	
+<?php
+$server_root = "./"; //str_ireplace("/Apache24/htdocs","",$_SERVER["DOCUMENT_ROOT"]);
+$wsdl_file = $server_root."console.wsdl";
+if (file_exists($wsdl_file)) {
+	//echo $wsdl_file." -- exists!";
+	
+	$wsdl = file_get_contents($wsdl_file);
+} else {
+	echo "\n\n<br /><br />".$wsdl_file." -- does not exist!";
+	
+	$wsdl = null;
+}
+?>
+
+
+
+<?php
+if ($wsdl != null) {
+	function exampleXML($urn, $elements, $returnIt = false) {
+		$xml = "&#060;soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:urn='urn:TaniumSOAP'&#062;\n";
+		
+		$xml .= "	&#060;soapenv:Header/&#062;\n";
+		$xml .= "	&#060;soapenv:Body&#062;\n";
+		$xml .= "		&#060;urn:".$urn."&#062;\n";
+		
+		foreach($elements as $ele) {
+			$xml .= "			&#060;".$ele['name']."&#062;&#060;/".$ele['name']."&#062;";
+			if ( isset($ele['minOccurs']) && isset($ele['maxOccurs']) ) {
+				if ($ele['minOccurs'] > 0) {
+					$xml .= " <!-- minOccurs=".$ele['minOccurs'].", maxOccurs=".$ele['maxOccurs']." -->"; 
+				} else {
+					$xml .= " <!-- maxOccurs=".$ele['maxOccurs']." -->";
+				}
+			} else if ( isset($ele['minOccurs']) ) { 
+				if ($ele['minOccurs'] > 0) {
+					$xml .= " <!-- minOccurs=".$ele['minOccurs']." -->";
+				} 
+			}
+			if ( isset($ele['maxOccurs']) ) { 
+				$xml .= " <!-- maxOccurs=".$ele['maxOccurs']." -->"; 
+			}
+			
+			$xml .= "\n"; 
+		}
+		$xml .= "		&#060;/urn:".$urn."&#062;\n";
+		$xml .= "	&#060;/soapenv:Body&#062;\n";
+		$xml .= "&#060;/soapenv:Envelope&#062;\n";
+		
+		//$xml = str_replace(" ","&nbsp;",$xml);
+		//$xml = str_replace("\n","\n<br />",$xml);
+		
+		if ($returnIt) {
+			return $xml;
+		} else { echo $xml; }
+	}
+
+	
+	$xml = simplexml_load_string($wsdl);
+	//$output = print_r($xml, true);
+	//echo str_replace("\n","<br />",$output);
+	//echo "<br />Result:<textarea style='border:none; width:100%; height:250px; '>".$output."</textarea>";
+
+	//echo "<br />comments count=".count( $xml->comment );
+	//foreach($xml->comment as $cc) {
+	//	$output = print_r($cc->comment,true);
+	//	echo "<textarea style='border:none; width:100%; height:250px; '>".$output."</textarea>";
+	//}
+
+	$xmlLines = explode("\n",$xml->asXML());
+	$inML = false;
+	$comment = null;
+	foreach($xmlLines as $line) {
+		if (!$inML) {
+			if (trim($line) == "<!--" ) {
+				$inML = true;
+			} else if (startsWith(trim($line), "<!--") && endsWith(trim($line),"-->")) {
+				$comment = trim(str_replace("-->","",str_replace("<!--","",$line)));
+				break;
+			}
+		} else {
+			if (trim($line) == "-->") {
+				$inML = false;
+				break;
+			} else {
+				if ($comment == null) { $comment = $line; } else { $comment .= "\n".$line; }
+			}
+		}
+	}
+	echo "<div class='initcomment'>".str_replace("\n","<br />", $comment)."</div>";
+	
+
+	//echo "<br />Result:<textarea style='border:none; width:100%; height:250px; '>".$xml->asXML()."</textarea>";
+
+	$ecmds = $xml->types->children('xsd',true)->schema->children('xsd',true)->complexType;
+	
+	$cmds = array();
+	foreach($ecmds as $cmd) {
+		$cmds[] = $cmd;
+	}
+	
+	usort($cmds, function ($a, $b) {
+		$_a = $a->attributes();
+		$_b = $b->attributes();
+		return strcmp( $_a['name'], $_b['name'] );
+	});
+
+
+	
+	
+	$i = 0;
+	//echo "<br />count=".count($cmds);
+	foreach($cmds as $cmd) {
+		$foundCmd = false;
+	//if ($cmd->attributes()['name'] == "TaniumSOAPRequest") {
+		if (isset($cmd->children('xsd',true)->all)) {
+			$c = $cmd->children('xsd',true)->all;
+			
+			echo "\n\n<div class='tag'>\n";
+			$_cmd = $cmd->attributes();
+			echo "<div onclick=\"showDiv('details-".$i."', true)\" id='tagTitle-".$i."' class='tagTitle'>".$_cmd['name']."</div>\n";
+			$xmlLines = explode("\n",$c->asXML()); //for finding comments!
+			//echo "<textarea style='border:none; width:100%; height:100px; '>".$c->asXML()."</textarea>";
+			echo "</div>\n";
+			
+			
+			echo "<div id='details-".$i."' class='subtag' style='display:none;'>\n";
+			$elements = array();
+			$j = 0;
+			foreach($c->element as $ele) {
+				$_ele = $ele->attributes();
+				$name = $_ele['name'];
+				$type = null;
+				if (isset($_ele['type'])) { $type = str_replace("xsd:","",$_ele['type']); }
+				$minOccurs = null;
+				if (isset($_ele['minOccurs'])) { $minOccurs = $_ele['minOccurs']; }
+				
+				$maxOccurs = null;
+				if (isset($_ele['maxOccurs'])) { $maxOccurs = $_ele['maxOccurs']; }
+				
+				echo "<div class='element'>\n";
+				echo "<span id='tag-".$i."-".$j."' class='title'>".$name."</span> ";
+				if (isset($type)) { echo "<span class='subtitle'>(".$type.")</span>"; }
+				//echo "<textarea style='border:none; width:100%; height:25px; '>".$ele->asXML()."</textarea>";
+				
+				
+				
+				//-----------------------------------------------------------------------------
+				$comment = null;
+				
+				//now find short comment for this element
+				foreach($xmlLines as $line) {
+					if (strpos(trim($line),$ele->asXML()) !== false && strpos($line,'<!--') !== false) {
+						$comment = trim(str_replace($ele->asXML(),"",str_replace("-->","",str_replace("<!--","",$line))));
+						//echo " -- <i class='comment'>(".$comment.")</i>";
+						break;
+					}
+				}
+				
+				//now find multiline comment for this element
+				$inML = false;
+				$ml = null;
+				foreach($xmlLines as $line) {
+					
+					
+					if (!$inML) {
+						if (trim($line) == "<!--" ) {
+							//echo "<br />starting ML";
+							$inML = true;
+							$ml = null;
+						} else if (startsWith(trim($line), "<!--") && endsWith(trim($line),"-->")) {
+							$ml = trim(str_replace("-->","",str_replace("<!--","",$line)));
+						} else {
+//if (strpos($ml,"These filter what results are returned.") !== false) {
+	//echo $ml."   ".$line;
+//	echo "<textarea style='border:none; width:100%; height:50px; '>".$line."</textarea>";
+//	echo "<textarea style='border:none; width:100%; height:50px; '>".$ele->asXML()."</textarea>";
+//}
+
+							if (trim($line) !== "") {
+								if (strpos($ele->asXML(),trim($line)) !== false) {
+									//echo "<br />--- found my line ";
+									if ($ml != null) {
+										//echo "-- have ML";
+										//echo "<textarea style='border:none; width:100%; height:50px; '>".$ml."</textarea>";
+										if ($comment == null) {
+											$comment = $ml;
+										} else { $comment .= "\n".$ml; }
+										//echo "<div class='bigcomment'>".$ml."</div>";
+									}
+									break;
+								} else {
+									$ml = null;
+								}
+							} else {
+								$ml = null;
+							}
+						}
+					} else {
+						
+						if (trim($line) == "-->") {
+							//echo "<br />ending ML";
+							$inML = false;
+						} else {
+							if ($ml == null) { $ml = $line; } else { $ml .= "\n".$line; }
+						}
+					}
+					
+				}
+				if ($comment != null) {
+					$prep_comment = $comment;
+					$prep_comment = str_replace("<","&#060;",$prep_comment);
+					$prep_comment = str_replace(">","&#062;",$prep_comment);
+					$prep_comment = str_replace("\n","<br />",$prep_comment);
+					echo "<div id='notes-".$i."-".$j."' class='notes'>".$prep_comment."</div>";
+				}
+				//-----------------------------------------------------------------------------
+						
+				echo "</div>";
+				
+				//now exclude deprecated elements...
+				if (!startsWith($comment,"DEPRECATED")) {
+					$elements[count($elements)] = array( "name" => $name, "minOccurs" => $minOccurs, "maxOccurs" => $maxOccurs );
+					
+				} else {
+					//fade the color of deprecated tags
+					echo "<script>\n";
+					echo "$(document).ready(function() {\n";
+					echo "	$('#tag-".$i."-".$j."').addClass('deprecatedTag');\n";
+					echo "	$('#notes-".$i."-".$j."').addClass('deprecatedTag');\n";
+					echo "});\n";
+					echo "</script>\n";
+				}
+				
+				$j++;
+			}
+			
+			
+			echo "<div class='example'>\n";
+			echo "Example:\n";
+			echo "<textarea style='border:none; width:100%; height:200px; '>";
+			$_cmd = $cmd->attributes();
+			echo exampleXML($_cmd['name'], $elements, true);
+			echo "</textarea>\n";
+			echo "</div>\n";
+			
+			echo "</div>\n\n";
+			
+			
+			
+		} else {
+			//echo "SKIPPED: ".$cmd->attributes()['name'];
+		}
+	//}
+		$i++;
+	}
+	
+	
+	/*
+	echo "<h1>SOAP Commands</h1>";
+	
+	$doc = new DOMDocument();
+    $doc->loadXML($xml);
+    $elements = $doc->getElementsByTagNameNS('*','*');
+
+	echo "<br />count=".count($elements);
+    foreach($elements as $element) {
+    	//echo '<br />local name: ', $element->localName, ', prefix: ', $element->prefix, "\n";
+    	echo get_inner_html( $element );
+    }
+	*/
+}
+
+
+function get_inner_html( $node ) { 
+    $innerHTML= ''; 
+    $children = $node->childNodes; 
+    foreach ($children as $child) { 
+        $innerHTML .= $child->ownerDocument->saveXML( $child ); 
+    } 
+
+    return $innerHTML;  }
+
+
+?>	
+
+	
+</div>
+	
+
+<?php require_once ($_SERVER ['DOCUMENT_ROOT'] . "/includes/footer.php"); ?>
