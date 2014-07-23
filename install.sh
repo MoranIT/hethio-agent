@@ -20,6 +20,12 @@ shift $((OPTIND-1))
 if [ "$UPDATE" != true ]; then
 echo "Installing Fresh Minion Installation"
 
+echo "- Installing Python"
+apt-get install python
+
+echo "- Installing Perl"
+apt-get install perl
+
 echo "- Installing WebServer and PHP"
 apt-get install lighttpd
 service lighttpd stop
