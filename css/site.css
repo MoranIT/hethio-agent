@@ -44,14 +44,12 @@
 .resource_content
 {
     padding:5px;
-    width:980px;
     overflow: hidden;
 }
 
 .resource_code
 {
     margin:8px;
-    width:920px;
     border: 2px dashed #ccc;
     background-color:#FCF6DB;
     overflow: hidden;
