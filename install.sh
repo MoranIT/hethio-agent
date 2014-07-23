@@ -35,6 +35,8 @@ lighty-enable-mod fastcgi-php
 echo "- Creating Minion Directory"
 mkdir -f /opt/minion
 mkdir -f /opt/minion/logs
+chmod 775 /opt/minion/logs
+
 
 else
 echo "Updating Existing Minion Installation"
