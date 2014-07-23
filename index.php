@@ -12,10 +12,10 @@ $app = new \Slim\Slim(array(
 $app->get('/', function () {
 	echo file_get_contents('/var/www/index.html');
 });
-$app->get('/features', function () {
-	echo file_get_contents('/var/www/features.html');
+$app->get('/api(/)', function () {
+	echo file_get_contents('/var/www/api.html');
 });
-$app->get('/contact', function () {
+$app->get('/contact(/)', function () {
 	echo file_get_contents('/var/www/contact.html');
 });
 
