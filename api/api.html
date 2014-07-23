@@ -18,6 +18,36 @@
 </head>
 <body>
 
+<script>
+    function showDiv(id, isRoot) {
+        div = document.getElementById(id);
+        if (div.style.display == "none") {
+            $("#" + id).show("fast");
+            //div.style.display = "block";
+
+            if (isRoot) {
+                $("#" + id.replace("resources", "rootResource_Title")).css('color', '#000');
+                //div = document.getElementById(id.replace("resources", "rootResource_Title"));
+                //div.style.color = "#000";
+            }
+        }
+        else {
+            $("#" + id).hide("fast");
+            //div.style.display = "none";
+
+            if (isRoot) {
+                //$("#" + id.replace("resources", "rootResource_Title")).css('color', '#ccc');
+                //div = document.getElementById(id.replace("resources", "rootResource_Title"));
+                //div.style.color = "#ccc";
+
+                $("#" + id.replace("resources", "rootResource_Title")).hover(function () { $(this).css({ 'color': '#000' }); }, function () { $(this).css({ 'color': '#ccc' }); });
+            }
+        }
+    }
+</script>
+
+
+
 
     <div class="site-wrapper">
 
@@ -27,7 +57,7 @@
 
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Minion v1.0</h3>
+              <h3 class="masthead-brand">Minion-API v1.0</h3>
               <ul class="nav masthead-nav">
                 <li><a href="/">Home</a></li>
                 <li class="active"><a href="/api">API</a></li>
@@ -37,13 +67,146 @@
           </div>
 
         <div class="inner cover-api">
-			<h1 class="cover-heading">Minion-API</h1>
-            <p>Each api call is available in three response types: HTML, JSON, and XML.  For example: /speedtest/json  will return the latest json formated speedtest result.  Where as /speedtest/xml  will return the same value but in xml format.</p>
+			      <p class='initcomment'>The following is a collection of functionality provided by our Minion-API.  Use this documentation as a way to build tools to interact with your minions remotely.</p>
 
 
 
-            <h2 class="cover-heading">/speedtest</h2>
-            <p>Once every hour we are testing and logging the speed of your internet connection.  The speedtest controller gives you fast access to that information.</p>
+
+    <div class="rootResource">
+    <div id="rootResource_Title-1" class="rootResource_Title" onclick="javascript:showDiv('resources-1', true)" style="color: rgb(0, 0, 0);">/speedtest</div>    
+    
+    
+    <div id="resources-1" style="display:none;">
+    
+    <!--
+        <div class="resource_Title-DELETE">
+            <table width="100%" border="0"><tbody><tr>
+                <td width="40px" style="padding:0px;"><div class="resource_marker-DELETE">DELETE</div></td>
+                <td valign="middle" align="left"><a onclick="javascript:showDiv('resource-262', false)" class="resource_subTitle">/api/action/{id}</a></td>
+                <td valign="middle" align="right" class="resourceDescription resource_Caption-262">Deletes and stops the specified action.</td>
+            </tr></tbody></table>
+        </div>
+        <div id="resource-262" style="display:none;" class="resource-DELETE">
+            <div class="resource_content">
+            <table width="100%" border="0">
+                <tbody><tr>
+                    <td style="padding:0px;"><div class="resource_Description">
+                        <b>Request:</b> URL is all that is required.
+                    </div></td>
+        
+                    <td width="40" valign="top" align="right" style="padding:0px;padding-right:8px">
+                        <div class="resourcetools">
+                        </div>
+                    </td>
+                </tr>
+            </tbody></table>
+            </div>
+        </div>
+    -->
+
+        <div class="resource_Title-GET">
+            <table width="100%" border="0"><tbody><tr>
+                <td width="40px" style="padding:0px;"><div class="resource_marker-GET">GET</div></td>
+                <td valign="middle" align="left"><a onclick="javascript:showDiv('resource-271', false)" class="resource_subTitle">/speedtest/{html|json|xml}</a></td>
+                <td valign="middle" align="right" class="resourceDescription resource_Caption-271">Fetch the latest speedtest results.</td>
+            </tr></tbody></table>
+        </div>
+        <div id="resource-271" style="display:none;" class="resource-GET">
+            <div class="resource_content">
+            <table width="100%" border="0">
+                <tbody><tr>
+                    <td style="padding:0px;"><div class="resource_Description">
+                        <b>Request:</b> URL is all that is required.
+                        <br><b>Response:</b>
+                        <ul>
+                          <li>HTTP 200 - Returns status in requested format as a response.</li>
+                          <li>HTTP 404 - Returns empty response if speedtest is not found.</li>
+                        </ul>
+                    </div></td>
+                </tr>
+            </tbody></table>
+            </div>
+        </div>
+
+    <!--
+        <div class="resource_Title-POST">
+            <table width="100%" border="0"><tbody><tr>
+                <td width="40px" style="padding:0px;"><div class="resource_marker-POST">POST</div></td>
+                <td valign="middle" align="left"><a onclick="javascript:showDiv('resource-260', false)" class="resource_subTitle">/api/action/{id}/stop</a></td>
+                <td valign="middle" align="right" class="resourceDescription resource_Caption-260">This will stop the specified action.</td>
+            </tr></tbody></table>
+        </div>
+        <div id="resource-260" style="display:none;" class="resource-POST">
+            <div class="resource_content">
+            <table width="100%" border="0">
+                <tbody><tr>
+                    <td style="padding:0px;"><div class="resource_Description">
+                        <b>Request:</b> URL is all that is required.
+                        <br>POSTing with 0 byte data is sufficient to stop the specified action.
+                        <br>
+                        <br><b>Response Schema:</b> BESAPI.xsd
+                    </div></td>
+        
+                    <td width="40" valign="top" align="right" style="padding:0px;padding-right:8px">
+                        <div class="resourcetools">
+                        </div>
+                    </td>
+                </tr>
+            </tbody></table>
+            </div>
+        </div>
+    -->
+
+    <!--
+        <div class="resource_Title-PUT">
+            <table width="100%" border="0"><tbody><tr>
+                <td width="40px" style="padding:0px;"><div class="resource_marker-PUT">PUT</div></td>
+                <td valign="middle" align="left"><a onclick="javascript:showDiv('resource-261', false)" class="resource_subTitle">/api/action/{id}/stop</a></td>
+                <td valign="middle" align="right" class="resourceDescription resource_Caption-261">This will stop the specified action.</td>
+            </tr></tbody></table>
+        </div>
+        <div id="resource-261" style="display:none;" class="resource-PUT">
+            <div class="resource_content">
+            <table width="100%" border="0">
+                <tbody><tr>
+                    <td style="padding:0px;"><div class="resource_Description">
+                        <b>Request:</b> URL is all that is required.
+                        <br>POSTing with 0 byte data is sufficient to stop the specified action.
+                        <br>
+                        <br><b>Response Schema:</b> BESAPI.xsd
+                    </div></td>
+        
+                    <td width="40" valign="top" align="right" style="padding:0px;padding-right:8px">
+                        <div class="resourcetools">
+                        </div>
+                    </td>
+                </tr>
+            </tbody></table>
+            </div>
+        </div>
+    -->
+
+
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
