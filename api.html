@@ -79,7 +79,7 @@
     
     <div id="resources-1" style="display:none;">
     
-    
+    <!--
         <div class="resource_Title-DELETE">
             <table width="100%" border="0"><tbody><tr>
                 <td width="40px" style="padding:0px;"><div class="resource_marker-DELETE">DELETE</div></td>
@@ -103,7 +103,7 @@
             </tbody></table>
             </div>
         </div>
-    
+    -->
 
         <div class="resource_Title-GET">
             <table width="100%" border="0"><tbody><tr>
@@ -120,21 +120,17 @@
                         <b>Request:</b> URL is all that is required.
                         <br><b>Response:</b>
                         <ul>
-                          <li>HTTP 200 - Returns XML in body of response.</li>
-                          <li>HTTP 404 - Returns empty response if action is not found.</li>
+                          <li>HTTP 200 - Returns status in requested format as a response.</li>
+                          <li>HTTP 404 - Returns empty response if speedtest is not found.</li>
                         </ul>
-                        Example:  https://lab.bigfix.me:52311/api/action/44<br>
+                        Example:  <?php echo $_SERVER['HTTP_REFERER']; ?>/speedtest/json<br>
                     </div></td>
-                    <td width="40" valign="top" align="right" style="padding:0px;padding-right:8px">
-                        <div class="resourcetools">
-                        </div>
-                    </td>
                 </tr>
             </tbody></table>
             </div>
         </div>
 
-    
+    <!--
         <div class="resource_Title-POST">
             <table width="100%" border="0"><tbody><tr>
                 <td width="40px" style="padding:0px;"><div class="resource_marker-POST">POST</div></td>
@@ -161,8 +157,9 @@
             </tbody></table>
             </div>
         </div>
+    -->
 
-
+    <!--
         <div class="resource_Title-PUT">
             <table width="100%" border="0"><tbody><tr>
                 <td width="40px" style="padding:0px;"><div class="resource_marker-PUT">PUT</div></td>
@@ -189,7 +186,7 @@
             </tbody></table>
             </div>
         </div>
-    
+    -->
 
 
     </div>
@@ -203,139 +200,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="rootResource">
-    <div id="rootResource_Title-2" class="rootResource_Title" onclick="javascript:showDiv('resources-2', true)" style="color: rgb(0, 0, 0);">/speedtest2</div>    
-    
-    
-    <div id="resources-2" style="display:none;">
-    
-    
-        <div class="resource_Title-DELETE">
-            <table width="100%" border="0"><tbody><tr>
-                <td width="40px" style="padding:0px;"><div class="resource_marker-DELETE">DELETE</div></td>
-                <td valign="middle" align="left"><a onclick="javascript:showDiv('resource-2624', false)" class="resource_subTitle">/api/action/{id}</a></td>
-                <td valign="middle" align="right" class="resourceDescription resource_Caption-2624">Deletes and stops the specified action.</td>
-            </tr></tbody></table>
-        </div>
-        <div id="resource-2624" style="display:none;" class="resource-DELETE">
-            <div class="resource_content">
-            <table width="100%" border="0">
-                <tbody><tr>
-                    <td style="padding:0px;"><div class="resource_Description">
-                        <b>Request:</b> URL is all that is required.
-                    </div></td>
-        
-                    <td width="40" valign="top" align="right" style="padding:0px;padding-right:8px">
-                        <div class="resourcetools">
-                        </div>
-                    </td>
-                </tr>
-            </tbody></table>
-            </div>
-        </div>
-    
-
-        <div class="resource_Title-GET">
-            <table width="100%" border="0"><tbody><tr>
-                <td width="40px" style="padding:0px;"><div class="resource_marker-GET">GET</div></td>
-                <td valign="middle" align="left"><a onclick="javascript:showDiv('resource-2714', false)" class="resource_subTitle">/speedtest/{html|json|xml}</a></td>
-                <td valign="middle" align="right" class="resourceDescription resource_Caption-2714">Fetch the latest speedtest results.</td>
-            </tr></tbody></table>
-        </div>
-        <div id="resource-2714" style="display:none;" class="resource-GET">
-            <div class="resource_content">
-            <table width="100%" border="0">
-                <tbody><tr>
-                    <td style="padding:0px;"><div class="resource_Description">
-                        <b>Request:</b> URL is all that is required.
-                        <br><b>Response:</b>
-                        <ul>
-                          <li>HTTP 200 - Returns XML in body of response.</li>
-                          <li>HTTP 404 - Returns empty response if action is not found.</li>
-                        </ul>
-                        Example:  https://lab.bigfix.me:52311/api/action/44<br>
-                    </div></td>
-                    <td width="40" valign="top" align="right" style="padding:0px;padding-right:8px">
-                        <div class="resourcetools">
-                        </div>
-                    </td>
-                </tr>
-            </tbody></table>
-            </div>
-        </div>
-
-    
-        <div class="resource_Title-POST">
-            <table width="100%" border="0"><tbody><tr>
-                <td width="40px" style="padding:0px;"><div class="resource_marker-POST">POST</div></td>
-                <td valign="middle" align="left"><a onclick="javascript:showDiv('resource-2604', false)" class="resource_subTitle">/api/action/{id}/stop</a></td>
-                <td valign="middle" align="right" class="resourceDescription resource_Caption-2604">This will stop the specified action.</td>
-            </tr></tbody></table>
-        </div>
-        <div id="resource-2604" style="display:none;" class="resource-POST">
-            <div class="resource_content">
-            <table width="100%" border="0">
-                <tbody><tr>
-                    <td style="padding:0px;"><div class="resource_Description">
-                        <b>Request:</b> URL is all that is required.
-                        <br>POSTing with 0 byte data is sufficient to stop the specified action.
-                        <br>
-                        <br><b>Response Schema:</b> BESAPI.xsd
-                    </div></td>
-        
-                    <td width="40" valign="top" align="right" style="padding:0px;padding-right:8px">
-                        <div class="resourcetools">
-                        </div>
-                    </td>
-                </tr>
-            </tbody></table>
-            </div>
-        </div>
-
-
-        <div class="resource_Title-PUT">
-            <table width="100%" border="0"><tbody><tr>
-                <td width="40px" style="padding:0px;"><div class="resource_marker-PUT">PUT</div></td>
-                <td valign="middle" align="left"><a onclick="javascript:showDiv('resource-2614', false)" class="resource_subTitle">/api/action/{id}/stop</a></td>
-                <td valign="middle" align="right" class="resourceDescription resource_Caption-2614">This will stop the specified action.</td>
-            </tr></tbody></table>
-        </div>
-        <div id="resource-2614" style="display:none;" class="resource-PUT">
-            <div class="resource_content">
-            <table width="100%" border="0">
-                <tbody><tr>
-                    <td style="padding:0px;"><div class="resource_Description">
-                        <b>Request:</b> URL is all that is required.
-                        <br>POSTing with 0 byte data is sufficient to stop the specified action.
-                        <br>
-                        <br><b>Response Schema:</b> BESAPI.xsd
-                    </div></td>
-        
-                    <td width="40" valign="top" align="right" style="padding:0px;padding-right:8px">
-                        <div class="resourcetools">
-                        </div>
-                    </td>
-                </tr>
-            </tbody></table>
-            </div>
-        </div>
-    
-
-
-    </div>
-    </div>
 
 
 
