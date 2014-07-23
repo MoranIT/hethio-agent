@@ -4,7 +4,7 @@ Minions are Ubuntu computers or, more likely, Raspberry Pi's configured to run a
 
 ## Installing or Updating Minions
 
->$ wget https://github.com/danielheth/minion-api/tarball/master
+>$ wget https://github.com/danielheth/minion/tarball/master
 
 >$ tar -xpvf master
 
