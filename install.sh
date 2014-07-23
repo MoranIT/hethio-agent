@@ -76,9 +76,13 @@ cp -rf api/ /opt/minion/
 
 echo "- Configuring Cron"
 cp -f cron/hourly /etc/cron.hourly/minion
-cp -f cron/daily /etc/cron.daily/minion
-cp -f cron/weekly /etc/cron.weekly/minion
-cp -f cron/monthly /etc/cron.monthly/minion
+chmod +x /etc/cron.hourly/minion
+#cp -f cron/daily /etc/cron.daily/minion
+#chmod +x /etc/cron.daily/minion
+#cp -f cron/weekly /etc/cron.weekly/minion
+#chmod +x /etc/cron.weekly/minion
+#cp -f cron/monthly /etc/cron.monthly/minion
+#chmod +x /etc/cron.monthly/minion
 
 
 echo "- Fixing Permissions"
