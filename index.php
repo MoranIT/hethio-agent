@@ -10,7 +10,7 @@ $app = new \Slim\Slim(array(
 
 
 $app->get('/', function () {
-	echo "Minion v1.0";
+	echo file_get_contents("index.html");
 });
 
 $app->get('/hello/:name/:format', function ($name, $format = "html") use($app) {
