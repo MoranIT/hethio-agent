@@ -32,11 +32,17 @@ service lighttpd stop
 apt-get install php5-common php5-cgi php5
 lighty-enable-mod fastcgi-php
 
+echo "- Creating minion User Group"
+groupadd minion
+useradd -G minion www-data
+
 echo "- Creating Minion Directory"
 mkdir -f /opt/minion
 mkdir -f /opt/minion/logs
-chmod 775 /opt/minion/logs
-
+mkdir -f /opt/minion/cache
+mkdir -f /opt/minion/cache/api
+mkdir -f /opt/minion/cache/api/uploads
+mkdir -f /opt/minion/cache/api/compress
 
 else
 echo "Updating Existing Minion Installation"
@@ -74,6 +80,10 @@ cp -f cron/daily /etc/cron.daily/minion
 cp -f cron/weekly /etc/cron.weekly/minion
 cp -f cron/monthly /etc/cron.monthly/minion
 
+
+echo "- Fixing Permissions"
+chgrp -R minion /opt/minion
+chmod -R 775 /opt/minion
 
 echo "- Starting WebServer"
 service lighttpd start
