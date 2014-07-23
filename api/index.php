@@ -38,7 +38,7 @@ $app->get('/publicip(/)(/:format)', function($format = 'html') use($app) {
 		echo '<?xml version="1.0" encoding="UTF-8"?>';
 		//echo '<publicips>';
 		echo '	<publicip>';
-		echo '		<ipaddress>'.$response['status'].'</ipaddress>';
+		echo '		<ipaddress>'.$response['ipaddress'].'</ipaddress>';
 		echo '		<timestamp>'.$response['timestamp'].'</timestamp>';
 		echo '	</publicip>';
 		//echo '</publicips>';
