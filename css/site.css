@@ -1,4 +1,4 @@
-/*
+
 @font-face {
   font-family: "open_sansregular";
   src: url("../libraries/fonts/opensans_regular/OpenSans-Regular-webfont.eot");
@@ -12,7 +12,10 @@
   font-weight: 400;
   font-size: 14px;
 }
-*/
+
+.cover-api {
+  text-align: left;
+}
 
 
 /*
@@ -35,6 +38,8 @@ a:hover {
   background-color: #fff;
   border: 1px solid #fff;
 }
+
+
 
 
 /*
