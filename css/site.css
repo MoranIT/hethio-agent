@@ -1,7 +1,7 @@
 @font-face {
   font-family: "open_sansregular";
-  src: url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.eot");
-  src: url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.eot?#iefix") format("embedded-opentype"), url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.woff") format("woff"), url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.ttf") format("truetype"), url("../libraries/font/opensans_regular/OpenSans-Regular-webfont.svg#open_sansregular") format("svg");
+  src: url("../libraries/fonts/opensans_regular/OpenSans-Regular-webfont.eot");
+  src: url("../libraries/fonts/opensans_regular/OpenSans-Regular-webfont.eot?#iefix") format("embedded-opentype"), url("../libraries/fonts/opensans_regular/OpenSans-Regular-webfont.woff") format("woff"), url("../libraries/fonts/opensans_regular/OpenSans-Regular-webfont.ttf") format("truetype"), url("../libraries/fonts/opensans_regular/OpenSans-Regular-webfont.svg#open_sansregular") format("svg");
   font-weight: normal;
   font-style: normal; }
 
