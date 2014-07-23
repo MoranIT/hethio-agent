@@ -7,20 +7,23 @@
   font-style: normal; }
 
 * {
-  font-family: "open_sansregular", "Arial", "sans-serif";
-  font-style: normal;
+  font-family: "open_sansregular", "Arial", "sans-serif" !important;
+  font-style: normal !important;
   font-weight: 400;
   font-size: 14px;
 }
 
 .cover-api {
   text-align: left;
-  margin-top: 35px;
+  margin-top: 0px;
 }
 .content-line {
   margin-top: 91;
 }
 
+.cover-heading {
+  margin-top: 0px !important;
+}
 
 
 
