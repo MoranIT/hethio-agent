@@ -10,7 +10,6 @@ Session.vim
 *.pydevproject
 .metadata
 .gradle
-bin/
 tmp/
 *.tmp
 *.bak
@@ -93,7 +92,6 @@ $RECYCLE.BIN/
 
 ### Ignore NodeJs Files
 # Logs
-logs
 *.log
 
 # Runtime data
