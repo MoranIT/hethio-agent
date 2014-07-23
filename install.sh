@@ -52,6 +52,9 @@ service lighttpd stop
 
 fi
 
+echo "- Updating Message of the Day"
+cp -f motd /etc/
+
 echo "- Removing Old Files"
 rm -rf /var/www
 rm -rf /etc/speedtest
