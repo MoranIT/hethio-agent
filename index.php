@@ -1,6 +1,8 @@
 <?php
 
 require 'libraries/Slim/Slim.php';
+\Slim\Slim::registerAutoloader();
+
 
 $app = new \Slim\Slim(array(
 	'debug' => true
