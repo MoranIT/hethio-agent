@@ -34,7 +34,7 @@ lighty-enable-mod fastcgi-php
 
 echo "- Creating minion User Group"
 groupadd minion
-useradd -G minion www-data
+useradd -a -G minion www-data
 
 echo "- Creating Minion Directory"
 mkdir -f /opt/minion
@@ -91,6 +91,9 @@ chmod -R 775 /opt/minion
 
 echo "- Starting WebServer"
 service lighttpd start
+
+echo "- Starting Cron"
+service cron restart
 
 
 echo "Enjoy your Minion!"
