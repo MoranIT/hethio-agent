@@ -15,6 +15,7 @@
 
 .cover-api {
   text-align: left;
+  margin-top: 35px;
 }
 .content-line {
   margin-top: 91;
@@ -119,25 +120,21 @@
 
 .resource_Title-POST
 {
-    border: 1px solid #C3E8D1;
     margin-top:8px;
 }
 
 .resource_Title-PUT
 {
-    border: 1px solid #F0E0CA;
     margin-top:8px;
 }
 
 .resource_Title-DELETE
 {
-    border: 1px solid #E8C6C7;
     margin-top:8px;
 }
 
 .resource_Title-GET
 {
-    border: 1px solid #C3D9EC;
     margin-top:8px;
 }
 
