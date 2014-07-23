@@ -417,7 +417,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  .masthead {
+  .cover-api {
     padding-top: 0px;
   }
   .resourceDescription {
