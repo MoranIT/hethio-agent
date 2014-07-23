@@ -24,8 +24,8 @@ $app->get('/publicip(/)(/:format)', function($format = 'html') use($app) {
 	$response['timestamp'] = null;
 
 	if (is_file('/opt/minion/log/publicip.log')) {
-		$response['ipaddress'] = file_get_contents('/opt/minion/log/publicip.log');
-		$response['timestamp'] = date ("Y-m-d H:i:s.", filemtime('/opt/minion/log/publicip.log'));
+		$response['ipaddress'] = trim(file_get_contents('/opt/minion/log/publicip.log'));
+		$response['timestamp'] = date ("Y-m-d H:i:s", filemtime('/opt/minion/log/publicip.log'));
 	}
 
 	$format = strtolower($format);
