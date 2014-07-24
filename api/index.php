@@ -199,9 +199,15 @@ $app->get('/speedtest(/)(/:format)', function($format = 'html') {
 });
 
 
-$app->get('/speedtests(/)(/:format)', function($format = 'html') {
+$app->get('/speedtests(/)(/:count)(/:count/:format)', function($count = 10, $format = 'html') {
+	if (!is_numeric($count)) {  //user passing in format and wants 10
+		$format = $count;
+		$count = 10;
+	}
+
+
 	$responses = array();
-	$lines = GetLastLines('/opt/minion/log/speedtest.log', 10);
+	$lines = GetLastLines('/opt/minion/log/speedtest.log', $count);
 	if (count($lines) > 0) {
 		foreach($lines as $line) {
 			$response = array();
