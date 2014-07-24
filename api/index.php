@@ -14,8 +14,11 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 	$isArray = is_array($response);
 	if ($isArray) {
 		$responses = $response;
-	} else { $responses = array($response); }
+	} else { 
+		$responses = array($response); 
+	}
 
+	/*
 	if ($format == "json") {
 		$app->response->headers->set('Content Type', 'application/json');
 		echo json_encode($response);
@@ -33,6 +36,7 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 	} else {
 		print_r($response);
 	}
+	*/
 }
 
 
