@@ -11,7 +11,7 @@ $app = new \Slim\Slim(array(
 
 function OutputResponse($response, $singular, $multiple = null, $format = 'html') {
 	$format = strtolower($format);
-	$isArray = (is_array($response));
+	$isArray = is_array($response);
 	if ($isArray) {
 		$responses = $response;
 	} else { $responses = array($response); }
