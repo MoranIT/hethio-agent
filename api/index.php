@@ -24,18 +24,15 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 		$app->response->headers->set('Content Type', 'application/json');
 		echo json_encode($response);
 	} else if ($format == "xml") {
-	/*
 		$app->response->headers->set('Content Type', 'text/xml');
 		echo '<?xml version="1.0" encoding="UTF-8"?>';
 		if ($isArray && $multiple != null) { echo "<".$multiple.">"; }	
 		foreach($response in $responses) {
 			echo "<".$singular.">\n";
-			reset($response);
-			while (list($key, $val) = each($response)) { echo "<$key>$val</$key>\n"; }
+			//while (list($key, $val) = each($response)) { echo "<$key>$val</$key>\n"; }
 			echo "</".$singular.">\n";
 		}
 		if ($isArray && $multiple != null) { echo "</".$multiple.">\n"; }
-	*/
 	} else {
 		print_r($response);
 	}
@@ -65,7 +62,7 @@ $app->get('/contact(/)', function () {
 //This will return the temperature in millicentigrade, with quick 
 //conversions to centigrade being something like (in your language of choice) 
 //value / 1000.0 and to Fahrenheit value / 1000.0 * 9/5 + 32.
-$app->get('/temp(/)(/:format)', function($format = 'html') use($app) {
+$app->get('/temp(/)(/:format)', function($format = 'html') {
 	$response['millicentigrade'] = null;
 	$response['centigrade'] = null;
 	$response['fahrenheit'] = null;
@@ -83,7 +80,7 @@ $app->get('/temp(/)(/:format)', function($format = 'html') use($app) {
 
 
 
-$app->get('/publicip(/)(/:format)', function($format = 'html') use($app) {
+$app->get('/publicip(/)(/:format)', function($format = 'html') {
 	$response['ipaddress'] = "Unknown";
 	$response['timestamp'] = null;
 
@@ -95,7 +92,7 @@ $app->get('/publicip(/)(/:format)', function($format = 'html') use($app) {
 });
 
 
-$app->get('/speedtest(/)(/:format)', function($format = 'html') use($app) {
+$app->get('/speedtest(/)(/:format)', function($format = 'html') {
 	$response['status'] = "Unknown";
 	$response['download'] = null;
 	$response['upload'] = null;
