@@ -21,29 +21,34 @@ if [ "$UPDATE" != true ]; then
 echo "Installing Fresh Minion Installation"
 
 echo "- Installing Python"
-apt-get install python
+apt-get install python -y
 
 echo "- Installing Perl"
-apt-get install perl
+apt-get install perl -y
 
 echo "- Installing WebServer and PHP"
-apt-get install lighttpd
+apt-get install lighttpd -y
 service lighttpd stop
-apt-get install php5-common php5-cgi php5
+apt-get install php5-common php5-cgi php5 -y
 lighty-enable-mod fastcgi-php
 
 echo "- Creating minion User Group"
 groupadd minion
-useradd -a -G minion www-data
+usermod -a -G minion www-data
+
+rm -rf /opt/minion
 
 echo "- Creating Minion Directory"
-mkdir -f /opt/minion
-mkdir -f /opt/minion/log
-mkdir -f /opt/minion/cache
-mkdir -f /opt/minion/cache/ddclient
-mkdir -f /opt/minion/cache/api
-mkdir -f /opt/minion/cache/api/uploads
-mkdir -f /opt/minion/cache/api/compress
+mkdir /opt/minion
+mkdir /opt/minion/log
+mkdir /opt/minion/cache
+mkdir /opt/minion/cache/ddclient
+mkdir /opt/minion/cache/api
+mkdir /opt/minion/cache/api/uploads
+mkdir /opt/minion/cache/api/compress
+
+touch /opt/minion/log/api.access.log
+touch /opt/minion/log/api.error.log
 
 else
 echo "Updating Existing Minion Installation"
