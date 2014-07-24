@@ -134,9 +134,14 @@ $app->get('/publicip(/)(/:format)', function($format = 'html') {
 
 	$line = GetLastLine('/opt/minion/log/publicip.log');
 	if (!is_null($line)) {
-		$l = explode('|',$line); //publicip|timestamp
-		$response['ipaddress'] = $l[0];
-		$response['timestamp'] = $l[1];
+		if (strpos($line, '|') !== FALSE) {
+			$l = explode('|',$line); //publicip|timestamp
+			$response['ipaddress'] = $l[0];
+			$response['timestamp'] = $l[1];
+		} else {
+			$response['ipaddress'] = $line;
+			$response['timestamp'] = date ("Y-m-d H:i:s", time());
+		}
 	}
 	OutputResponse($response, "publicip", "publicips", $format);
 });
@@ -149,10 +154,12 @@ $app->get('/speedtest(/)(/:format)', function($format = 'html') {
 
 	$line = GetLastLine('/opt/minion/log/speedtest.log');
 	if (!is_null($line)) {
-		$l = explode('|',$line); //download|upload|timestamp
-		$response['download'] = $l[0];
-		$response['upload'] = $l[1];
-		$response['timestamp'] = $l[2];
+		if (strpos($line, '|') !== FALSE) {
+			$l = explode('|',$line); //download|upload|timestamp
+			$response['download'] = $l[0];
+			$response['upload'] = $l[1];
+			$response['timestamp'] = $l[2];
+		}
 	}
 	OutputResponse($response, "speedtest", "speedtests", $format);
 });
