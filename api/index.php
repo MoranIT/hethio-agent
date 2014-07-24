@@ -10,6 +10,8 @@ $app = new \Slim\Slim(array(
 
 
 function OutputResponse($response, $singular, $multiple = null, $format = 'html') {
+	global $app;
+
 	$format = strtolower($format);
 	$isArray = is_array($response);
 	if ($isArray) {
