@@ -4,8 +4,14 @@
 # Minion Hourly Script
 #
 
-# Run Internet Speedtest every hour
+echo "Run Internet Speedtest every hour"
 /opt/minion/bin/speedtest-wrapper.sh
 
-# Update Dynamic DNS Location
-/opt/minion/bin/ddclient-wrapper.sh
+echo "Make sure the Dynamic DNS Location service is running"
+if ps aux | grep "ddclient" > /dev/null
+then
+    echo "It is Running"
+else
+    echo "It is Stopped, starting"
+    /opt/minion/bin/ddclient
+fi
