@@ -220,6 +220,28 @@ $app->get('/speedtests(/)(/:count(/:format))', function($count = 10, $format = '
 				array_push($responses, $response);
 			}
 		}
+
+		//do we need to look into older log files?
+		if (count($responses) < $count) {
+			$count = $count - count($responses); 
+			$lines = GetLastLines('/opt/minion/log/speedtest.1.log', $count);
+			if (count($lines) > 0) {
+			foreach($lines as $line) {
+				$response = array();
+				if (strpos($line, '|') !== FALSE) {
+					$l = explode('|',$line); //download|upload|timestamp
+					$response['download'] = $l[0];
+					$response['upload'] = $l[1];
+					$response['timestamp'] = $l[2];
+
+					array_push($responses, $response);
+				}
+			}
+			//TODO only go one log file back for now... should make this recursive
+		}
+
+
+
 	}
 	OutputResponse($responses, "speedtest", "speedtests", $format);
 });
