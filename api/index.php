@@ -24,6 +24,7 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 		$app->response->headers->set('Content Type', 'application/json');
 		echo json_encode($response);
 	} else if ($format == "xml") {
+		/*
 		$app->response->headers->set('Content Type', 'text/xml');
 		echo '<?xml version="1.0" encoding="UTF-8"?>';
 		if ($isArray && $multiple != null) { echo "<".$multiple.">"; }	
@@ -33,6 +34,7 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 			echo "</".$singular.">\n";
 		}
 		if ($isArray && $multiple != null) { echo "</".$multiple.">\n"; }
+		*/
 	} else {
 		print_r($response);
 	}
