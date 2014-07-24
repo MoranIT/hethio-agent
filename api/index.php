@@ -19,6 +19,47 @@ $app->get('/contact(/)', function () {
 	echo file_get_contents('/opt/minion/api/contact.html');
 });
 
+
+
+//One is using this command: cat /sys/class/thermal/thermal_zone0/temp. 
+//This will return the temperature in millicentigrade, with quick 
+//conversions to centigrade being something like (in your language of choice) 
+//value / 1000.0 and to Fahrenheit value / 1000.0 * 9/5 + 32.
+$app->get('/temp(/)(/:format)', function($format = 'html') use($app) {
+	$response['millicentigrade'] = null;
+	$response['centigrade'] = null;
+	$response['fahrenheit'] = null;
+	$response['timestamp'] = time();
+
+	if (is_file('/sys/class/thermal/thermal_zone0/temp')) {
+		$response['millicentigrade'] = trim(file_get_contents('/sys/class/thermal/thermal_zone0/temp'));
+		$response['centigrade'] = $response['millicentigrade'] / 1000;
+		$response['fahrenheit'] = $response['centigrade'] * 9/5 + 32;
+		$response['timestamp'] = date ("Y-m-d H:i:s", filemtime('/sys/class/thermal/thermal_zone0/temp'));
+	}
+
+	$format = strtolower($format);
+	if ($format == "json") {
+		$app->response->headers->set('Content Type', 'application/json');
+		echo json_encode($response);
+	} else if ($format == "xml") {
+		$app->response->headers->set('Content Type', 'text/xml');
+
+		echo '<?xml version="1.0" encoding="UTF-8"?>';
+		//echo '<publicips>';
+		echo '	<temp>';
+		echo '		<millicentigrade>'.$response['millicentigrade'].'</millicentigrade>';
+		echo '		<centigrade>'.$response['centigrade'].'</centigrade>';
+		echo '		<fahrenheit>'.$response['fahrenheit'].'</fahrenheit>';
+		echo '		<timestamp>'.$response['timestamp'].'</timestamp>';
+		echo '	</temp>';
+		//echo '</publicips>';
+	} else {
+		print_r($response);
+	}
+});
+
+
 $app->get('/publicip(/)(/:format)', function($format = 'html') use($app) {
 	$response['ipaddress'] = "Unknown";
 	$response['timestamp'] = null;

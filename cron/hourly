@@ -15,3 +15,6 @@ else
     echo "It is Stopped, starting"
     /opt/minion/bin/ddclient
 fi
+
+echo "Log Current Temperature to running file"
+/opt/minion/bin/temp-logger
