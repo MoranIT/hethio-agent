@@ -124,6 +124,9 @@ $app->get('/contact(/)', function () {
 
 
 
+
+
+
 $app->get('/temp(/)(/:format)', function($format = 'html') {
 	$response['millicentigrade'] = null;
 	$response['centigrade'] = null;
@@ -138,6 +141,106 @@ $app->get('/temp(/)(/:format)', function($format = 'html') {
 	}
 	OutputResponse($response, "temp", "temps", $format);
 });
+
+
+$app->get('/temps(/)(/:count(/:format))', function($count = 10, $format = 'html') {
+	if (!is_numeric($count)) {  //user passing in format and wants 10
+		$format = $count;
+		$count = 10;
+	}
+
+
+	$responses = array();
+	$lines = GetLastLines('/opt/minion/log/temp.log', $count);
+	if (count($lines) > 0) {
+		foreach($lines as $line) {
+			$response = array();
+			if (strpos($line, '|') !== FALSE) {
+				$l = explode('|',$line); //temp|timestamp
+				$response['millicentigrade'] = $l[0];
+				$response['centigrade'] = $response['millicentigrade'] / 1000;
+				$response['fahrenheit'] = $response['centigrade'] * 9/5 + 32;
+				$response['timestamp'] = $l[1];
+
+				array_push($responses, $response);
+			}
+		}
+
+		//do we need to look into older log files?
+		if (count($responses) < $count) {
+			$count = $count - count($responses); 
+			$lines = GetLastLines('/opt/minion/log/temp.1.log', $count);
+			if (count($lines) > 0) {
+				$lines = array_reverse($lines); //reverse array order
+				foreach($lines as $line) {
+					$response = array();
+					if (strpos($line, '|') !== FALSE) {
+						$l = explode('|',$line); //temp|timestamp
+						$response['millicentigrade'] = $l[0];
+						$response['centigrade'] = $response['millicentigrade'] / 1000;
+						$response['fahrenheit'] = $response['centigrade'] * 9/5 + 32;
+						$response['timestamp'] = $l[1];
+
+						array_unshift($responses, $response); //push to begining of array
+					}
+				}
+
+				if (count($responses) < $count) {
+					$count = $count - count($responses); 
+					$lines = GetLastLines('/opt/minion/log/temp.2.log', $count);
+					if (count($lines) > 0) {
+						$lines = array_reverse($lines); //reverse array order
+						foreach($lines as $line) {
+							$response = array();
+							if (strpos($line, '|') !== FALSE) {
+								$l = explode('|',$line); //temp|timestamp
+								$response['millicentigrade'] = $l[0];
+								$response['centigrade'] = $response['millicentigrade'] / 1000;
+								$response['fahrenheit'] = $response['centigrade'] * 9/5 + 32;
+								$response['timestamp'] = $l[1];
+
+								array_unshift($responses, $response); //push to begining of array
+							}
+						}
+
+
+
+
+						if (count($responses) < $count) {
+							$count = $count - count($responses); 
+							$lines = GetLastLines('/opt/minion/log/temp.3.log', $count);
+							if (count($lines) > 0) {
+								$lines = array_reverse($lines); //reverse array order
+								foreach($lines as $line) {
+									$response = array();
+									if (strpos($line, '|') !== FALSE) {
+										$l = explode('|',$line); //temp|timestamp
+										$response['millicentigrade'] = $l[0];
+										$response['centigrade'] = $response['millicentigrade'] / 1000;
+										$response['fahrenheit'] = $response['centigrade'] * 9/5 + 32;
+										$response['timestamp'] = $l[1];
+
+										array_unshift($responses, $response); //push to begining of array
+									}
+								}
+								//TODO only went 3 logs back for now... should make this recursive
+							}
+						}
+
+					}
+				}
+			}
+		}
+
+
+
+	}
+	OutputResponse($responses, "speedtest", "speedtests", $format);
+});
+
+
+
+
 
 
 $app->get('/publicip(/)(/:format)', function($format = 'html') {
@@ -169,6 +272,96 @@ $app->get('/publicip(/)(/:format)', function($format = 'html') {
 	}
 	OutputResponse($response, "publicip", "publicips", $format);
 });
+
+
+$app->get('/publicips(/)(/:count(/:format))', function($count = 10, $format = 'html') {
+	if (!is_numeric($count)) {  //user passing in format and wants 10
+		$format = $count;
+		$count = 10;
+	}
+
+
+	$responses = array();
+	$lines = GetLastLines('/opt/minion/log/publicip.log', $count);
+	if (count($lines) > 0) {
+		foreach($lines as $line) {
+			$response = array();
+			if (strpos($line, '|') !== FALSE) {
+				$l = explode('|',$line); //download|upload|timestamp
+				$response['ipaddress'] = $l[0];
+				$response['timestamp'] = $l[1];
+
+				array_push($responses, $response);
+			}
+		}
+
+		//do we need to look into older log files?
+		if (count($responses) < $count) {
+			$count = $count - count($responses); 
+			$lines = GetLastLines('/opt/minion/log/publicip.1.log', $count);
+			if (count($lines) > 0) {
+				$lines = array_reverse($lines); //reverse array order
+				foreach($lines as $line) {
+					$response = array();
+					if (strpos($line, '|') !== FALSE) {
+						$l = explode('|',$line); //download|upload|timestamp
+						$response['ipaddress'] = $l[0];
+						$response['timestamp'] = $l[1];
+
+						array_unshift($responses, $response); //push to begining of array
+					}
+				}
+
+				if (count($responses) < $count) {
+					$count = $count - count($responses); 
+					$lines = GetLastLines('/opt/minion/log/publicip.2.log', $count);
+					if (count($lines) > 0) {
+						$lines = array_reverse($lines); //reverse array order
+						foreach($lines as $line) {
+							$response = array();
+							if (strpos($line, '|') !== FALSE) {
+								$l = explode('|',$line); //download|upload|timestamp
+								$response['ipaddress'] = $l[0];
+								$response['timestamp'] = $l[1];
+
+								array_unshift($responses, $response); //push to begining of array
+							}
+						}
+
+
+
+
+						if (count($responses) < $count) {
+							$count = $count - count($responses); 
+							$lines = GetLastLines('/opt/minion/log/publicip.3.log', $count);
+							if (count($lines) > 0) {
+								$lines = array_reverse($lines); //reverse array order
+								foreach($lines as $line) {
+									$response = array();
+									if (strpos($line, '|') !== FALSE) {
+										$l = explode('|',$line); //download|upload|timestamp
+										$response['ipaddress'] = $l[0];
+										$response['timestamp'] = $l[1];
+
+										array_unshift($responses, $response); //push to begining of array
+									}
+								}
+								//TODO only went 3 logs back for now... should make this recursive
+							}
+						}
+
+					}
+				}
+			}
+		}
+
+
+
+	}
+	OutputResponse($responses, "speedtest", "speedtests", $format);
+});
+
+
 
 
 $app->get('/speedtest(/)(/:format)', function($format = 'html') {
@@ -238,7 +431,49 @@ $app->get('/speedtests(/)(/:count(/:format))', function($count = 10, $format = '
 						array_unshift($responses, $response); //push to begining of array
 					}
 				}
-				//TODO only go one log file back for now... should make this recursive
+
+				if (count($responses) < $count) {
+					$count = $count - count($responses); 
+					$lines = GetLastLines('/opt/minion/log/speedtest.2.log', $count);
+					if (count($lines) > 0) {
+						$lines = array_reverse($lines); //reverse array order
+						foreach($lines as $line) {
+							$response = array();
+							if (strpos($line, '|') !== FALSE) {
+								$l = explode('|',$line); //download|upload|timestamp
+								$response['download'] = $l[0];
+								$response['upload'] = $l[1];
+								$response['timestamp'] = $l[2];
+
+								array_unshift($responses, $response); //push to begining of array
+							}
+						}
+
+
+
+
+						if (count($responses) < $count) {
+							$count = $count - count($responses); 
+							$lines = GetLastLines('/opt/minion/log/speedtest.3.log', $count);
+							if (count($lines) > 0) {
+								$lines = array_reverse($lines); //reverse array order
+								foreach($lines as $line) {
+									$response = array();
+									if (strpos($line, '|') !== FALSE) {
+										$l = explode('|',$line); //download|upload|timestamp
+										$response['download'] = $l[0];
+										$response['upload'] = $l[1];
+										$response['timestamp'] = $l[2];
+
+										array_unshift($responses, $response); //push to begining of array
+									}
+								}
+								//TODO only went 3 logs back for now... should make this recursive
+							}
+						}
+
+					}
+				}
 			}
 		}
 
