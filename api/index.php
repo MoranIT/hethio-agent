@@ -48,12 +48,14 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 
 		echo "<table>\n";
 
-		echo "<tr>\n";
-		while(list($key, $val) = each($responses[0])) {
+		echo "<thead><tr>\n";
+		if ($isArray) { $firstitem = $responses[0]; } else { $firstitem = $response; }
+		while(list($key, $val) = each($firstitem)) {
 			echo "<th>".$key."</th>\n";
 		}
-		echo "</tr>\n";
+		echo "</tr></thead>\n";
 
+		echo "<tbody>\n";
 		foreach($responses as $response) {
 			echo "<tr>\n";
 			while (list($key, $val) = each($response)) { 
@@ -62,6 +64,7 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 			}
 			echo "</tr>\n";
 		}
+		echo "</tbody>\n";
 
 		echo "</table>\n";
 	}
