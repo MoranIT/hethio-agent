@@ -10,16 +10,9 @@ Minions are Ubuntu computers or, more likely, Raspberry Pi's configured to run a
 
 >$ cd danielheth*
 
+The following command will determine if we're upgrading or installing new.
 
-### Brand New Minions
-If this is a brand new Pi which you just installed the Raspbian OS, run the following:
-
->$ sudo ./install.sh
-
-
-### Updating Existing Minions
-
->$ sudo ./install.sh -u
+>$ sudo ./installed.sh
 
 
 ## File Structure
