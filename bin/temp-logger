@@ -1,3 +1,6 @@
 #!/bin/sh
 
-cat /sys/class/thermal/thermal_zone0/temp >> /opt/minion/log/temp.log
+DATETIME=`date +"%Y-%m-%d %H:%M:%S"`
+TEMP=`cat /sys/class/thermal/thermal_zone0/temp`
+
+echo "$TEMP|$DATETIME" >> /opt/minion/log/temp.log
