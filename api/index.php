@@ -28,11 +28,11 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 		$app->response->headers->set('Content Type', 'text/xml');
 		echo '<?xml version="1.0" encoding="UTF-8"?>';
 		if ($isArray && !is_null($multiple)) { echo "<".$multiple.">"; }	
-		foreach($response in $responses) {
-			echo "<".$singular.">\n";
+		//foreach($response in $responses) {
+		//	echo "<".$singular.">\n";
 			//while (list($key, $val) = each($response)) { echo "<$key>$val</$key>\n"; }
-			echo "</".$singular.">\n";
-		}
+		//	echo "</".$singular.">\n";
+		//}
 		if ($isArray && !is_null($multiple)) { echo "</".$multiple.">\n"; }
 		
 	} else {
