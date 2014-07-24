@@ -226,18 +226,19 @@ $app->get('/speedtests(/)(/:count(/:format))', function($count = 10, $format = '
 			$count = $count - count($responses); 
 			$lines = GetLastLines('/opt/minion/log/speedtest.1.log', $count);
 			if (count($lines) > 0) {
-			foreach($lines as $line) {
-				$response = array();
-				if (strpos($line, '|') !== FALSE) {
-					$l = explode('|',$line); //download|upload|timestamp
-					$response['download'] = $l[0];
-					$response['upload'] = $l[1];
-					$response['timestamp'] = $l[2];
+				foreach($lines as $line) {
+					$response = array();
+					if (strpos($line, '|') !== FALSE) {
+						$l = explode('|',$line); //download|upload|timestamp
+						$response['download'] = $l[0];
+						$response['upload'] = $l[1];
+						$response['timestamp'] = $l[2];
 
-					array_push($responses, $response);
+						array_push($responses, $response);
+					}
 				}
+				//TODO only go one log file back for now... should make this recursive
 			}
-			//TODO only go one log file back for now... should make this recursive
 		}
 
 
