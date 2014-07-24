@@ -234,7 +234,7 @@ $app->get('/speedtests(/)(/:count(/:format))', function($count = 10, $format = '
 						$response['upload'] = $l[1];
 						$response['timestamp'] = $l[2];
 
-						array_push($responses, $response);
+						array_unshift($responses, $response);
 					}
 				}
 				//TODO only go one log file back for now... should make this recursive
