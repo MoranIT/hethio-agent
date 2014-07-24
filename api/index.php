@@ -95,6 +95,19 @@ function GetLastLine($file) {
 	return $line;
 }
 
+function GetLastLines($file, $lines) {
+	$result = array();
+	if (is_file($file)) {
+		$file = file("filename.txt");
+		if (count($file) < $lines) { $lines = count($file); }
+
+		for ($i = count($file)-($lines + 1)); $i < count($file); $i++) {
+		  array_push($result, $file[$i]);
+		}
+	}
+	return $result;
+}
+
 
 
 
@@ -185,6 +198,27 @@ $app->get('/speedtest(/)(/:format)', function($format = 'html') {
 	}
 	OutputResponse($response, "speedtest", "speedtests", $format);
 });
+
+
+$app->get('/speedtests(/)(/:format)', function($format = 'html') {
+	$responses = array();
+	$lines = GetLastLines('/opt/minion/log/speedtest.log', 10);
+	if (count($lines) > 0) {
+		foreach($lines as $line) {
+			$response = array();
+			if (strpos($line, '|') !== FALSE) {
+				$l = explode('|',$line); //download|upload|timestamp
+				$response['download'] = $l[0];
+				$response['upload'] = $l[1];
+				$response['timestamp'] = $l[2];
+
+				array_push($responses, $response);
+			}
+		}
+	}
+	OutputResponse($responses, "speedtest", "speedtests", $format);
+});
+
 
 
 
