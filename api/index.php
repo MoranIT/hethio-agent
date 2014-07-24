@@ -199,7 +199,7 @@ $app->get('/speedtest(/)(/:format)', function($format = 'html') {
 });
 
 
-$app->get('/speedtests(/)(/:count)(/:count/:format)', function($count = 10, $format = 'html') {
+$app->get('/speedtests(/)(/:count(/:format))(/:format)', function($count = 10, $format = 'html') {
 	if (!is_numeric($count)) {  //user passing in format and wants 10
 		$format = $count;
 		$count = 10;
