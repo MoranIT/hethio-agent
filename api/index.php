@@ -42,10 +42,10 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 		if ($isArray && !is_null($multiple)) { echo "</".$multiple.">\n"; }
 		
 	} else {
-		if (is_null($multiple)) {
-			echo "<h1>".$singular."</h1>\n";
-		} else {
+		if ($isArray && !is_null($multiple)) {
 			echo "<h1>".$multiple."</h1>\n";
+		} else {
+			echo "<h1>".$singular."</h1>\n";
 		}
 
 		echo "<table>\n";
@@ -142,6 +142,18 @@ $app->get('/publicip(/)(/:format)', function($format = 'html') {
 			$response['ipaddress'] = $line;
 			$response['timestamp'] = date ("Y-m-d H:i:s", time());
 		}
+	} else {  //logs could have just been rotated
+		$line = GetLastLine('/opt/minion/log/publicip.1.log');
+		if (!is_null($line)) {
+			if (strpos($line, '|') !== FALSE) {
+				$l = explode('|',$line); //publicip|timestamp
+				$response['ipaddress'] = $l[0];
+				$response['timestamp'] = $l[1];
+			} else {
+				$response['ipaddress'] = $line;
+				$response['timestamp'] = date ("Y-m-d H:i:s", time());
+			}
+		}
 	}
 	OutputResponse($response, "publicip", "publicips", $format);
 });
@@ -159,6 +171,16 @@ $app->get('/speedtest(/)(/:format)', function($format = 'html') {
 			$response['download'] = $l[0];
 			$response['upload'] = $l[1];
 			$response['timestamp'] = $l[2];
+		}
+	} else {  //logs could have just been rotated
+		$line = GetLastLine('/opt/minion/log/speedtest.1.log');
+		if (!is_null($line)) {
+			if (strpos($line, '|') !== FALSE) {
+				$l = explode('|',$line); //download|upload|timestamp
+				$response['download'] = $l[0];
+				$response['upload'] = $l[1];
+				$response['timestamp'] = $l[2];
+			}	
 		}
 	}
 	OutputResponse($response, "speedtest", "speedtests", $format);
