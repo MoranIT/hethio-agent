@@ -13,11 +13,15 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 	global $app;
 
 	$format = strtolower($format);
-	$isArray = is_array($response);
-	if ($isArray) {
-		$responses = $response;
-	} else { 
-		$responses = array($response); 
+	
+	$isArray = true;  //assume array of arrays/objects
+	$responses = $response;
+	while (list($key, $val) = each($response)) { 
+		if (!is_numeric($key)) {  //objects must be associative arrays
+			$isArray = false;  //if any of the keys are not numeric, then it is an object
+			$responses = array($response);
+			break;
+		}
 	}
 
 	if ($format == "json") {
@@ -28,11 +32,11 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 		$app->response->headers->set('Content Type', 'text/xml');
 		echo '<?xml version="1.0" encoding="UTF-8"?>';
 		if ($isArray && !is_null($multiple)) { echo "<".$multiple.">"; }	
-		//foreach($response in $responses) {
-		//	echo "<".$singular.">\n";
-			//while (list($key, $val) = each($response)) { echo "<$key>$val</$key>\n"; }
-		//	echo "</".$singular.">\n";
-		//}
+		foreach($responses as $response) {
+			echo "<".$singular.">\n";
+			while (list($key, $val) = each($response)) { echo "<$key>$val</$key>\n"; }
+			echo "</".$singular.">\n";
+		}
 		if ($isArray && !is_null($multiple)) { echo "</".$multiple.">\n"; }
 		
 	} else {
