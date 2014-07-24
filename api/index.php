@@ -23,6 +23,7 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 			break;
 		}
 	}
+	reset($responses);
 
 	if ($format == "json") {
 		$app->response->headers->set('Content Type', 'application/json');
@@ -33,6 +34,7 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 		echo '<?xml version="1.0" encoding="UTF-8"?>';
 		if ($isArray && !is_null($multiple)) { echo "<".$multiple.">"; }	
 		foreach($responses as $response) {
+			reset($response);
 			echo "<".$singular.">\n";
 			while (list($key, $val) = each($response)) { echo "<$key>$val</$key>\n"; }
 			echo "</".$singular.">\n";
@@ -48,15 +50,16 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 
 		echo "<table>\n";
 
+		reset($responses[0]);
 		echo "<thead><tr>\n";
-		if ($isArray) { $firstitem = $responses[0]; } else { $firstitem = $response; }
-		while(list($key, $val) = each($firstitem)) {
+		while(list($key, $val) = each($responses[0])) {
 			echo "<th>".$key."</th>\n";
 		}
 		echo "</tr></thead>\n";
 
 		echo "<tbody>\n";
 		foreach($responses as $response) {
+			reset($response);
 			echo "<tr>\n";
 			while (list($key, $val) = each($response)) { 
 				//echo "<td>".$key."</td>\n";
