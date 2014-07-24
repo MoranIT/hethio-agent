@@ -79,11 +79,21 @@ fi
 
 echo "- Removing Old ddclient Utility"
 if [ -d /etc/ddclient ]; then
-cp -f /etc/ddclient/ddclient.conf conf/
-rm -rf /etc/ddclient
-if [ -f /usr/sbin/ddclient ]; then
-rm -rf /usr/sbin/ddclient
-fi
+  if [ -f /etc/ddclient/ddclient.conf ]; then
+    cp -f /etc/ddclient/ddclient.conf conf/
+  else
+  	#Conf not found, auto-generate fqdn
+    TIMESTAMP=`date +"%s"`
+    echo "$TIMESTAMP.minion.moranit.com" >> conf/ddclient.conf
+  fi
+  rm -rf /etc/ddclient
+  if [ -f /usr/sbin/ddclient ]; then
+    rm -rf /usr/sbin/ddclient
+  fi
+else
+  #Conf not found, auto-generate fqdn
+  TIMESTAMP=`date +"%s"`
+  echo "$TIMESTAMP.minion.moranit.com" >> conf/ddclient.conf
 fi
 
 echo "- Configuring WebServer"
@@ -94,10 +104,6 @@ rm -rf /opt/minion/bin
 cp -rf bin/ /opt/minion/
 
 echo "- Copying Configurations"
-if [ ! -f /opt/minion/conf/ddclient.conf ]; then
-TIMESTAMP=`date +"%s"`
-echo "$TIMESTAMP.minion.moranit.com" >> conf/ddclient.conf
-fi
 rm -rf /opt/minion/conf
 cp -rf conf/ /opt/minion/
 
