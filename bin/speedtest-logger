@@ -11,7 +11,7 @@ RESULTS=`cat /opt/minion/log/speedtest.lastrun.log | grep 'Mbits/s' | awk -F':' 
 DOWNLOAD=`echo $RESULTS | awk -F'|' '{print $1}'`
 UPLOAD=`echo $RESULTS | awk -F'|' '{print $2}'`
 
-echo "$PUBLICIP" > /opt/minion/log/publicip.log
+echo "$PUBLICIP|$DATETIME" >> /opt/minion/log/publicip.log
 echo "$DOWNLOAD|$UPLOAD|$DATETIME" >> /opt/minion/log/speedtest.log  
 
 echo "Done"

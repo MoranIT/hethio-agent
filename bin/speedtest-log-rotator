@@ -1,0 +1,37 @@
+#!/bin/sh
+
+#
+# Rotate Logs - Keep 1 week's worth of data locally
+#
+# TODO DHM put this into a loop instead of a bunch of if statements
+
+if [ -f '/opt/minion/log/speedtest.log' ]; then
+
+#remove last log
+if [ -f '/opt/minion/log/speedtest.7.log' ]; then
+	rm -f /opt/minion/log/speedtest.7.log
+fi
+if [ -f '/opt/minion/log/speedtest.6.log' ]; then
+	mv -f /opt/minion/log/speedtest.6.log /opt/minion/log/speedtest.7.log
+fi
+if [ -f '/opt/minion/log/speedtest.5.log' ]; then
+	mv -f /opt/minion/log/speedtest.5.log /opt/minion/log/speedtest.6.log
+fi
+if [ -f '/opt/minion/log/speedtest.4.log' ]; then
+	mv -f /opt/minion/log/speedtest.4.log /opt/minion/log/speedtest.5.log
+fi
+if [ -f '/opt/minion/log/speedtest.3.log' ]; then
+	mv -f /opt/minion/log/speedtest.3.log /opt/minion/log/speedtest.4.log
+fi
+if [ -f '/opt/minion/log/speedtest.2.log' ]; then
+	mv -f /opt/minion/log/speedtest.2.log /opt/minion/log/speedtest.3.log
+fi
+if [ -f '/opt/minion/log/speedtest.1.log' ]; then
+	mv -f /opt/minion/log/speedtest.1.log /opt/minion/log/speedtest.2.log
+fi
+
+mv -f /opt/minion/log/speedtest.log /opt/minion/log/speedtest.1.log
+
+touch /opt/minion/log/speedtest.log
+
+fi

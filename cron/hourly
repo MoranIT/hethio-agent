@@ -4,8 +4,11 @@
 # Minion Hourly Script
 #
 
+echo "Log Current Temperature to running file"
+/opt/minion/bin/temp-logger
+
 echo "Run Internet Speedtest every hour"
-/opt/minion/bin/speedtest-wrapper.sh
+/opt/minion/bin/speedtest-logger
 
 echo "Make sure the Dynamic DNS Location service is running"
 if ps aux | grep "ddclient" > /dev/null
@@ -16,5 +19,3 @@ else
     /opt/minion/bin/ddclient
 fi
 
-echo "Log Current Temperature to running file"
-/opt/minion/bin/temp-logger

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#
+# Minion Monthly Script
+#
+
+/opt/minion/bin/temp-log-rotator
+/opt/minion/bin/speedtest-log-rotator
+/opt/minion/bin/publicip-log-rotator

@@ -45,7 +45,26 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 
 }
 
-
+function GetLastLine($file) {
+	$line = null;
+	if (is_file($file)) {
+		$line = '';
+		$f = fopen($file, 'r');
+		$cursor = -1;
+		fseek($f, $cursor, SEEK_END);
+		$char = fgetc($f);
+		while ($char === "\n" || $char === "\r") {
+		    fseek($f, $cursor--, SEEK_END);
+		    $char = fgetc($f);
+		}
+		while ($char !== false && $char !== "\n" && $char !== "\r") {
+		    $line = $char . $line;
+		    fseek($f, $cursor--, SEEK_END);
+		    $char = fgetc($f);
+		}
+	}
+	return $line;
+}
 
 
 
@@ -64,10 +83,6 @@ $app->get('/contact(/)', function () {
 
 
 
-//One is using this command: cat /sys/class/thermal/thermal_zone0/temp. 
-//This will return the temperature in millicentigrade, with quick 
-//conversions to centigrade being something like (in your language of choice) 
-//value / 1000.0 and to Fahrenheit value / 1000.0 * 9/5 + 32.
 $app->get('/temp(/)(/:format)', function($format = 'html') {
 	$response['millicentigrade'] = null;
 	$response['centigrade'] = null;
@@ -84,45 +99,28 @@ $app->get('/temp(/)(/:format)', function($format = 'html') {
 });
 
 
-
-
 $app->get('/publicip(/)(/:format)', function($format = 'html') {
 	$response['ipaddress'] = "Unknown";
 	$response['timestamp'] = null;
 
-	if (is_file('/opt/minion/log/publicip.log')) {
-		$response['ipaddress'] = trim(file_get_contents('/opt/minion/log/publicip.log'));
-		$response['timestamp'] = date ("Y-m-d H:i:s", filemtime('/opt/minion/log/publicip.log'));
+	$line = GetLastLine('/opt/minion/log/publicip.log');
+	if (!is_null($line)) {
+		$l = explode('|',$line); //publicip|timestamp
+		$response['ipaddress'] = $l[0];
+		$response['timestamp'] = $l[1];
 	}
 	OutputResponse($response, "publicip", "publicips", $format);
 });
 
 
 $app->get('/speedtest(/)(/:format)', function($format = 'html') {
-	$response['status'] = "Unknown";
 	$response['download'] = null;
 	$response['upload'] = null;
 	$response['timestamp'] = null;
 
-	if (is_file('/opt/minion/log/speedtest.log')) {
-		$line = '';
-		$f = fopen('/opt/minion/log/speedtest.log', 'r');
-		$cursor = -1;
-		fseek($f, $cursor, SEEK_END);
-		$char = fgetc($f);
-		while ($char === "\n" || $char === "\r") {
-		    fseek($f, $cursor--, SEEK_END);
-		    $char = fgetc($f);
-		}
-		while ($char !== false && $char !== "\n" && $char !== "\r") {
-		    $line = $char . $line;
-		    fseek($f, $cursor--, SEEK_END);
-		    $char = fgetc($f);
-		}
-
-		$l = explode('|',$line); //download|upload|test-timestamp
-
-		$response['status'] = "Successful";
+	$line = GetLastLine('/opt/minion/log/speedtest.log');
+	if (!is_null($line)) {
+		$l = explode('|',$line); //download|upload|timestamp
 		$response['download'] = $l[0];
 		$response['upload'] = $l[1];
 		$response['timestamp'] = $l[2];
