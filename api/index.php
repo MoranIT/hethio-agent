@@ -40,7 +40,30 @@ function OutputResponse($response, $singular, $multiple = null, $format = 'html'
 		if ($isArray && !is_null($multiple)) { echo "</".$multiple.">\n"; }
 		
 	} else {
-		print_r($response);
+		if (is_null($multiple)) {
+			echo "<h1>".$singular."</h1>\n";
+		} else {
+			echo "<h1>".$multiple."</h1>\n";
+		}
+
+		echo "<table>\n";
+
+		echo "<tr>\n";
+		while(list($key, $val) = each($responses[0])) {
+			echo "<th>".$key."</th>\n";
+		}
+		echo "</tr>\n";
+
+		foreach($responses as $response) {
+			echo "<tr>\n";
+			while (list($key, $val) = each($response)) { 
+				//echo "<td>".$key."</td>\n";
+				echo "<td>".$val."</td>\n"; 
+			}
+			echo "</tr>\n";
+		}
+
+		echo "</table>\n";
 	}
 
 }
