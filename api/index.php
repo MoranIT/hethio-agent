@@ -226,6 +226,7 @@ $app->get('/speedtests(/)(/:count(/:format))', function($count = 10, $format = '
 			$count = $count - count($responses); 
 			$lines = GetLastLines('/opt/minion/log/speedtest.1.log', $count);
 			if (count($lines) > 0) {
+				$lines = array_reverse($lines); //reverse array order
 				foreach($lines as $line) {
 					$response = array();
 					if (strpos($line, '|') !== FALSE) {
@@ -234,7 +235,7 @@ $app->get('/speedtests(/)(/:count(/:format))', function($count = 10, $format = '
 						$response['upload'] = $l[1];
 						$response['timestamp'] = $l[2];
 
-						array_unshift($responses, $response);
+						array_unshift($responses, $response); //push to begining of array
 					}
 				}
 				//TODO only go one log file back for now... should make this recursive
