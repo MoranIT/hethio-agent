@@ -235,7 +235,7 @@ $app->get('/temps(/)(/:count(/:format))', function($count = 10, $format = 'html'
 
 
 	}
-	OutputResponse($responses, "speedtest", "speedtests", $format);
+	OutputResponse($responses, "temp", "temps", $format);
 });
 
 
@@ -358,7 +358,7 @@ $app->get('/publicips(/)(/:count(/:format))', function($count = 10, $format = 'h
 
 
 	}
-	OutputResponse($responses, "speedtest", "speedtests", $format);
+	OutputResponse($responses, "publicip", "publicips", $format);
 });
 
 
