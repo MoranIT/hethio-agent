@@ -95,14 +95,14 @@ function GetLastLine($file) {
 	return $line;
 }
 
-function GetLastLines($file, $lines) {
+function GetLastLines($file, $lines_count) {
 	$result = array();
 	if (is_file($file)) {
-		$file = file("filename.txt");
-		if (count($file) < $lines) { $lines = count($file); }
+		$lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		if (count($lines) < $lines_count) { $lines_count = count($lines); }
 
-		for ($i = count($file)-($lines + 1)); $i < count($file); $i++) {
-		  array_push($result, $file[$i]);
+		for ($i = count($lines)-($lines_count + 1)); $i < count($lines); $i++) {
+		  array_push($result, $lines[$i]);
 		}
 	}
 	return $result;
