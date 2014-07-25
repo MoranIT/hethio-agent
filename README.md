@@ -24,3 +24,7 @@ To help you understand what is going on and know how to extend this project, her
   - conf - configuration files for the utilities within bin
   - cache - temporary location for website and other tools
   - logs - results of utilities and other logged data
+
+
+# Special Notes
+I did have to recompile the latest version of Mosquitto for this project to function properly on Raspberry Pi's.

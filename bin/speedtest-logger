@@ -14,13 +14,14 @@ UPLOAD=`echo $RESULTS | awk -F'|' '{print $2}'`
 echo "$PUBLICIP|$DATETIME" >> /opt/minion/log/publicip.log
 echo "$DOWNLOAD|$UPLOAD|$DATETIME" >> /opt/minion/log/speedtest.log  
 
-echo "Transmitting Public IP to MoranIT HomeOffice"
 HOSTNAME=`hostname -f`
-mosquitto_pub -t "$HOSTNAME/publicip" -m "$PUBLICIP|$DATETIME" -h mq.moranit.com -p 8883 --cafile /etc/minion/conf/MoranCA.crt -r
+
+echo "Transmitting Public IP to MoranIT HomeOffice"
+mosquitto_pub -t "$HOSTNAME/internet/ip" -m "$PUBLICIP" -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
 
 echo "Transmitting Speedtest Results to MoranIT HomeOffice"
-HOSTNAME=`hostname -f`
-mosquitto_pub -t "$HOSTNAME/speedtest" -m "$DOWNLOAD|$UPLOAD|$DATETIME" -h mq.moranit.com -p 8883 --cafile /etc/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/internet/speed/download" -m "$DOWNLOAD" -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/internet/speed/upload" -m "$UPLOAD" -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
 
 
 echo "Done"
