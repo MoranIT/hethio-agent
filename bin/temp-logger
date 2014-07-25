@@ -1,6 +1,17 @@
 #!/bin/sh
 
+echo "Reading Device Temperature..."
+
 DATETIME=`date +"%Y-%m-%d %H:%M:%S"`
 TEMP=`cat /sys/class/thermal/thermal_zone0/temp`
 
 echo "$TEMP|$DATETIME" >> /opt/minion/log/temp.log
+
+
+
+echo "Transmitting Temperature to MoranIT HomeOffice"
+HOSTNAME=`hostname -f`
+mosquitto_pub -t "$HOSTNAME/publicip" -m "$TEMP|$DATETIME" -h mq.moranit.com -p 8883 --cafile /etc/minion/conf/MoranCA.crt -r
+
+
+echo "Done"
