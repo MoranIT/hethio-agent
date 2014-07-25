@@ -70,6 +70,7 @@ if [ -d /opt/minion/api ]; then
 fi
 
 cp -f README.md /opt/minion/
+touch /opt/minion/log/minion.log
 
 echo "* Updating Message of the Day"
 cp -f motd /etc/
@@ -123,6 +124,7 @@ chmod +x /etc/cron.monthly/minion
 echo "* Fixing Permissions"
 chgrp -R minion /opt/minion
 chmod -R 775 /opt/minion
+chmod -R 664 /opt/minion/log
 
 echo "* Starting Cron"
 service cron restart
