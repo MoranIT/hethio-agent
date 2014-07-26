@@ -11,7 +11,7 @@ echo "$TEMP|$DATETIME" >> /opt/minion/log/temperature.log
 
 echo "Transmitting Temperature to MoranIT HomeOffice"
 HOSTNAME=`hostname -f`
-mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -q 1 -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
 
 
 echo "Done"

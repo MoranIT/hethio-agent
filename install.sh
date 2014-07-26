@@ -42,10 +42,12 @@ else
 	if [ -d /etc/lighttpd ]; then
 		echo "* Stopping WebServer"
 		service lighttpd stop
-	fi
 
-	echo "* Removing Webserver"
-	apt-get remove lighttpd php5-common php5-cgi php5 -y
+		echo "* Removing Webserver"
+		apt-get remove lighttpd php5-common php5-cgi php5 -y
+
+		rm -rf /etc/lighttpd
+	fi
 
 	if [ ! -f /etc/apt/sources.list.d/mosquitto-stable.list ]; then
 		echo "* Installing Mosquitto-Clients"
@@ -126,26 +128,7 @@ chmod +x /etc/cron.monthly/minion
 echo "* Fixing Permissions"
 chgrp -R minion /opt/minion
 chmod -R 775 /opt/minion
-chmod -R 664 /opt/minion/log
 
-if [ -f /opt/minion/log/temp.log ]; then
-	mv /opt/minion/log/temp.log /opt/minion/log/temperature.log
-fi
-if [ -f /opt/minion/log/temp.1.log ]; then
-	mv /opt/minion/log/temp.1.log /opt/minion/log/temperature.1.log
-fi
-if [ -f /opt/minion/log/temp.2.log ]; then
-	mv /opt/minion/log/temp.2.log /opt/minion/log/temperature.2.log
-fi
-if [ -f /opt/minion/log/temp.3.log ]; then
-	mv /opt/minion/log/temp.3.log /opt/minion/log/temperature.3.log
-fi
-if [ -f /opt/minion/log/temp.3.log ]; then
-	mv /opt/minion/log/temp.3.log /opt/minion/log/temperature.3.log
-fi
-if [ -f /opt/minion/log/temp.4.log ]; then
-	mv /opt/minion/log/temp.4.log /opt/minion/log/temperature.4.log
-fi
 
 
 echo "* Starting Cron"

@@ -17,11 +17,11 @@ echo "$DOWNLOAD|$UPLOAD|$DATETIME" >> /opt/minion/log/speedtest.log
 HOSTNAME=`hostname -f`
 
 echo "Transmitting Public IP to MoranIT HomeOffice"
-mosquitto_pub -t "$HOSTNAME/internet/ip" -m "$PUBLICIP" -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/internet/ip" -m "$PUBLICIP" -q 1 -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
 
 echo "Transmitting Speedtest Results to MoranIT HomeOffice"
-mosquitto_pub -t "$HOSTNAME/internet/speed/download" -m "$DOWNLOAD" -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
-mosquitto_pub -t "$HOSTNAME/internet/speed/upload" -m "$UPLOAD" -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/internet/speed/download" -m "$DOWNLOAD" -q 1 -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/internet/speed/upload" -m "$UPLOAD" -q 1 -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
 
 
 echo "Done"

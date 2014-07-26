@@ -4,6 +4,11 @@
 # Minion Monthly Script
 #
 
-/opt/minion/bin/temp-log-rotator
+echo "Rotate Temperature Logs"
+/opt/minion/bin/temperature-log-rotator
+
+echo "Rotate Speedtest Logs"
 /opt/minion/bin/speedtest-log-rotator
+
+echo "Rotate Public IP Logs"
 /opt/minion/bin/publicip-log-rotator

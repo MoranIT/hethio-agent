@@ -5,17 +5,8 @@
 #
 
 echo "Log Current Temperature to running file"
-/opt/minion/bin/temp-logger
+/opt/minion/bin/temperature-logger
 
 echo "Run Internet Speedtest every hour"
 /opt/minion/bin/speedtest-logger
-
-echo "Make sure the Dynamic DNS Location service is running"
-if ps aux | grep "ddclient" > /dev/null
-then
-    echo "It is Running"
-else
-    echo "It is Stopped, starting"
-    /opt/minion/bin/ddclient
-fi
 
