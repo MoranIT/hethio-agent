@@ -5,33 +5,33 @@
 #
 # TODO DHM put this into a loop instead of a bunch of if statements
 
-if [ -f '/opt/minion/log/temp.log' ]; then
+if [ -f '/opt/minion/log/temperature.log' ]; then
 
 #remove last log
-if [ -f '/opt/minion/log/temp.7.log' ]; then
-	rm -f /opt/minion/log/temp.7.log
+if [ -f '/opt/minion/log/temperature.7.log' ]; then
+	rm -f /opt/minion/log/temperature.7.log
 fi
-if [ -f '/opt/minion/log/temp.6.log' ]; then
-	mv -f /opt/minion/log/temp.6.log /opt/minion/log/temp.7.log
+if [ -f '/opt/minion/log/temperature.6.log' ]; then
+	mv -f /opt/minion/log/temperature.6.log /opt/minion/log/temperature.7.log
 fi
-if [ -f '/opt/minion/log/temp.5.log' ]; then
-	mv -f /opt/minion/log/temp.5.log /opt/minion/log/temp.6.log
+if [ -f '/opt/minion/log/temperature.5.log' ]; then
+	mv -f /opt/minion/log/temperature.5.log /opt/minion/log/temperature.6.log
 fi
-if [ -f '/opt/minion/log/temp.4.log' ]; then
-	mv -f /opt/minion/log/temp.4.log /opt/minion/log/temp.5.log
+if [ -f '/opt/minion/log/temperature.4.log' ]; then
+	mv -f /opt/minion/log/temperature.4.log /opt/minion/log/temperature.5.log
 fi
-if [ -f '/opt/minion/log/temp.3.log' ]; then
-	mv -f /opt/minion/log/temp.3.log /opt/minion/log/temp.4.log
+if [ -f '/opt/minion/log/temperature.3.log' ]; then
+	mv -f /opt/minion/log/temperature.3.log /opt/minion/log/temperature.4.log
 fi
-if [ -f '/opt/minion/log/temp.2.log' ]; then
-	mv -f /opt/minion/log/temp.2.log /opt/minion/log/temp.3.log
+if [ -f '/opt/minion/log/temperature.2.log' ]; then
+	mv -f /opt/minion/log/temperature.2.log /opt/minion/log/temperature.3.log
 fi
-if [ -f '/opt/minion/log/temp.1.log' ]; then
-	mv -f /opt/minion/log/temp.1.log /opt/minion/log/temp.2.log
+if [ -f '/opt/minion/log/temperature.1.log' ]; then
+	mv -f /opt/minion/log/temperature.1.log /opt/minion/log/temperature.2.log
 fi
 
-mv -f /opt/minion/log/temp.log /opt/minion/log/temp.1.log
+mv -f /opt/minion/log/temperature.log /opt/minion/log/temperature.1.log
 
-touch /opt/minion/log/temp.log
+touch /opt/minion/log/temperature.log
 
 fi
