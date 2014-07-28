@@ -4,15 +4,15 @@
 # Minion Registeration
 #
 
-echo "Registering Device with Moran IT..."
+echo "Registering Device..."
 
 DATETIME=`date +"%Y-%m-%d %H:%M:%S"`
 
 HOSTNAME=`hostname -f`
-#mosquitto_pub -t "$HOSTNAME/system/registration" -m "$DATETIME" -h mq.moranit.com -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
-mosquitto_pub -t "$HOSTNAME/system/registration" -m "$DATETIME" -h mq.moranit.com -r
+#mosquitto_pub -t "$HOSTNAME/system/registration" -m "$DATETIME" -h mqtt.me -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/system/registration" -m "$DATETIME" -h mqtt.me -r
 
-echo "$DATETIME [0] Registering Device with Moran IT" >> /opt/minion/log/minion.log
+echo "$DATETIME [0] Registering Device with HomeOffice" >> /opt/minion/log/minion.log
 
 
 echo "Done"
