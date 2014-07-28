@@ -34,20 +34,9 @@ if [ "$UPDATE" != true ]; then
 	mkdir /opt/minion
 	mkdir /opt/minion/log
 	mkdir /opt/minion/cache
-	mkdir /opt/minion/cache/ddclient
 
 else
 	echo "Updating Existing Minion Installation"
-
-	if [ -d /etc/lighttpd ]; then
-		echo "* Stopping WebServer"
-		service lighttpd stop
-
-		echo "* Removing Webserver"
-		apt-get remove lighttpd php5-common php5-cgi php5 -y
-
-		rm -rf /etc/lighttpd
-	fi
 
 	if [ ! -f /etc/apt/sources.list.d/mosquitto-stable.list ]; then
 		echo "* Installing Mosquitto-Clients"
@@ -61,16 +50,6 @@ else
 		rm -f conf/mosquitto-stable.list
 	fi
 
-	echo "* Backing up Dynamic DNS Configuration"
-	cp -f /opt/minion/conf/ddclient.conf conf/
-
-fi
-
-if [ -d /opt/minion/api ]; then
-	echo "* Removing Outdated API Content"
-	rm -rf /opt/minion/api
-	rm -rf /opt/minion/cache/api
-	rm -rf /opt/minion/log/api*
 fi
 
 cp -f README.md /opt/minion/
@@ -85,25 +64,6 @@ if [ -d /etc/speedtest ]; then
 	if [ -f /usr/local/bin/speedtest-cli ]; then
 		rm -rf /usr/local/bin/speedtest-cli
 	fi
-fi
-
-echo "* Removing Old ddclient Utility"
-if [ -d /etc/ddclient ]; then
-	if [ -f /etc/ddclient/ddclient.conf ]; then
-		cp -f /etc/ddclient/ddclient.conf conf/
-	else
-		echo "* Generating unique FQDN"
-		TIMESTAMP=`date +"%s"`
-		echo "$TIMESTAMP.minion.moranit.com" >> conf/ddclient.conf
-	fi
-	rm -rf /etc/ddclient
-	if [ -f /usr/sbin/ddclient ]; then
-		rm -rf /usr/sbin/ddclient
-	fi
-else
-	echo "* Generating unique FQDN"
-	TIMESTAMP=`date +"%s"`
-	echo "$TIMESTAMP.minion.moranit.com" >> conf/ddclient.conf
 fi
 
 echo "* Copying Bin Utilities and Scripts"
