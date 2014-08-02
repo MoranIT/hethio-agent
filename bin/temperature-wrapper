@@ -8,11 +8,13 @@ TEMP=`cat /sys/class/thermal/thermal_zone0/temp`
 echo "$TEMP|$DATETIME" >> /opt/minion/log/temperature.log
 
 
-
-echo "Transmitting Temperature to HomeOffice"
-HOSTNAME=`hostname -f`
-#mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -q 1 -h broker.mqtt.me -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
-mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -q 1 -h broker.mqtt.me -r
-
+if [ -z "$var" ]; then
+	echo "No Temperature to Report"
+else
+	echo "Transmitting Temperature to HomeOffice"
+	HOSTNAME=`hostname -f`
+	#mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -q 1 -h broker.mqtt.me -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+	mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -q 1 -h broker.mqtt.me -r
+fi
 
 echo "Done"

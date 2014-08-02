@@ -5,8 +5,8 @@
 #
 
 echo "Log Current Temperature to running file"
-/opt/minion/bin/temperature-logger
+/opt/minion/bin/temperature-wrapper
 
 echo "Run Internet Speedtest every hour"
-/opt/minion/bin/speedtest-logger
+/opt/minion/bin/speedtest-wrapper
 

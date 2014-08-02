@@ -95,6 +95,6 @@ echo "* Starting Cron"
 service cron restart
 
 # Kickoff Registration Script
-/opt/minion/bin/register
+#/opt/minion/bin/register
 
 echo "Enjoy your Minion!"

@@ -33,5 +33,7 @@ fi
 mv -f /opt/minion/log/temperature.log /opt/minion/log/temperature.1.log
 
 touch /opt/minion/log/temperature.log
+chmod 775 /opt/minion/log/temperature.log
+chgrp minion /opt/minion/log/temperature.log
 
 fi

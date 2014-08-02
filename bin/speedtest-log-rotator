@@ -33,6 +33,8 @@ fi
 mv -f /opt/minion/log/speedtest.log /opt/minion/log/speedtest.1.log
 
 touch /opt/minion/log/speedtest.log
+chmod 775 /opt/minion/log/speedtest.log
+chgrp minion /opt/minion/log/speedtest.log
 
 fi
 
@@ -68,5 +70,7 @@ fi
 mv -f /opt/minion/log/publicip.log /opt/minion/log/publicip.1.log
 
 touch /opt/minion/log/publicip.log
+chmod 775 /opt/minion/log/publicip.log
+chgrp minion /opt/minion/log/publicip.log
 
 fi
