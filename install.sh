@@ -11,6 +11,7 @@ else
 fi
 
 NAME=`hostname`
+NAME=${NAME//./_}
 
 read -p "What email should we use for alerts? " EMAIL
 read -p "What port number should be configured for the reverse SSH Tunnel? " PORT
@@ -173,7 +174,7 @@ if [ ! -f /etc/init.d/tund ]; then
 	sed -i "/:user/a :user => $NAME" /opt/minion/bin/tund
 	sed -i "/:fwd_port/a :fwd_port => $PORT" /opt/minion/bin/tund
 
-	service tund start
+	#service tund start
 else
 	echo "* Updating Tund"
 	cp -f init.d/tund /etc/init.d/tund
@@ -181,7 +182,7 @@ else
 	sed -i "/:user/a :user => $NAME" /opt/minion/bin/tund
 	sed -i "/:fwd_port/a :fwd_port => $PORT" /opt/minion/bin/tund
 
-	service tund restart
+	#service tund restart
 fi
 
 
@@ -229,6 +230,11 @@ echo "We created an SSH key that needs to be setup on minions.mqtt.me..."
 echo "------------------------------------------------------------------"
 cat "/opt/minion/key.pub"
 echo "------------------------------------------------------------------"
-
+echo "1. Copy public key into central minion server"
+echo "2. Test connection using the following:"
+echo "   ssh -vgN -i /opt/minion/key -R $PORT:localhost:22 $NAME"
+echo "3. Lastly start the tund service"
+echo "   sudo service tund start"
+echo " "
 
 echo "Enjoy your Minion!"
