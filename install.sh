@@ -1,14 +1,12 @@
 #!/bin/bash
 
-if [ -d /opt/minion ]; then
-	UPDATE=true
+if [ ! -d /opt/minion ]; then
 	echo "Installing Fresh Minion Installation"
 
 	mkdir /opt/minion
 	chgrp -R minion /opt/minion
 	chmod -R 775 /opt/minion
 else
-	UPDATE=false
 	echo "Updating Existing Minion Installation"
 fi
 
