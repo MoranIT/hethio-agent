@@ -147,11 +147,17 @@ if [ ! -d /etc/fail2ban ]; then
 	chgrp -R minion /opt/minion
 	chmod -R 775 /opt/minion
 
+	service fail2ban start
+
 else
 	echo "* Updating Fail2Ban"
 	mv -f conf/jail.conf /etc/fail2ban/jail.conf	
+
+	sed -i "/#sendername/a sendername = Fail2Ban ($NAME Minion)" /etc/fail2ban/jail.conf
+	sed -i "/#destemail/a destemail = $EMAIL" /etc/fail2ban/jail.conf
+
+	service fail2ban restart
 fi
-service fail2ban restart
 
 
 # Tund
@@ -164,14 +170,19 @@ if [ ! -f /etc/init.d/tund ]; then
 	chgrp -R minion /opt/minion
 	chmod -R 775 /opt/minion
 
+	sed -i "/:user/a :user => $NAME" /opt/minion/bin/tund
+	sed -i "/:fwd_port/a :fwd_port => $PORT" /opt/minion/bin/tund
+
 	service tund start
 else
 	echo "* Updating Tund"
 	cp -f init.d/tund /etc/init.d/tund
+
+	sed -i "/:user/a :user => $NAME" /opt/minion/bin/tund
+	sed -i "/:fwd_port/a :fwd_port => $PORT" /opt/minion/bin/tund
+
 	service tund restart
 fi
-sed -i "/:user/a :user => $NAME" /opt/minion/bin/tund
-sed -i "/:fwd_port/a :fwd_port => $PORT" /opt/minion/bin/tund
 
 
 
@@ -190,9 +201,9 @@ sed -i "/:fwd_port/a :fwd_port => $PORT" /opt/minion/bin/tund
 # MINION USER GROUP
 /bin/egrep  -i "^minion" /etc/group
 if [ $? -eq 0 ]; then
-   echo "User Group 'minion' already exists, nothing to do."
+   echo "* User Group 'minion' already exists, nothing to do."
 else
-   echo "User Group 'minion' does not exist, creating now."
+   echo "* User Group 'minion' does not exist, creating now."
    groupadd minion
 fi
 
