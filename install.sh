@@ -15,8 +15,8 @@ read -p "What port number should be configured for the reverse SSH Tunnel? " POR
 
 
 
-if [! -f /opt/minion/key ]; then
-	echo "* Generating Minion Key"
+if [ ! -f /opt/minion/key ]; then
+	echo "* Generating Minion Key, this may take a while..."
 	ssh-keygen -b 4096 -N "" -O clear -O permit-port-forwarding -t rsa -f "/opt/minion/key"
 	chmod 600 /opt/minion/key
 fi
@@ -29,13 +29,14 @@ apt-get update
 #http://brandonb.io/creating-your-own-minimalistic-rasbian-image-for-the-raspberry-pi
 echo "* Remove Misc Packages and Development"
 rm -rf python_games
-sudo apt-get remove x11-common midori lxde python3 python3-minimal lxde-common lxde-icon-theme omxplayer raspi-config
-apt-get remove `sudo dpkg --get-selections | grep "\-dev" | sed s/install//`
-apt-get remove `sudo dpkg --get-selections | grep -v "deinstall" | grep python | sed s/install//`
-apt-get remove `sudo dpkg --get-selections | grep -v "deinstall" | grep x11 | sed s/install//`
-apt-get remove gcc-4.4-base:armhf gcc-4.5-base:armhf gcc-4.6-base:armhf
-apt-get remove libraspberrypi-doc xkb-data fonts-freefont-ttf
-apt-get autoremove && apt-get clean
+apt-get remove x11-common midori lxde python3 python3-minimal lxde-common lxde-icon-theme omxplayer raspi-config -y
+apt-get remove `sudo dpkg --get-selections | grep "\-dev" | sed s/install//` -y
+apt-get remove `sudo dpkg --get-selections | grep -v "deinstall" | grep python | sed s/install//` -y
+apt-get remove `sudo dpkg --get-selections | grep -v "deinstall" | grep x11 | sed s/install//` -y
+apt-get remove gcc-4.4-base:armhf gcc-4.5-base:armhf gcc-4.6-base:armhf -y
+apt-get remove libraspberrypi-doc xkb-data fonts-freefont-ttf -y
+apt-get autoremove -y
+apt-get clean
 
 
 
@@ -56,7 +57,7 @@ fi
 if [ ! -f /etc/apt/sources.list.d/mosquitto-stable.list ]; then
 	echo "* Installing Mosquitto-Clients"
 	apt-key add conf/mosquitto-repo.gpg.key
-	rm conf/mosquitto-repo-gpg.key
+	rm conf/mosquitto-repo.gpg.key
 	mv conf/mosquitto-stable.list /etc/apt/sources.list.d/
 	apt-get install mosquitto-clients -y
 else
@@ -92,6 +93,7 @@ service fail2ban restart
 if [ ! -f /etc/init.d/tund ]; then
 	echo "* Installing Tund"
 	cp init.d/tund /etc/init.d/tund
+	chmod +x /etc/init.d/tund
 	sudo update-rc.d tund defaults
 	service tund start
 else
