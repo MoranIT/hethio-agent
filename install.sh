@@ -43,6 +43,65 @@ apt-get clean
 
 
 
+
+
+
+
+
+
+
+echo "* Creating Minion Directory Structure"
+if [ ! -d /opt/minion ]; then
+	mkdir /opt/minion
+fi
+if [ ! -d /opt/minion/log ]; then
+	mkdir /opt/minion/log
+fi
+if [ ! -d /opt/minion/cache ]; then
+	mkdir /opt/minion/cache
+fi
+
+cp -f README.md /opt/minion/
+touch /opt/minion/log/minion.log
+
+
+echo "* Updating Message of the Day"
+cp -f motd /etc/
+
+
+
+echo "* Copying Bin Utilities and Scripts"
+rm -rf /opt/minion/bin
+cp -rf bin/ /opt/minion/
+
+echo "* Copying Configurations"
+rm -rf /opt/minion/conf
+cp -rf conf/ /opt/minion/
+
+echo "* Configuring Cron"
+cp -f cron/hourly /etc/cron.hourly/minion
+chmod +x /etc/cron.hourly/minion
+cp -f cron/daily /etc/cron.daily/minion
+chmod +x /etc/cron.daily/minion
+cp -f cron/weekly /etc/cron.weekly/minion
+chmod +x /etc/cron.weekly/minion
+cp -f cron/monthly /etc/cron.monthly/minion
+chmod +x /etc/cron.monthly/minion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # PYTHON
 if [ ! -d /etc/python ]; then
 	echo "* Installing Python"
@@ -141,43 +200,6 @@ fi
 
 
 
-echo "* Creating Minion Directory Structure"
-if [ ! -d /opt/minion ]; then
-	mkdir /opt/minion
-fi
-if [ ! -d /opt/minion/log ]; then
-	mkdir /opt/minion/log
-fi
-if [ ! -d /opt/minion/cache ]; then
-	mkdir /opt/minion/cache
-fi
-
-cp -f README.md /opt/minion/
-touch /opt/minion/log/minion.log
-
-
-echo "* Updating Message of the Day"
-cp -f motd /etc/
-
-
-
-echo "* Copying Bin Utilities and Scripts"
-rm -rf /opt/minion/bin
-cp -rf bin/ /opt/minion/
-
-echo "* Copying Configurations"
-rm -rf /opt/minion/conf
-cp -rf conf/ /opt/minion/
-
-echo "* Configuring Cron"
-cp -f cron/hourly /etc/cron.hourly/minion
-chmod +x /etc/cron.hourly/minion
-cp -f cron/daily /etc/cron.daily/minion
-chmod +x /etc/cron.daily/minion
-cp -f cron/weekly /etc/cron.weekly/minion
-chmod +x /etc/cron.weekly/minion
-cp -f cron/monthly /etc/cron.monthly/minion
-chmod +x /etc/cron.monthly/minion
 
 
 echo "* Fixing Permissions"
@@ -193,7 +215,9 @@ service cron restart
 #/opt/minion/bin/register
 
 echo "We created an SSH key that needs to be setup on minions.mqtt.me..."
+echo "------------------------------------------------------------------"
 cat "/opt/minion/key.pub"
+echo "------------------------------------------------------------------"
 
 
 echo "Enjoy your Minion!"
