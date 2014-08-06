@@ -15,6 +15,7 @@ NAME=${NAME//./_}
 
 read -p "What email should we use for alerts? " EMAIL
 read -p "What port number should be configured for the reverse SSH Tunnel? " PORT
+read -p "What is the central minion server's domain name? " HOST
 
 
 
@@ -179,6 +180,7 @@ if [ ! -f /etc/init.d/tund ]; then
 
 	sed -i "/INSERT_USER_HERE/a :user => \'$NAME\'," /opt/minion/bin/tund
 	sed -i "/INSERT_PORT_HERE/a :fwd_port => $PORT" /opt/minion/bin/tund
+	sed -i "/INSERT_HOST_HERE/a :host => \'$HOST\'" /opt/minion/bin/tund
 
 	#service tund start
 else
@@ -187,6 +189,7 @@ else
 
 	sed -i "/INSERT_USER_HERE/a :user => \'$NAME\'," /opt/minion/bin/tund
 	sed -i "/INSERT_PORT_HERE/a :fwd_port => $PORT" /opt/minion/bin/tund
+	sed -i "/INSERT_HOST_HERE/a :host => \'$HOST\'" /opt/minion/bin/tund
 
 	#service tund restart
 fi
@@ -216,6 +219,11 @@ fi
 
 
 
+
+
+echo "* Installing Root Certiciate"
+cp -f conf/MoranCA.crt /usr/local/share/ca-certificates/
+update-ca-certificates
 
 
 

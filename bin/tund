@@ -6,7 +6,7 @@ opts = {
     :port => 22               # Local port to forward to
   },
   :remote => {
-    :host => 'minions.mqtt.me',    # Remote host to connect to
+    #INSERT_HOST_HERE    # Remote host to connect to
     #INSERT_USER_HERE        # Remote user
     :ssh_port => 22,          # Remote port SSH runs on
     #INSERT_PORT_HERE         # Remote port which will be forwarded
