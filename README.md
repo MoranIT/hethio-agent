@@ -25,37 +25,26 @@ To help you understand what is going on and know how to extend this project, her
   - logs - results of utilities and other logged data
 
 
-# Special Notes
-I did have to recompile the latest version of Mosquitto for this project to function properly on Raspberry Pi's.
+## Main Features
 
-# Minion Basics
+* Removes misc packages from a freshly installed Raspberry Pi device during installation.
 
-1. Call Home via Reverse SSH tunneling
+* Installs Python, Ruby and Perl scripting hosts to run the various utilities we are configuring.
 
-2. Fail2Ban for ssh protection functionality
+* Installs MoranCA root certificate authority certificate system wide.
 
-sudo apt-get install fail2ban sendmail iptables-persistent
-sudo vi /etc/fail2ban/jail.conf
- -- fix settings
+* Uses (Tund)[https://github.com/aphyr/tund] to keep a reverse ssh tunnel open to our central Minions cloud server.
 
-sudo iptables -A INPUT -i lo -j ACCEPT
-sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 17472 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-sudo iptables -A INPUT -j DROP
+* Uses (SpeedTest-CLI)[https://github.com/sivel/speedtest-cli] to capture public IP address and internet connectivity speed information
 
-sudo service fail2ban restart
+* Uses (Mosquitto)[https://bitbucket.org/oojah/mosquitto/] Clients to publish MQTT status messages to our central Minion Cloud Broker.
 
+* Logs device temperature into logs and reports via MQTT.
 
-## List SSH Connections
+* Installs/configures (Fail2Ban)[https://github.com/fail2ban/fail2ban] to keep our ssh server secure and safe.
 
-sudo lsof -i -n | egrep '\<sshd\>'
+### Future Enhancements
 
-## Lookup Bad IP Addresses
-
-https://www.badips.com/info/116.10.191.166
-
+* We are developing a Minion executable that will service as our MQTT subscription and publication mechanism allowing us to eliminate the Mosquitto installation.  This "minion" service will be installed and monitors logs and kicks off our various utilities to "do the work".
 
 

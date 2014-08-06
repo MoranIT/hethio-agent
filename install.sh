@@ -1,5 +1,15 @@
 #!/bin/bash
 
+
+# MINION USER GROUP
+/bin/egrep  -i "^minion" /etc/group
+if [ $? -eq 0 ]; then
+   #echo "* User Group 'minion' already exists, nothing to do."
+else
+   echo "* User Group 'minion' does not exist, creating now."
+   groupadd minion
+fi
+
 if [ ! -d /opt/minion ]; then
 	echo "Installing Fresh Minion Installation"
 
@@ -15,8 +25,9 @@ NAME=${NAME//./_}
 
 read -p "What email should we use for alerts? " EMAIL
 read -p "What port number should be configured for the reverse SSH Tunnel? " PORT
-read -p "What is the central minion server's domain name? " HOST
 
+#read -p "What is the central minion server's domain name? " HOST
+HOST="minions.mqtt.me"
 
 
 if [ ! -f /opt/minion/key ]; then
@@ -207,15 +218,6 @@ fi
 
 
 
-
-# MINION USER GROUP
-/bin/egrep  -i "^minion" /etc/group
-if [ $? -eq 0 ]; then
-   echo "* User Group 'minion' already exists, nothing to do."
-else
-   echo "* User Group 'minion' does not exist, creating now."
-   groupadd minion
-fi
 
 
 
