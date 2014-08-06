@@ -44,7 +44,23 @@ apt-get clean
 
 
 
+# PYTHON
+if [ ! -d /etc/python ]; then
+	echo "* Installing Python"
+	apt-get install python -y
+fi
 
+# PERL
+if [ ! -d /etc/perl ]; then
+	echo "* Installing Perl"
+	apt-get install perl -y
+fi
+
+# RUBY
+if [ ! -d /etc/perl ]; then
+	echo "* Installing Ruby"
+	apt-get install ruby -y
+fi
 
 
 
@@ -103,17 +119,7 @@ chmod +x /etc/cron.monthly/minion
 
 
 
-# PYTHON
-if [ ! -d /etc/python ]; then
-	echo "* Installing Python"
-	apt-get install python -y
-fi
 
-# PERL
-if [ ! -d /etc/perl ]; then
-	echo "* Installing Perl"
-	apt-get install perl -y
-fi
 
 # MOSQUITTO
 if [ ! -f /etc/apt/sources.list.d/mosquitto-stable.list ]; then
@@ -171,8 +177,8 @@ if [ ! -f /etc/init.d/tund ]; then
 	chgrp -R minion /opt/minion
 	chmod -R 775 /opt/minion
 
-	sed -i "/:user/a :user => $NAME" /opt/minion/bin/tund
-	sed -i "/:fwd_port/a :fwd_port => $PORT" /opt/minion/bin/tund
+	sed -i "/INSERT_USER_HERE/a :user => \'$NAME\'," /opt/minion/bin/tund
+	sed -i "/INSERT_PORT_HERE/a :fwd_port => $PORT" /opt/minion/bin/tund
 
 	#service tund start
 else
@@ -232,7 +238,7 @@ cat "/opt/minion/key.pub"
 echo "------------------------------------------------------------------"
 echo "1. Copy public key into central minion server"
 echo "2. Test connection using the following:"
-echo "   ssh -vgN -i /opt/minion/key -R $PORT:localhost:22 $NAME"
+echo "   ssh -vgN -i /opt/minion/key -R $PORT:localhost:22 $NAME@minions.mqtt.me"
 echo "3. Lastly start the tund service"
 echo "   sudo service tund start"
 echo " "
