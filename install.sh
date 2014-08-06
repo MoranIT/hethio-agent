@@ -4,7 +4,7 @@
 # MINION USER GROUP
 /bin/egrep  -i "^minion" /etc/group
 if [ $? -eq 0 ]; then
-   #echo "* User Group 'minion' already exists, nothing to do."
+   echo "* User Group 'minion' already exists, nothing to do."
 else
    echo "* User Group 'minion' does not exist, creating now."
    groupadd minion
