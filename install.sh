@@ -185,8 +185,8 @@ else
 	echo "* Updating Tund"
 	cp -f init.d/tund /etc/init.d/tund
 
-	sed -i "/:user/a :user => $NAME" /opt/minion/bin/tund
-	sed -i "/:fwd_port/a :fwd_port => $PORT" /opt/minion/bin/tund
+	sed -i "/INSERT_USER_HERE/a :user => \'$NAME\'," /opt/minion/bin/tund
+	sed -i "/INSERT_PORT_HERE/a :fwd_port => $PORT" /opt/minion/bin/tund
 
 	#service tund restart
 fi
@@ -223,6 +223,7 @@ fi
 echo "* Fixing Permissions"
 chgrp -R minion /opt/minion
 chmod -R 775 /opt/minion
+chmod 600 /opt/minion/key
 
 
 
