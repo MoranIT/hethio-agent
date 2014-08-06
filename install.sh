@@ -35,7 +35,7 @@ echo "* Remove Misc Packages and Development"
 rm -rf python_games
 apt-get remove x11-common midori lxde lxde-common lxde-icon-theme omxplayer raspi-config -y
 apt-get remove `sudo dpkg --get-selections | grep "\-dev" | sed s/install//` -y
-apt-get remove `sudo dpkg --get-selections | grep -v "deinstall" | grep python | sed s/install//` -y
+#apt-get remove `sudo dpkg --get-selections | grep -v "deinstall" | grep python | sed s/install//` -y
 apt-get remove `sudo dpkg --get-selections | grep -v "deinstall" | grep x11 | sed s/install//` -y
 apt-get remove gcc-4.4-base:armhf gcc-4.5-base:armhf gcc-4.6-base:armhf -y
 apt-get remove libraspberrypi-doc xkb-data fonts-freefont-ttf -y
@@ -46,19 +46,19 @@ apt-get clean
 
 
 # PYTHON
-if [ ! -d /etc/python ]; then
+if [ ! -f /usr/bin/python ]; then
 	echo "* Installing Python"
 	apt-get install python -y
 fi
 
 # PERL
-if [ ! -d /etc/perl ]; then
+if [ ! -f /usr/bin/perl ]; then
 	echo "* Installing Perl"
 	apt-get install perl -y
 fi
 
 # RUBY
-if [ ! -d /etc/perl ]; then
+if [ ! -f /usr/bin/ruby ]; then
 	echo "* Installing Ruby"
 	apt-get install ruby -y
 fi
@@ -141,7 +141,7 @@ if [ ! -d /etc/fail2ban ]; then
 	apt-get install fail2ban iptables-persistent -y
 	mv -f conf/jail.conf /etc/fail2ban/jail.conf
 
-	sed -i "/#sendername/a sendername = Fail2Ban ($NAME Minion)" /etc/fail2ban/jail.conf
+	sed -i "/#sendername/a sendername = Fail2Ban ($NAME)" /etc/fail2ban/jail.conf
 	sed -i "/#destemail/a destemail = $EMAIL" /etc/fail2ban/jail.conf
 
 	iptables -A INPUT -i lo -j ACCEPT
@@ -161,7 +161,7 @@ else
 	echo "* Updating Fail2Ban"
 	mv -f conf/jail.conf /etc/fail2ban/jail.conf	
 
-	sed -i "/#sendername/a sendername = Fail2Ban ($NAME Minion)" /etc/fail2ban/jail.conf
+	sed -i "/#sendername/a sendername = Fail2Ban ($NAME)" /etc/fail2ban/jail.conf
 	sed -i "/#destemail/a destemail = $EMAIL" /etc/fail2ban/jail.conf
 
 	service fail2ban restart
@@ -180,7 +180,7 @@ if [ ! -f /etc/init.d/tund ]; then
 
 	sed -i "/INSERT_USER_HERE/a :user => \'$NAME\'," /opt/minion/bin/tund
 	sed -i "/INSERT_PORT_HERE/a :fwd_port => $PORT" /opt/minion/bin/tund
-	sed -i "/INSERT_HOST_HERE/a :host => \'$HOST\'" /opt/minion/bin/tund
+	sed -i "/INSERT_HOST_HERE/a :host => \'$HOST\'," /opt/minion/bin/tund
 
 	#service tund start
 else
@@ -189,7 +189,7 @@ else
 
 	sed -i "/INSERT_USER_HERE/a :user => \'$NAME\'," /opt/minion/bin/tund
 	sed -i "/INSERT_PORT_HERE/a :fwd_port => $PORT" /opt/minion/bin/tund
-	sed -i "/INSERT_HOST_HERE/a :host => \'$HOST\'" /opt/minion/bin/tund
+	sed -i "/INSERT_HOST_HERE/a :host => \'$HOST\'," /opt/minion/bin/tund
 
 	#service tund restart
 fi
@@ -220,11 +220,11 @@ fi
 
 
 
-
-echo "* Installing Root Certiciate"
-cp -f conf/MoranCA.crt /usr/local/share/ca-certificates/
-update-ca-certificates
-
+if [ ! -f /usr/local/share/ca-certificates/MoranCA.crt ]; then
+	echo "* Installing Root Certiciate"
+	cp -f conf/MoranCA.crt /usr/local/share/ca-certificates/
+	update-ca-certificates
+fi
 
 
 
