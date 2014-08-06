@@ -27,3 +27,35 @@ To help you understand what is going on and know how to extend this project, her
 
 # Special Notes
 I did have to recompile the latest version of Mosquitto for this project to function properly on Raspberry Pi's.
+
+# Minion Basics
+
+1. Call Home via Reverse SSH tunneling
+
+2. Fail2Ban for ssh protection functionality
+
+sudo apt-get install fail2ban sendmail iptables-persistent
+sudo vi /etc/fail2ban/jail.conf
+ -- fix settings
+
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 17472 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+sudo iptables -A INPUT -j DROP
+
+sudo service fail2ban restart
+
+
+## List SSH Connections
+
+sudo lsof -i -n | egrep '\<sshd\>'
+
+## Lookup Bad IP Addresses
+
+https://www.badips.com/info/116.10.191.166
+
+
+
