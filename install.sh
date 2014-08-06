@@ -3,6 +3,10 @@
 if [ -d /opt/minion ]; then
 	UPDATE=true
 	echo "Installing Fresh Minion Installation"
+
+	mkdir /opt/minion
+	chgrp -R minion /opt/minion
+	chmod -R 775 /opt/minion
 else
 	UPDATE=false
 	echo "Updating Existing Minion Installation"
@@ -29,7 +33,7 @@ apt-get update
 #http://brandonb.io/creating-your-own-minimalistic-rasbian-image-for-the-raspberry-pi
 echo "* Remove Misc Packages and Development"
 rm -rf python_games
-apt-get remove x11-common midori lxde python3 python3-minimal lxde-common lxde-icon-theme omxplayer raspi-config -y
+apt-get remove x11-common midori lxde lxde-common lxde-icon-theme omxplayer raspi-config -y
 apt-get remove `sudo dpkg --get-selections | grep "\-dev" | sed s/install//` -y
 apt-get remove `sudo dpkg --get-selections | grep -v "deinstall" | grep python | sed s/install//` -y
 apt-get remove `sudo dpkg --get-selections | grep -v "deinstall" | grep x11 | sed s/install//` -y
@@ -82,6 +86,10 @@ if [ ! -d /etc/fail2ban ]; then
 	#iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 	#iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 	iptables -A INPUT -j DROP
+
+	chgrp -R minion /opt/minion
+	chmod -R 775 /opt/minion
+
 else
 	echo "* Updating Fail2Ban"
 	mv -f conf/jail.conf /etc/fail2ban/jail.conf	
@@ -95,6 +103,10 @@ if [ ! -f /etc/init.d/tund ]; then
 	cp init.d/tund /etc/init.d/tund
 	chmod +x /etc/init.d/tund
 	sudo update-rc.d tund defaults
+
+	chgrp -R minion /opt/minion
+	chmod -R 775 /opt/minion
+
 	service tund start
 else
 	echo "* Updating Tund"
