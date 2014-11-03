@@ -20,14 +20,7 @@ else
 	echo "Updating Existing Minion Installation"
 fi
 
-NAME=`hostname`
-NAME=${NAME//./_}
 
-read -p "What email should we use for alerts? " EMAIL
-read -p "What port number should be configured for the reverse SSH Tunnel? " PORT
-
-#read -p "What is the central minion server's domain name? " HOST
-HOST="minions.mqtt.me"
 
 
 if [ ! -f /opt/minion/key ]; then
@@ -97,8 +90,6 @@ touch /opt/minion/log/minion.log
 echo "* Updating Message of the Day"
 cp -f motd /etc/
 
-
-
 echo "* Copying Bin Utilities and Scripts"
 rm -rf /opt/minion/bin
 cp -rf bin/ /opt/minion/
@@ -121,18 +112,6 @@ chmod +x /etc/cron.monthly/minion
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 # MOSQUITTO
 if [ ! -f /etc/apt/sources.list.d/mosquitto-stable.list ]; then
 	echo "* Installing Mosquitto-Clients"
@@ -146,82 +125,12 @@ else
 	rm -f conf/mosquitto-stable.list
 fi
 
-# Fail2Ban
-if [ ! -d /etc/fail2ban ]; then
-	echo "* Installing Fail2Ban"
-	apt-get install fail2ban iptables-persistent -y
-	mv -f conf/jail.conf /etc/fail2ban/jail.conf
-
-	sed -i "/#sendername/a sendername = Fail2Ban ($NAME)" /etc/fail2ban/jail.conf
-	sed -i "/#destemail/a destemail = $EMAIL" /etc/fail2ban/jail.conf
-
-	iptables -A INPUT -i lo -j ACCEPT
-	iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-	iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-	#iptables -A INPUT -p tcp --dport 17472 -j ACCEPT
-	#iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-	#iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-	iptables -A INPUT -j DROP
-
-	chgrp -R minion /opt/minion
-	chmod -R 775 /opt/minion
-
-	service fail2ban start
-
-else
-	echo "* Updating Fail2Ban"
-	mv -f conf/jail.conf /etc/fail2ban/jail.conf	
-
-	sed -i "/#sendername/a sendername = Fail2Ban ($NAME)" /etc/fail2ban/jail.conf
-	sed -i "/#destemail/a destemail = $EMAIL" /etc/fail2ban/jail.conf
-
-	service fail2ban restart
-fi
-
-
-# Tund
-if [ ! -f /etc/init.d/tund ]; then
-	echo "* Installing Tund"
-	cp init.d/tund /etc/init.d/tund
-	chmod +x /etc/init.d/tund
-	sudo update-rc.d tund defaults
-
-	chgrp -R minion /opt/minion
-	chmod -R 775 /opt/minion
-
-	sed -i "/INSERT_USER_HERE/a :user => \'$NAME\'," /opt/minion/bin/tund
-	sed -i "/INSERT_PORT_HERE/a :fwd_port => $PORT" /opt/minion/bin/tund
-	sed -i "/INSERT_HOST_HERE/a :host => \'$HOST\'," /opt/minion/bin/tund
-
-	#service tund start
-else
-	echo "* Updating Tund"
-	cp -f init.d/tund /etc/init.d/tund
-
-	sed -i "/INSERT_USER_HERE/a :user => \'$NAME\'," /opt/minion/bin/tund
-	sed -i "/INSERT_PORT_HERE/a :fwd_port => $PORT" /opt/minion/bin/tund
-	sed -i "/INSERT_HOST_HERE/a :host => \'$HOST\'," /opt/minion/bin/tund
-
-	#service tund restart
-fi
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+# INSTALL MORAN CERTIFICATE AUTHORITY
 if [ ! -f /usr/local/share/ca-certificates/MoranCA.crt ]; then
 	echo "* Installing Root Certiciate"
 	cp -f conf/MoranCA.crt /usr/local/share/ca-certificates/
@@ -240,18 +149,5 @@ chmod 600 /opt/minion/key
 echo "* Starting Cron"
 service cron restart
 
-# Kickoff Registration Script
-#/opt/minion/bin/register
 
-echo "We created an SSH key that needs to be setup on minions.mqtt.me..."
-echo "------------------------------------------------------------------"
-cat "/opt/minion/key.pub"
-echo "------------------------------------------------------------------"
-echo "1. Copy public key into central minion server"
-echo "2. Test connection using the following:"
-echo "   ssh -vgN -i /opt/minion/key -R $PORT:localhost:22 $NAME@minions.mqtt.me"
-echo "3. Lastly start the tund service"
-echo "   sudo service tund start"
-echo " "
-
-echo "Enjoy your Minion!"
+echo "Installation Complete... Enjoy your Minion!"

@@ -17,14 +17,14 @@ echo "$DOWNLOAD|$UPLOAD|$DATETIME" >> /opt/minion/log/speedtest.log
 HOSTNAME=`hostname -f`
 
 echo "Transmitting Public IP to HomeOffice"
-#mosquitto_pub -t "$HOSTNAME/internet/ip" -m "$PUBLICIP" -q 1 -h broker.mqtt.me -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
-mosquitto_pub -t "$HOSTNAME/internet/ip" -m "$PUBLICIP" -q 1 -h broker.mqtt.me -r
+#mosquitto_pub -t "$HOSTNAME/internet/ip" -m "$PUBLICIP" -q 1 -h broker.openmqtt.org -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/internet/ip" -m "$PUBLICIP" -q 1 -h broker.openmqtt.org -r
 
 echo "Transmitting Speedtest Results to HomeOffice"
-#mosquitto_pub -t "$HOSTNAME/internet/speed/download" -m "$DOWNLOAD" -q 1 -h broker.mqtt.me -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
-mosquitto_pub -t "$HOSTNAME/internet/speed/download" -m "$DOWNLOAD" -q 1 -h broker.mqtt.me -r
-#mosquitto_pub -t "$HOSTNAME/internet/speed/upload" -m "$UPLOAD" -q 1 -h broker.mqtt.me -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
-mosquitto_pub -t "$HOSTNAME/internet/speed/upload" -m "$UPLOAD" -q 1 -h broker.mqtt.me -r
+#mosquitto_pub -t "$HOSTNAME/internet/speed/download" -m "$DOWNLOAD" -q 1 -h broker.openmqtt.org -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/internet/speed/download" -m "$DOWNLOAD" -q 1 -h broker.openmqtt.org -r
+#mosquitto_pub -t "$HOSTNAME/internet/speed/upload" -m "$UPLOAD" -q 1 -h broker.openmqtt.org -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+mosquitto_pub -t "$HOSTNAME/internet/speed/upload" -m "$UPLOAD" -q 1 -h broker.openmqtt.org -r
 
 
 echo "Done"

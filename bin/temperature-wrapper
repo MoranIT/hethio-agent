@@ -13,8 +13,8 @@ if [ -z "$var" ]; then
 else
 	echo "Transmitting Temperature to HomeOffice"
 	HOSTNAME=`hostname -f`
-	#mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -q 1 -h broker.mqtt.me -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
-	mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -q 1 -h broker.mqtt.me -r
+	#mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -q 1 -h broker.openmqtt.org -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
+	mosquitto_pub -t "$HOSTNAME/system/temperature" -m "$TEMP" -q 1 -h broker.openmqtt.org -r
 fi
 
 echo "Done"

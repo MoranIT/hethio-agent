@@ -10,11 +10,3 @@ echo "Log Current Temperature to running file"
 echo "Run Internet Speedtest every hour"
 /opt/minion/bin/speedtest-wrapper
 
-echo "Make sure the Tund service is running"
-if ps aux | grep "tund" > /dev/null
-then
-    echo "It is Running"
-else
-    echo "It is Stopped, starting"
-    service tund start
-fi
