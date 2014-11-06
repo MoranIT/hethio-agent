@@ -6,6 +6,8 @@
 if [ -f "/etc/minion.conf" ]; then
 	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion.conf)
 
+	cd $MPATH/bin
+
 	if [ -f $MPATH/bin/temperature ]; then
 		echo "Log Current Temperature to running file"
 		$MPATH/bin/temperature

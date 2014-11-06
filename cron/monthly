@@ -1,6 +1,13 @@
 #!/bin/sh
-
 #
 # Minion Monthly Tasks
 #
 
+if [ -f "/etc/minion.conf" ]; then
+	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion.conf)
+
+	cd $MPATH/bin
+
+
+
+fi
