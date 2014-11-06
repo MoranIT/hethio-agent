@@ -12,6 +12,12 @@ else
 	echo "MPATH=$MPATH" >> "/etc/minion.conf"
 fi
 
+if [[ -z "$MPATH" ]]; then
+	echo "Invalid path found"
+fi
+if [ $MPATH="" ]; then
+	echo "Invalid path found"
+fi
 
 
 

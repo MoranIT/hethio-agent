@@ -11,10 +11,14 @@ if [ -f "/etc/minion.conf" ]; then
 		$MPATH/bin/temperature-log-rotator
 	fi
 
-	echo "Rotate Speedtest Logs"
-	$MPATH/bin/speedtest-log-rotator
+	if [ -f $MPATH/bin/speedtest-log-rotator ]; then
+		echo "Rotate Speedtest Logs"
+		$MPATH/bin/speedtest-log-rotator
+	fi
 
-	echo "Rotate Public IP Logs"
-	$MPATH/bin/publicip-log-rotator
+	if [ -f $MPATH/bin/publicip-log-rotator ]; then
+		echo "Rotate Public IP Logs"
+		$MPATH/bin/publicip-log-rotator
+	fi
 
 fi

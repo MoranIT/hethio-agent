@@ -6,14 +6,19 @@
 if [ -f "/etc/minion.conf" ]; then
 	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion.conf)
 
-	echo "Log Current Temperature to running file"
-	$MPATH/bin/temperature
+	if [ -f $MPATH/bin/temperature ]; then
+		echo "Log Current Temperature to running file"
+		$MPATH/bin/temperature
+	fi
 
-	echo "Run Internet Speedtest every hour"
-	$MPATH/bin/speedtest
+	if [ -f $MPATH/bin/speedtest ]; then
+		echo "Run Internet Speedtest every hour"
+		$MPATH/bin/speedtest
+	fi
 
-
-	echo "Register system"
-	$MPATH/bin/register
+	if [ -f $MPATH/bin/register ]; then
+		echo "Register system"
+		$MPATH/bin/register
+	fi
 
 fi
