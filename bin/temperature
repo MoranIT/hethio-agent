@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# Read Temperature from system file
+#
+
+source globals.sh
+
+if [ -f "/sys/class/thermal/thermal_zone0/temp" ]; then
+	echo "Reading Device Temperature..."
+
+	TEMP=`cat /sys/class/thermal/thermal_zone0/temp`
+
+	echo "$TEMP|$DATETIME" >> $MPATH/log/temperature.log
+
+	echo "Done"
+else
+	echo "Unable to read temperature, missing file."
+fi

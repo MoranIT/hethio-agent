@@ -1,4 +1,19 @@
 #!/bin/bash
+#
+#
+#
+
+#Read install path from conf file or create it with defaults
+if [ -f "/etc/minion.conf" ]; then
+	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion.conf)
+else
+	MPATH="$MPATH"
+	echo "[Global]" > "/etc/minion.conf"
+	echo "MPATH=$MPATH" >> "/etc/minion.conf"
+fi
+
+
+
 
 
 # MINION USER GROUP
@@ -10,12 +25,12 @@ else
    groupadd minion
 fi
 
-if [ ! -d /opt/minion ]; then
+if [ ! -d "$MPATH" ]; then
 	echo "Installing Fresh Minion Installation"
 
-	mkdir /opt/minion
-	chgrp -R minion /opt/minion
-	chmod -R 775 /opt/minion
+	mkdir $MPATH
+	chgrp -R minion $MPATH
+	chmod -R 775 $MPATH
 else
 	echo "Updating Existing Minion Installation"
 fi
@@ -23,10 +38,10 @@ fi
 
 
 
-if [ ! -f /opt/minion/key ]; then
+if [ ! -f $MPATH/key ]; then
 	echo "* Generating Minion Key, this may take a while..."
-	ssh-keygen -b 4096 -N "" -O clear -O permit-port-forwarding -t rsa -f "/opt/minion/key"
-	chmod 600 /opt/minion/key
+	ssh-keygen -b 4096 -N "" -O clear -O permit-port-forwarding -t rsa -f "$MPATH/key"
+	chmod 600 $MPATH/key
 fi
 
 
@@ -73,30 +88,30 @@ fi
 
 
 echo "* Creating Minion Directory Structure"
-if [ ! -d /opt/minion ]; then
-	mkdir /opt/minion
+if [ ! -d $MPATH ]; then
+	mkdir $MPATH
 fi
-if [ ! -d /opt/minion/log ]; then
-	mkdir /opt/minion/log
+if [ ! -d $MPATH/log ]; then
+	mkdir $MPATH/log
 fi
-if [ ! -d /opt/minion/cache ]; then
-	mkdir /opt/minion/cache
+if [ ! -d $MPATH/cache ]; then
+	mkdir $MPATH/cache
 fi
 
-cp -f README.md /opt/minion/
-touch /opt/minion/log/minion.log
+cp -f README.md $MPATH/
+touch $MPATH/log/minion.log
 
 
 echo "* Updating Message of the Day"
 cp -f motd /etc/
 
 echo "* Copying Bin Utilities and Scripts"
-rm -rf /opt/minion/bin
-cp -rf bin/ /opt/minion/
+rm -rf $MPATH/bin
+cp -rf bin/ $MPATH/
 
 echo "* Copying Configurations"
-rm -rf /opt/minion/conf
-cp -rf conf/ /opt/minion/
+rm -rf $MPATH/conf
+cp -rf conf/ $MPATH/
 
 echo "* Configuring Cron"
 cp -f cron/hourly /etc/cron.hourly/minion
@@ -140,9 +155,9 @@ fi
 
 
 echo "* Fixing Permissions"
-chgrp -R minion /opt/minion
-chmod -R 775 /opt/minion
-chmod 600 /opt/minion/key
+chgrp -R minion $MPATH
+chmod -R 775 $MPATH
+chmod 600 $MPATH/key
 
 
 

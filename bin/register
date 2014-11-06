@@ -1,18 +1,37 @@
 #!/bin/sh
+#
+# Register with heth.io
+#
 
-#
-# Minion Registeration
-#
+source globals.sh
 
 echo "Registering Device..."
 
-DATETIME=`date +"%Y-%m-%d %H:%M:%S"`
+#READ PUBLIC IP ADDRESS FROM LOG FILE IF EXISTS
+if [ -f "$MPATH/log/publicip.log" ]; then
+PUBLICIP=`awk '/./{line=$0} END{print line}' $MPATH/log/publicip.log`
+else
+PUBLICIP='UNKNOWN'
+fi
 
-HOSTNAME=`hostname -f`
-#mosquitto_pub -t "$HOSTNAME/system/registration" -m "$DATETIME" -h broker.openmqtt.org -p 8883 --cafile /opt/minion/conf/MoranCA.crt -r
-mosquitto_pub -t "$HOSTNAME/system/registration" -m "$DATETIME" -h broker.openmqtt.org -r
 
-echo "$DATETIME [0] Registering Device with HomeOffice" >> /opt/minion/log/minion.log
+#READ SPEED TEST RESULTS FROM LOG FILE IF EXISTS
+if [ -f "$MPATH/log/speedtest.log" ]; then
+SPEEDTEST=`awk '/./{line=$0} END{print line}' $MPATH/log/speedtest.log`
+else
+SPEEDTEST='UNKNOWN'
+fi
 
+
+#READ TEMPERATURE FROM LOG FILE IF EXISTS
+if [ -f "$MPATH/log/temperature.log" ]; then
+TEMPERATURE=`awk '/./{line=$0} END{print line}' $MPATH/log/temperature.log`
+else
+TEMPERATURE='UNKNOWN'
+fi
+
+
+
+message "register" "{'hostname':'$HOSTNAME','publicip':'$PUBLICIP','speedtest':'$SPEEDTEST','temperature':'$TEMPERATURE','timestamp':'$DATETIME'}"
 
 echo "Done"

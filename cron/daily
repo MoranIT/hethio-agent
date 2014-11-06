@@ -4,11 +4,18 @@
 # Minion Monthly Script
 #
 
-echo "Rotate Temperature Logs"
-/opt/minion/bin/temperature-log-rotator
+if [ -f "/etc/minion.conf" ]; then
+	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion.conf)
 
-echo "Rotate Speedtest Logs"
-/opt/minion/bin/speedtest-log-rotator
+	if [ -f $MPATH/bin/temperature-log-rotator ]; then
+		echo "Rotate Temperature Logs"
+		$MPATH/bin/temperature-log-rotator
+	fi
 
-echo "Rotate Public IP Logs"
-/opt/minion/bin/publicip-log-rotator
+	echo "Rotate Speedtest Logs"
+	$MPATH/bin/speedtest-log-rotator
+
+	echo "Rotate Public IP Logs"
+	$MPATH/bin/publicip-log-rotator
+
+fi

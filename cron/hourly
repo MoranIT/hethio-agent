@@ -4,9 +4,17 @@
 # Minion Hourly Script
 #
 
-echo "Log Current Temperature to running file"
-/opt/minion/bin/temperature-wrapper
+if [ -f "/etc/minion.conf" ]; then
+	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion.conf)
 
-echo "Run Internet Speedtest every hour"
-/opt/minion/bin/speedtest-wrapper
+	echo "Log Current Temperature to running file"
+	$MPATH/bin/temperature
 
+	echo "Run Internet Speedtest every hour"
+	$MPATH/bin/speedtest
+
+
+	echo "Register system"
+	$MPATH/bin/register
+
+fi

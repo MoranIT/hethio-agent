@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# Test Internet Connection
+#
+
+source globals.sh
+
+if [ -f "$MPATH/bin/speedtest-cli" ]; then
+	echo "Testing internet speed..."
+
+	$MPATH/bin/speedtest-cli > $MPATH/log/speedtest.lastrun.log
+
+	TIMESTAMP=`date +"%s"`
+	PUBLICIP=`cat $MPATH/log/speedtest.lastrun.log | grep 'Testing from' | awk -F'(' '{print $2}' | awk -F ')' '{print $1}'`
+	RESULTS=`cat $MPATH/log/speedtest.lastrun.log | grep 'Mbits/s' | awk -F':' '{print $2}' | awk -F' ' '{print $1;}' | awk 'NR%2{printf $0"|";next;}1'`
+	DOWNLOAD=`echo $RESULTS | awk -F'|' '{print $1}'`
+	UPLOAD=`echo $RESULTS | awk -F'|' '{print $2}'`
+
+	echo "$PUBLICIP|$DATETIME" >> $MPATH/log/publicip.log
+	echo "$DOWNLOAD|$UPLOAD|$DATETIME" >> $MPATH/log/speedtest.log  
+
+	echo "Done"
+else
+	echo "Unable to run speedtest, missing test utility."
+fi
