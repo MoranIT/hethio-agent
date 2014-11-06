@@ -7,7 +7,7 @@
 if [ -f "/etc/minion.conf" ]; then
 	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion.conf)
 else
-	MPATH="$MPATH"
+	MPATH="/opt/minion"
 	echo "[Global]" > "/etc/minion.conf"
 	echo "MPATH=$MPATH" >> "/etc/minion.conf"
 fi
