@@ -12,6 +12,21 @@ if [ -f "/sys/class/thermal/thermal_zone0/temp" ]; then
 
 	echo "$TEMP|$DATETIME" >> $MPATH/log/temperature.log
 
+
+
+	#- TEMP - 
+	if [ -f "$MPATH/log/temperature.log" ]; then
+	TEMPERATURE=`awk '/./{line=$0} END{print line}' $MPATH/log/temperature.log | cut -d'|' -f1`
+	else
+	TEMPERATURE='UNKNOWN'
+	fi
+	TEMP="'temperature':'$TEMPERATURE'"
+
+
+	# Send message to central server
+	publish "machines/$ID/temperature" "{$TEMP}"
+
+
 	echo "Done"
 else
 	echo "Unable to read temperature, missing file."

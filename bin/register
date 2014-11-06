@@ -5,33 +5,43 @@
 
 source globals.sh
 
-echo "Registering Device..."
+if [ "$ID" = "" ]; then
 
-#READ PUBLIC IP ADDRESS FROM LOG FILE IF EXISTS
-if [ -f "$MPATH/log/publicip.log" ]; then
-PUBLICIP=`awk '/./{line=$0} END{print line}' $MPATH/log/publicip.log`
+	echo "Registering Device..."
+
+	GUID=`uuidgen`
+
+	#subscribe to reg channel and wait for registration id
+	subscribe "register/$GUID" "$MPATH/log/registration.log"
+	SUBPID=$!  #grab pid from recently run command
+
+	# Notify server of new device
+	publish "register" "$GUID"
+
+
+	# Now wait for response from registration service
+	ID=""
+	if [ -f "$MPATH/log/registration.log" ]; then
+		ID=`cat $MPATH/log/registration.log`
+	fi
+
+	while [ "$ID" = "" ]; do
+		sleep 10
+
+		if [ -f "$MPATH/log/registration.log" ]; then
+			ID=`cat $MPATH/log/registration.log`
+		fi
+
+	done
+	echo "Registered ID=$ID"
+	echo "ID=$ID" >> /etc/minion.conf
+
+	echo "Stopping registration pid"
+	kill $SUBPID
+
+	echo "Done"
+
 else
-PUBLICIP='UNKNOWN'
+	echo "Already Registered ID=$ID"
+
 fi
-
-
-#READ SPEED TEST RESULTS FROM LOG FILE IF EXISTS
-if [ -f "$MPATH/log/speedtest.log" ]; then
-SPEEDTEST=`awk '/./{line=$0} END{print line}' $MPATH/log/speedtest.log`
-else
-SPEEDTEST='UNKNOWN'
-fi
-
-
-#READ TEMPERATURE FROM LOG FILE IF EXISTS
-if [ -f "$MPATH/log/temperature.log" ]; then
-TEMPERATURE=`awk '/./{line=$0} END{print line}' $MPATH/log/temperature.log`
-else
-TEMPERATURE='UNKNOWN'
-fi
-
-
-
-message "register" "{'hostname':'$HOSTNAME','publicip':'$PUBLICIP','speedtest':'$SPEEDTEST','temperature':'$TEMPERATURE','timestamp':'$DATETIME'}"
-
-echo "Done"

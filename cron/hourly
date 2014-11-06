@@ -18,9 +18,9 @@ if [ -f "/etc/minion.conf" ]; then
 		$MPATH/bin/speedtest
 	fi
 
-	if [ -f $MPATH/bin/register ]; then
-		echo "Register system"
-		$MPATH/bin/register
+	if [ -f $MPATH/bin/generalinfo ]; then
+		echo "General Information"
+		$MPATH/bin/generalinfo
 	fi
 
 fi

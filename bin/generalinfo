@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# general information with heth.io
+#
+
+source globals.sh
+
+echo "Device Info..."
+
+#- HOST - basic stats about the device itself, hostname, time, etc.
+HOST="'host':{'hostname':'$HOSTNAME','time':'$DATETIME'}"
+
+
+#TODO collect other bits of information that is helpful about a machine
+
+
+# Send message to central server
+publish "machines/$ID/info" "{$HOST}"
+
+
+echo "Done"
