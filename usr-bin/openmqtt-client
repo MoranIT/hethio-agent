@@ -6,7 +6,8 @@ import argparse
 import sys
 import time  # this is only being used as part of the example
 import ConfigParser # read in config file
-import subprocess
+import subprocess # for executing other command line programs
+import shlex # for spliting strings
 
 # Deafults
 CONF_FILENAME = "/etc/openmqtt/openmqtt.conf"
@@ -88,26 +89,38 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 
 
 
+#=======================================================================================================================
+# MAIN DAEMON LOOP
 
-
-i = 0
-
+oldepoch = time.time()
 # Loop forever, doing something useful hopefully:
 while True:
-	#logger.info("The counter is now " + str(i))
-	#print "This is a print"
+	epoch = time.time() #get current unix timestamp
+
+
+	#every minute
+	if epoch - oldepoch >= 30:
+
+		#logger.info("The counter is now " + str(i))
+		#print "This is a print"
+		
+		command_line = "mosquitto_pub -t '/minion/machines/" + str(id) + "' -m '{\"status\":\"daemon loop " + str(epoch) + "\"}' -h '" + broker + "' -u '" + username + "'"
+	    args = shlex.split(command_line)
+
+	    # Set up the echo command and direct the output to a pipe
+	    p1 = subprocess.Popen(args, stdout=subprocess.PIPE)
+
+		# Run the command
+		output = p1.communicate()[0]
+		print str(i) + "  " + output
+
+
+
+
+
+	oldepoch = epoch
+	time.sleep(60)
 	
-	cmd = "mosquitto_pub -t '/minion/machines/" + id + "'' -m '{\"status\":\"daemon loop " + i + "\"}' -h '" + broker + "' -u '" + username + "'"
-
-	# Set up the echo command and direct the output to a pipe
-	p1 = subprocess.Popen([cmd], stdout=subprocess.PIPE)
-
-	# Run the command
-	output = p1.communicate()[0]
-	print str(i) + "  " + output
 
 
-	i = i + 1
-	time.sleep(10)
-#	if i == 3:
-#		j = 1/0  # cause an exception to be thrown and the program to exit
+
