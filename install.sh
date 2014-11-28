@@ -52,8 +52,8 @@ fi
 
 
 
-echo "* Updating Repository"
-apt-get update
+#echo "* Updating Repository"
+#apt-get update
 
 
 #REMOVE MISC UNNEEDED PACKAGES FROM RASPBERRY PI'S
@@ -149,6 +149,31 @@ else
 fi
 
 
+# FAIL2BAN CONFIGURATION
+if [ -d /etc/fail2ban ]; then
+if [ -f /etc/fail2ban/action.d/mosquitto.conf ]; then
+	mv conf/fail2ban.conf /etc/fail2ban/action.d/mosquitto.conf
+
+	/bin/egrep  -i "ssh-mosquitto" /etc/fail2ban/jail.conf
+	if [ $? -eq 0 ]; then
+	   echo "* Fail2Ban Jail already configured, nothing to do."
+	else
+	   echo "* Fail2Ban Jail needing configuration..."
+
+	   echo "# notify mqtt broker" >> /etc/fail2ban/jail.conf
+	   echo "[ssh-mosquitto]" >> /etc/fail2ban/jail.conf
+	   echo "enabled  = true" >> /etc/fail2ban/jail.conf
+	   echo "filter   = sshd" >> /etc/fail2ban/jail.conf
+	   echo "action   = mosquitto[name=ssh]" >> /etc/fail2ban/jail.conf
+	   echo "logpath  = /var/log/auth.log" >> /etc/fail2ban/jail.conf
+
+	fi
+
+	echo "* Restarting Fail2Ban"
+	service fail2ban restart
+
+fi
+fi
 
 
 
