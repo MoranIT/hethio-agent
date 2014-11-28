@@ -34,11 +34,11 @@ if args.log:
 # CONFIG
 
 #user defined configuration variables
+global id, broker, username
+
 id = 0
 broker = "broker.openmqtt.org"
 username = "minion"
-
-global id, broker, username
 
 # Read in configuration file
 configParser = ConfigParser.RawConfigParser()   
@@ -91,7 +91,10 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 #=======================================================================================================================
 # FUNCTIONALITY
 
+# REGISTER WITH THE BROKER NETWORK
 def register(epoch):
+	logger.info("Registering Endpoint with " + broker)
+
 	command_line = "mosquitto_pub -t '/minion/machines/" + str(id) + "' -m '{\"status\":\"daemon loop " + str(epoch) + "\"}' -h '" + broker + "' -u '" + username + "'"
 	args = shlex.split(command_line)
 
@@ -123,17 +126,19 @@ def register(epoch):
 
 
 
-
+# THIS FUNCTION IS EXECUTED EVERY MINUTE
 def every_minute(epoch, oldepoch):
 	if epoch - oldepoch >= 60: # EVERY MINUTE
-
+		logger.info("Minute Elapsed")
 		#logger.info("The counter is now " + str(i))
 		#print "This is a print"
 		
 	return;
 
+# THIS FUNCTION IS EXECUTED EVERY HOUR
 def every_hour(epoch, oldepoch):
 	if epoch - oldepoch >= 3600: # EVERY HOUR
+		logger.info("Hour Elapsed")
 
 		register(epoch)
 
