@@ -5,12 +5,68 @@
 # This script is executed during a reboot of the system thanks to an link pushed into /etc/rc0.d/
 #
 
+
+#=============================================================================
+### BEGIN GLOBALS
+BROKER='broker.openmqtt.org'
+
+MPATH='/opt/minion'
 if [ -f "/etc/minion/minion.conf" ]; then
 	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion/minion.conf)
-	cd $MPATH/bin
+fi
 
-	source globals.sh
+ID=''
+if [ -f "/etc/minion/minion.conf" ]; then
+	ID=$(awk -F "=" '/ID/ {print $2}' /etc/minion/minion.conf)
+fi
 
+
+DATETIME=`date +"%Y-%m-%d %H:%M:%S"`
+HOSTNAME=`hostname -f`
+
+
+# PUBLISH A MESSAGE TO THE MQTT BROKER
+publish () 
+{ # Send message to our mqtt broker
+	echo "/minion/$1 => $2"
+	mosquitto_pub -t "/minion/$1" -m "$2" -h $BROKER
+
+	if [ -f "$MPATH/log/minion.log" ]; then
+		echo "$DATETIME [0] Registering Device" >> $MPATH/log/minion.log
+	fi
+}
+
+
+# SUBSCRIBE TO A TOPIC ON THE MQTT BROKER
+subscribe () 
+{ # Send message to our mqtt broker
+	echo "Subscribe to /minion/$1 > $2"
+	mosquitto_sub -t "/minion/$1" -h $BROKER > $2 &
+
+	if [ -f "$MPATH/log/minion.log" ]; then
+		echo "$DATETIME [0] Registering Device" >> $MPATH/log/minion.log
+	fi
+}
+
+
+
+# PERFORM ANY LAST MINUTE CHECKS ON GLOBAL VARIABLES
+if [ ! -d "$MPATH" ]; then
+	echo "ERROR: Unable to find minion install path."
+fi
+
+
+### END GLOBALS
+#=============================================================================
+
+
+
+
+
+
+
+if [ -f "/etc/minion/minion.conf" ]; then
+	
 	while true; do
 		
 		publish "machines/$ID" "{'status':'daemon looped'}"
@@ -19,6 +75,5 @@ if [ -f "/etc/minion/minion.conf" ]; then
 		echo "Waiting..."
 		sleep 30
 	done
-
 
 fi
