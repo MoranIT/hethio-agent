@@ -6,7 +6,7 @@ import argparse
 import sys
 import time  # this is only being used as part of the example
 import ConfigParser # read in config file
-
+from subprocess import call
 
 # Deafults
 CONF_FILENAME = "/etc/openmqtt/openmqtt.conf"
@@ -34,6 +34,8 @@ if args.log:
 
 #user defined configuration variables
 id = 0
+broker = "broker.openmqtt.org"
+username = "minion"
 
 # Read in configuration file
 configParser = ConfigParser.RawConfigParser()   
@@ -88,27 +90,19 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 
 
 
-
-
-
-
-
-
-
-
+i = 0
 
 # Loop forever, doing something useful hopefully:
 while True:
-	#logger.info("The counter is now " + str(i))
+	logger.info("The counter is now " + str(i))
 	#print "This is a print"
 	
-	print id
+	args = "-t /minion/machines/" + id + "/ -m '{\"status\":\"daemon loop\"}' -h '" + broker + "' -u '" + username + "'"
+	print args
 
-	#from subprocess import call
-	#call(["mosquitto_pub", "-t /minion/machines/"])
+	call(["mosquitto_pub", args])
 
-
-	i += 1
+	i = i + 1
 	time.sleep(10)
 #	if i == 3:
 #		j = 1/0  # cause an exception to be thrown and the program to exit
