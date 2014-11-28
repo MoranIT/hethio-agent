@@ -21,7 +21,8 @@ fi
 
 
 
-
+#============================================================
+# SETUP PROPER USER GROUP
 # MINION USER GROUP
 /bin/egrep  -i "^minion" /etc/group
 if [ $? -eq 0 ]; then
@@ -44,6 +45,9 @@ fi
 
 
 
+#============================================================
+# SSL CERTIFICATE
+
 if [ ! -f $MPATH/key ]; then
 	echo "* Generating Minion Key, this may take a while..."
 	ssh-keygen -b 4096 -N "" -O clear -O permit-port-forwarding -t rsa -f "$MPATH/key"
@@ -52,10 +56,13 @@ fi
 
 
 
+
+
+#============================================================
+# PI CLEANUP
 #echo "* Updating Repository"
 #apt-get update
-
-
+#
 #REMOVE MISC UNNEEDED PACKAGES FROM RASPBERRY PI'S
 ##http://brandonb.io/creating-your-own-minimalistic-rasbian-image-for-the-raspberry-pi
 #echo "* Remove Misc Packages and Development"
@@ -71,6 +78,12 @@ fi
 
 
 
+
+
+
+
+#============================================================
+# INSTALL/CONFIGURE EXTERNAL UTILITIES
 
 # PYTHON
 if [ ! -f /usr/bin/python ]; then
@@ -90,10 +103,27 @@ if [ ! -f /usr/bin/ruby ]; then
 	apt-get install ruby -y
 fi
 
+# MOSQUITTO
+if [ ! -f /etc/apt/sources.list.d/mosquitto-stable.list ]; then
+	echo "* Installing Mosquitto-Clients"
+	apt-key add conf/mosquitto-repo.gpg.key
+	rm conf/mosquitto-repo.gpg.key
+	mv conf/mosquitto-stable.list /etc/apt/sources.list.d/
+	apt-get install mosquitto-clients -y
+else
+	echo "* Updating Mosquitto-Clients"
+	rm -f conf/mosquitto-repo-gpg.key
+	rm -f conf/mosquitto-stable.list
+fi
 
 
 
 
+
+
+
+#============================================================
+# INSTALL MINION APPLICATION
 
 echo "* Creating Minion Directory Structure"
 if [ ! -d $MPATH ]; then
@@ -122,70 +152,68 @@ rm -rf $MPATH/conf
 cp -rf conf/ $MPATH/
 
 echo "* Configuring Cron"
+#add hourly script
 cp -f cron/hourly /etc/cron.hourly/minion
 chmod +x /etc/cron.hourly/minion
+#add daily script
 cp -f cron/daily /etc/cron.daily/minion
 chmod +x /etc/cron.daily/minion
+#add weekly script
 cp -f cron/weekly /etc/cron.weekly/minion
 chmod +x /etc/cron.weekly/minion
+#add monthly script
 cp -f cron/monthly /etc/cron.monthly/minion
 chmod +x /etc/cron.monthly/minion
+#add reboot script
+ln -s /opt/minion/bin/reboot /etc/rc0.d/K99_minion_reboot
+chmod +x /etc/rc0.d/K99_minion_reboot
+#add shutdown script
+ln -s /opt/minion/bin/shutdown /etc/rc6.d/K99_minion_shutdown
+chmod +x /etc/rc6.d/K99_minion_shutdown
+#add startup script
+sed -i -e '$i \nohup sh /opt/minion/bin/startup &\n' /etc/rc.local
 
-
-
-
-
-# MOSQUITTO
-if [ ! -f /etc/apt/sources.list.d/mosquitto-stable.list ]; then
-	echo "* Installing Mosquitto-Clients"
-	apt-key add conf/mosquitto-repo.gpg.key
-	rm conf/mosquitto-repo.gpg.key
-	mv conf/mosquitto-stable.list /etc/apt/sources.list.d/
-	apt-get install mosquitto-clients -y
-else
-	echo "* Updating Mosquitto-Clients"
-	rm -f conf/mosquitto-repo-gpg.key
-	rm -f conf/mosquitto-stable.list
-fi
 
 
 # FAIL2BAN CONFIGURATION
 if [ -d /etc/fail2ban ]; then
-if [ -f /etc/fail2ban/action.d/mosquitto.conf ]; then
-	echo "* Fail2Ban already configured."
-else
-	mv conf/fail2ban.conf /etc/fail2ban/action.d/mosquitto.conf
-
-	/bin/egrep  -i "ssh-mosquitto" /etc/fail2ban/jail.conf
-	if [ $? -eq 0 ]; then
-	   echo "* Fail2Ban Jail already configured, nothing to do."
+	if [ -f /etc/fail2ban/action.d/mosquitto.conf ]; then
+		echo "* Fail2Ban already configured."
 	else
-	   echo "* Fail2Ban Jail needing configuration..."
+		mv conf/fail2ban.conf /etc/fail2ban/action.d/mosquitto.conf
 
-	   echo "# notify mqtt broker" >> /etc/fail2ban/jail.conf
-	   echo "[ssh-mosquitto]" >> /etc/fail2ban/jail.conf
-	   echo "enabled  = true" >> /etc/fail2ban/jail.conf
-	   echo "filter   = sshd" >> /etc/fail2ban/jail.conf
-	   echo "action   = mosquitto[name=ssh]" >> /etc/fail2ban/jail.conf
-	   echo "logpath  = /var/log/auth.log" >> /etc/fail2ban/jail.conf
+		/bin/egrep  -i "ssh-mosquitto" /etc/fail2ban/jail.conf
+		if [ $? -eq 0 ]; then
+		   echo "* Fail2Ban Jail already configured, nothing to do."
+		else
+		   echo "* Fail2Ban Jail needing configuration..."
 
+		   echo "# notify mqtt broker" >> /etc/fail2ban/jail.conf
+		   echo "[ssh-mosquitto]" >> /etc/fail2ban/jail.conf
+		   echo "enabled  = true" >> /etc/fail2ban/jail.conf
+		   echo "filter   = sshd" >> /etc/fail2ban/jail.conf
+		   echo "action   = mosquitto[name=ssh]" >> /etc/fail2ban/jail.conf
+		   echo "logpath  = /var/log/auth.log" >> /etc/fail2ban/jail.conf
+		fi
+		echo "* Restarting Fail2Ban"
+		service fail2ban restart
 	fi
-
-	echo "* Restarting Fail2Ban"
-	service fail2ban restart
-
-fi
 fi
 
 
 
 
-# INSTALL MORAN CERTIFICATE AUTHORITY
+
+
+#============================================================
+# INSTALL MORAN ROOT CERTIFICATE AUTHORITY
 if [ ! -f /usr/local/share/ca-certificates/MoranCA.crt ]; then
 	echo "* Installing Root Certiciate"
 	cp -f conf/MoranCA.crt /usr/local/share/ca-certificates/
 	update-ca-certificates
 fi
+
+
 
 
 
@@ -195,13 +223,13 @@ chmod -R 775 $MPATH
 chmod 600 $MPATH/key
 
 
-
 echo "* Starting Cron"
 service cron restart
 
 
 
-
+#============================================================
+# REGISTER SYSTEM UPON INSTALLATION
 if [ -f $MPATH/bin/register ]; then
 	cd $MPATH/bin
 	echo "Register system"

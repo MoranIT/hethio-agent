@@ -1,11 +1,13 @@
 #!/bin/bash
 #
-# general information with heth.io
+# Publish General Information
+#
+# Collect generic information about the endpoint and publish it.
 #
 
 source globals.sh
 
-echo "Device Info..."
+echo "General Info..."
 
 #- HOST - basic stats about the device itself, hostname, time, etc.
 HOST="'host':{'hostname':'$HOSTNAME','time':'$DATETIME'}"

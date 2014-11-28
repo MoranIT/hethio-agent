@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# Reboot Script
+#
+# This script is executed during a reboot of the system thanks to an link pushed into /etc/rc0.d/
+#
+
+source globals.sh
+
+echo "Reboot Script..."
+
+# Send message to central server
+publish "machines/$ID" "System Rebooted"
+
+echo "Done"
