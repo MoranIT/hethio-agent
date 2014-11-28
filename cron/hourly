@@ -20,7 +20,7 @@ if [ -f "/etc/minion.conf" ]; then
 
 	if [ -f $MPATH/bin/generalinfo ]; then
 		echo "General Information"
-		$MPATH/bin/generalinfo
+		$MPATH/bin/system-info
 	fi
 
 fi

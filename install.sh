@@ -178,8 +178,10 @@ sed -i -e '$i \nohup sh /opt/minion/bin/startup &\n' /etc/rc.local
 # FAIL2BAN CONFIGURATION
 if [ -d /etc/fail2ban ]; then
 	if [ -f /etc/fail2ban/action.d/mosquitto.conf ]; then
-		echo "* Fail2Ban already configured."
+		echo "* Fail2Ban already configured, updating..."
+		mv conf/fail2ban.conf /etc/fail2ban/action.d/mosquitto.conf
 	else
+		echo "* Configuring Fail2Ban"
 		mv conf/fail2ban.conf /etc/fail2ban/action.d/mosquitto.conf
 
 		/bin/egrep  -i "ssh-mosquitto" /etc/fail2ban/jail.conf
@@ -195,9 +197,9 @@ if [ -d /etc/fail2ban ]; then
 		   echo "action   = mosquitto[name=ssh]" >> /etc/fail2ban/jail.conf
 		   echo "logpath  = /var/log/auth.log" >> /etc/fail2ban/jail.conf
 		fi
-		echo "* Restarting Fail2Ban"
-		service fail2ban restart
 	fi
+	echo "* Restarting Fail2Ban"
+	service fail2ban restart
 fi
 
 
