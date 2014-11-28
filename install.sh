@@ -10,9 +10,7 @@ LOGPATH="/var/log/minion"
 #============================================================
 #fix outdated conf location
 if [ -f "/etc/minion.conf" ]; then
-	if [ -d /etc/minion ]; then
-
-	else
+	if [ ! -d /etc/minion ]; then
 		mkdir /etc/minion
 	fi
 	mv /etc/minion.conf /etc/minion/minion.conf
