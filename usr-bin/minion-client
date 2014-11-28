@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Reboot Script
+#
+# This script is executed during a reboot of the system thanks to an link pushed into /etc/rc0.d/
+#
+
+if [ -f "/etc/minion/minion.conf" ]; then
+	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion/minion.conf)
+	cd $MPATH/bin
+
+	source globals.sh
+
+	while true; do
+		
+		publish "machines/$ID" "{'status':'daemon looped'}"
+
+
+		echo "Waiting..."
+		sleep 30
+	done
+
+
+fi

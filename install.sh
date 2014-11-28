@@ -2,21 +2,43 @@
 #
 #
 #
+CPATH="/etc/minion"
+LOGPATH="/var/log/minion"
+
+
+
+#============================================================
+#fix outdated conf location
+if [ -f "/etc/minion.conf" ]; then
+	if [ -d /etc/minion ]; then
+
+	else
+		mkdir /etc/minion
+	fi
+	mv /etc/minion.conf /etc/minion/minion.conf
+fi 
+if [ -f "/opt/minion/key" ]; then
+	mv /opt/minion/key "$CPATH/key"
+fi
+if [ -f "/opt/minion/key.pub" ]; then
+	mv /opt/minion/key.pub "$CPATH/key.pub"
+fi
+rm /etc/motd
+rm /etc/cron.hourly/minion
+rm /etc/cron.daily/minion
+rm /etc/cron.weekly/minion
+rm /etc/cron.monthly/minion
+
+
+
+
 
 #Read install path from conf file or create it with defaults
-if [ -f "/etc/minion.conf" ]; then
-	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion.conf)
+if [ -f "$CPATH/minion.conf" ]; then
+	echo "Upgrading Minion"
 else
-	MPATH="/opt/minion"
-	echo "[Global]" > "/etc/minion.conf"
-	echo "MPATH=$MPATH" >> "/etc/minion.conf"
-fi
-
-if [[ -z "$MPATH" ]]; then
-	echo "Invalid path found"
-fi
-if [ $MPATH="" ]; then
-	echo "Invalid path found"
+	echo "Installing Minion"
+	echo "[Global]" > "/etc/minion/minion.conf"
 fi
 
 
@@ -32,14 +54,15 @@ else
    groupadd minion
 fi
 
-if [ ! -d "$MPATH" ]; then
-	echo "Installing Fresh Minion Installation"
 
-	mkdir $MPATH
-	chgrp -R minion $MPATH
-	chmod -R 775 $MPATH
-else
-	echo "Updating Existing Minion Installation"
+#============================================================
+# ADD LOGGING DIRECTORY
+if [ ! -d "$LOGPATH" ]; then
+	echo "Adding Logging"
+	mkdir $LOGPATH
+	chgrp -R minion $LOGPATH
+	chmod -R 775 $LOGPATH
+	touch "$LOGPATH/minion.log"
 fi
 
 
@@ -48,10 +71,10 @@ fi
 #============================================================
 # SSL CERTIFICATE
 
-if [ ! -f $MPATH/key ]; then
+if [ ! -f $CPATH/key ]; then
 	echo "* Generating Minion Key, this may take a while..."
-	ssh-keygen -b 4096 -N "" -O clear -O permit-port-forwarding -t rsa -f "$MPATH/key"
-	chmod 600 $MPATH/key
+	ssh-keygen -b 4096 -N "" -O clear -O permit-port-forwarding -t rsa -f "$CPATH/key"
+	chmod 600 $CPATH/key
 fi
 
 
@@ -125,56 +148,44 @@ fi
 #============================================================
 # INSTALL MINION APPLICATION
 
-echo "* Creating Minion Directory Structure"
-if [ ! -d $MPATH ]; then
-	mkdir $MPATH
-fi
-if [ ! -d $MPATH/log ]; then
-	mkdir $MPATH/log
-fi
-if [ ! -d $MPATH/cache ]; then
-	mkdir $MPATH/cache
-fi
 
-cp -f README.md $MPATH/
-touch $MPATH/log/minion.log
+#echo "* Copying Bin Utilities and Scripts"
+#rm -rf $MPATH/bin
+#cp -rf bin/ $MPATH/
+
+#echo "* Copying Configurations"
+#rm -rf $MPATH/conf
+#cp -rf conf/ $MPATH/
+
+#echo "* Configuring Cron"
+##add hourly script
+#cp -f cron/hourly /etc/cron.hourly/minion
+#chmod +x /etc/cron.hourly/minion
+##add daily script
+#cp -f cron/daily /etc/cron.daily/minion
+#chmod +x /etc/cron.daily/minion
+##add weekly script
+#cp -f cron/weekly /etc/cron.weekly/minion
+#chmod +x /etc/cron.weekly/minion
+##add monthly script
+#cp -f cron/monthly /etc/cron.monthly/minion
+#chmod +x /etc/cron.monthly/minion
 
 
-echo "* Updating Message of the Day"
-cp -f motd /etc/
+# install client
+mv init.d/minion /etc/init.d/minion
+chmod +x /etc/init.d/minion
 
-echo "* Copying Bin Utilities and Scripts"
-rm -rf $MPATH/bin
-cp -rf bin/ $MPATH/
+mv usr-bin/minion-client /usr/bin/minion-client
+chmod +x /usr/bin/minion-client
 
-echo "* Copying Configurations"
-rm -rf $MPATH/conf
-cp -rf conf/ $MPATH/
-
-echo "* Configuring Cron"
-#add hourly script
-cp -f cron/hourly /etc/cron.hourly/minion
-chmod +x /etc/cron.hourly/minion
-#add daily script
-cp -f cron/daily /etc/cron.daily/minion
-chmod +x /etc/cron.daily/minion
-#add weekly script
-cp -f cron/weekly /etc/cron.weekly/minion
-chmod +x /etc/cron.weekly/minion
-#add monthly script
-cp -f cron/monthly /etc/cron.monthly/minion
-chmod +x /etc/cron.monthly/minion
-#add reboot script
-ln -s /opt/minion/bin/reboot /etc/rc0.d/K99_minion_reboot
-chmod +x /etc/rc0.d/K99_minion_reboot
-#add shutdown script
-ln -s /opt/minion/bin/shutdown /etc/rc6.d/K99_minion_shutdown
-chmod +x /etc/rc6.d/K99_minion_shutdown
-#add startup script
-sed -i -e '$i \nohup sh /opt/minion/bin/startup &\n' /etc/rc.local
+update-rc.d minion defaults
 
 
 
+
+
+#============================================================
 # FAIL2BAN CONFIGURATION
 if [ -d /etc/fail2ban ]; then
 	if [ -f /etc/fail2ban/action.d/mosquitto.conf ]; then
@@ -211,7 +222,7 @@ fi
 # INSTALL MORAN ROOT CERTIFICATE AUTHORITY
 if [ ! -f /usr/local/share/ca-certificates/MoranCA.crt ]; then
 	echo "* Installing Root Certiciate"
-	cp -f conf/MoranCA.crt /usr/local/share/ca-certificates/
+	cp -f MoranCA.crt /usr/local/share/ca-certificates/
 	update-ca-certificates
 fi
 
@@ -219,24 +230,30 @@ fi
 
 
 
-echo "* Fixing Permissions"
-chgrp -R minion $MPATH
-chmod -R 775 $MPATH
-chmod 600 $MPATH/key
+#echo "* Fixing Permissions"
+#chgrp -R minion $MPATH
+#chmod -R 775 $MPATH
+#chmod 600 $MPATH/key
 
 
-echo "* Starting Cron"
-service cron restart
+#echo "* Starting Cron"
+#service cron restart
+
+
+
+##============================================================
+## REGISTER SYSTEM UPON INSTALLATION
+#if [ -f $MPATH/bin/register ]; then
+#	cd $MPATH/bin
+#	echo "Register system"
+#	$MPATH/bin/register
+#fi
 
 
 
 #============================================================
-# REGISTER SYSTEM UPON INSTALLATION
-if [ -f $MPATH/bin/register ]; then
-	cd $MPATH/bin
-	echo "Register system"
-	$MPATH/bin/register
-fi
+#rm -rf /opt/minion
+
 
 
 echo "Installation Complete... Enjoy your Minion!"

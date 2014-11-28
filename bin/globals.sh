@@ -6,13 +6,13 @@
 BROKER='broker.openmqtt.org'
 
 MPATH='/opt/minion'
-if [ -f "/etc/minion.conf" ]; then
-	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion.conf)
+if [ -f "/etc/minion/minion.conf" ]; then
+	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion/minion.conf)
 fi
 
 ID=''
-if [ -f "/etc/minion.conf" ]; then
-	ID=$(awk -F "=" '/ID/ {print $2}' /etc/minion.conf)
+if [ -f "/etc/minion/minion.conf" ]; then
+	ID=$(awk -F "=" '/ID/ {print $2}' /etc/minion/minion.conf)
 fi
 
 

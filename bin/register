@@ -34,7 +34,7 @@ if [ "$ID" = "" ]; then
 
 	done
 	echo "Registered ID=$ID"
-	echo "ID=$ID" >> /etc/minion.conf
+	echo "ID=$ID" >> /etc/minion/minion.conf
 
 	echo "Stopping registration pid"
 	kill $SUBPID
