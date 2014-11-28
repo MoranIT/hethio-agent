@@ -2,18 +2,18 @@
 #
 #
 #
-CPATH="/etc/minion"
-LOGPATH="/var/log/minion"
+CPATH="/etc/openmqtt"
+LOGPATH="/var/log/openmqtt"
 
 
 
 #============================================================
 #fix outdated conf location
 if [ -f "/etc/minion.conf" ]; then
-	if [ ! -d /etc/minion ]; then
-		mkdir /etc/minion
+	if [ ! -d /etc/openmqtt ]; then
+		mkdir /etc/openmqtt
 	fi
-	mv /etc/minion.conf /etc/minion/minion.conf
+	mv /etc/minion.conf /etc/openmqtt/openmqtt.conf
 fi 
 if [ -f "/opt/minion/key" ]; then
 	mv /opt/minion/key "$CPATH/key"
@@ -27,29 +27,36 @@ rm /etc/cron.daily/minion
 rm /etc/cron.weekly/minion
 rm /etc/cron.monthly/minion
 
+if [ -d "/etc/minion" ]; then
+	mv /etc/minion /etc/openmqtt
+	mv /etc/openmqtt/minion.conf /etc/openmqtt/openmqtt.conf
+fi
+
+
+
 
 
 
 
 #Read install path from conf file or create it with defaults
-if [ -f "$CPATH/minion.conf" ]; then
-	echo "Upgrading Minion"
+if [ -f "$CPATH/openmqtt.conf" ]; then
+	echo "Upgrading OpenMQTT"
 else
-	echo "Installing Minion"
-	echo "[Global]" > "/etc/minion/minion.conf"
+	echo "Installing OpenMQTT"
+	echo "[Global]" > "/etc/openmqtt/openmqtt.conf"
 fi
 
 
 
 #============================================================
 # SETUP PROPER USER GROUP
-# MINION USER GROUP
-/bin/egrep  -i "^minion" /etc/group
+# openmqtt USER GROUP
+/bin/egrep  -i "^openmqtt" /etc/group
 if [ $? -eq 0 ]; then
-   echo "* User Group 'minion' already exists, nothing to do."
+   echo "* User Group 'openmqtt' already exists, nothing to do."
 else
-   echo "* User Group 'minion' does not exist, creating now."
-   groupadd minion
+   echo "* User Group 'openmqtt' does not exist, creating now."
+   groupadd openmqtt
 fi
 
 
@@ -58,9 +65,8 @@ fi
 if [ ! -d "$LOGPATH" ]; then
 	echo "Adding Logging"
 	mkdir $LOGPATH
-	chgrp -R minion $LOGPATH
+	chgrp -R openmqtt $LOGPATH
 	chmod -R 775 $LOGPATH
-	touch "$LOGPATH/minion.log"
 fi
 
 
@@ -70,7 +76,7 @@ fi
 # SSL CERTIFICATE
 
 if [ ! -f $CPATH/key ]; then
-	echo "* Generating Minion Key, this may take a while..."
+	echo "* Generating openmqtt Key, this may take a while..."
 	ssh-keygen -b 4096 -N "" -O clear -O permit-port-forwarding -t rsa -f "$CPATH/key"
 	chmod 600 $CPATH/key
 fi
@@ -112,17 +118,17 @@ if [ ! -f /usr/bin/python ]; then
 	apt-get install python -y
 fi
 
-# PERL
-if [ ! -f /usr/bin/perl ]; then
-	echo "* Installing Perl"
-	apt-get install perl -y
-fi
+## PERL
+#if [ ! -f /usr/bin/perl ]; then
+#	echo "* Installing Perl"
+#	apt-get install perl -y
+#fi
 
-# RUBY
-if [ ! -f /usr/bin/ruby ]; then
-	echo "* Installing Ruby"
-	apt-get install ruby -y
-fi
+## RUBY
+#if [ ! -f /usr/bin/ruby ]; then
+#	echo "* Installing Ruby"
+#	apt-get install ruby -y
+#fi
 
 # MOSQUITTO
 if [ ! -f /etc/apt/sources.list.d/mosquitto-stable.list ]; then
@@ -144,7 +150,7 @@ fi
 
 
 #============================================================
-# INSTALL MINION APPLICATION
+# INSTALL openmqtt APPLICATION
 
 
 #echo "* Copying Bin Utilities and Scripts"
@@ -157,27 +163,29 @@ fi
 
 #echo "* Configuring Cron"
 ##add hourly script
-#cp -f cron/hourly /etc/cron.hourly/minion
-#chmod +x /etc/cron.hourly/minion
+#cp -f cron/hourly /etc/cron.hourly/openmqtt
+#chmod +x /etc/cron.hourly/openmqtt
 ##add daily script
-#cp -f cron/daily /etc/cron.daily/minion
-#chmod +x /etc/cron.daily/minion
+#cp -f cron/daily /etc/cron.daily/openmqtt
+#chmod +x /etc/cron.daily/openmqtt
 ##add weekly script
-#cp -f cron/weekly /etc/cron.weekly/minion
-#chmod +x /etc/cron.weekly/minion
+#cp -f cron/weekly /etc/cron.weekly/openmqtt
+#chmod +x /etc/cron.weekly/openmqtt
 ##add monthly script
-#cp -f cron/monthly /etc/cron.monthly/minion
-#chmod +x /etc/cron.monthly/minion
+#cp -f cron/monthly /etc/cron.monthly/openmqtt
+#chmod +x /etc/cron.monthly/openmqtt
+
 
 
 # install client
-mv init.d/minion /etc/init.d/minion
-chmod +x /etc/init.d/minion
+mv usr-bin/openmqtt-client /usr/bin/openmqtt-client
+chmod +x /usr/bin/openmqtt-client
 
-mv usr-bin/minion-client /usr/bin/minion-client
-chmod +x /usr/bin/minion-client
 
-update-rc.d minion defaults
+#install service
+mv init.d/openmqtt /etc/init.d/openmqtt
+chmod +x /etc/init.d/openmqtt
+update-rc.d openmqtt defaults
 
 
 
@@ -229,7 +237,7 @@ fi
 
 
 #echo "* Fixing Permissions"
-#chgrp -R minion $MPATH
+#chgrp -R openmqtt $MPATH
 #chmod -R 775 $MPATH
 #chmod 600 $MPATH/key
 
@@ -250,8 +258,11 @@ fi
 
 
 #============================================================
-#rm -rf /opt/minion
+#rm -rf /opt/openmqtt
 
 
+echo "* Starting OpenMQTT"
+service openmqtt start
 
-echo "Installation Complete... Enjoy your Minion!"
+
+echo "Installation Complete... Enjoy your openmqtt!"
