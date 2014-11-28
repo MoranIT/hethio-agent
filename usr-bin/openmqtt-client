@@ -38,6 +38,8 @@ id = 0
 broker = "broker.openmqtt.org"
 username = "minion"
 
+global id, broker, username
+
 # Read in configuration file
 configParser = ConfigParser.RawConfigParser()   
 configParser.read(CONF_FILENAME)
@@ -89,7 +91,7 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 #=======================================================================================================================
 # FUNCTIONALITY
 
-def register():
+def register(epoch):
 	command_line = "mosquitto_pub -t '/minion/machines/" + str(id) + "' -m '{\"status\":\"daemon loop " + str(epoch) + "\"}' -h '" + broker + "' -u '" + username + "'"
 	args = shlex.split(command_line)
 
@@ -100,7 +102,7 @@ def register():
 	output = p1.communicate()[0]
 	print str(epoch) + "  " + output
 
-	return true
+	return;
 
 
 
@@ -122,8 +124,20 @@ def register():
 
 
 
+def every_minute(epoch, oldepoch):
+	if epoch - oldepoch >= 60: # EVERY MINUTE
 
+		#logger.info("The counter is now " + str(i))
+		#print "This is a print"
+		
+	return;
 
+def every_hour(epoch, oldepoch):
+	if epoch - oldepoch >= 3600: # EVERY HOUR
+
+		register(epoch)
+
+	return;
 
 
 
@@ -135,20 +149,9 @@ oldepoch = int(time.time()) - 3600
 while true:
 	epoch = int(time.time()) #get current unix timestamp
 
+	every_hour(epoch, oldepoch)
 
-	if epoch - oldepoch >= 60: # EVERY MINUTE
-
-		#logger.info("The counter is now " + str(i))
-		#print "This is a print"
-		
-		
-
-	if epoch - oldepoch >= 3600: # EVERY HOUR
-
-		register()
-
-
-
+	every_minute(epoch, oldepoch)
 
 	oldepoch = epoch
 	time.sleep(60)
