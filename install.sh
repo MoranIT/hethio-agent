@@ -152,6 +152,8 @@ fi
 # FAIL2BAN CONFIGURATION
 if [ -d /etc/fail2ban ]; then
 if [ -f /etc/fail2ban/action.d/mosquitto.conf ]; then
+	echo "* Fail2Ban already configured."
+else
 	mv conf/fail2ban.conf /etc/fail2ban/action.d/mosquitto.conf
 
 	/bin/egrep  -i "ssh-mosquitto" /etc/fail2ban/jail.conf
