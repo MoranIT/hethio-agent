@@ -92,7 +92,7 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 #=======================================================================================================================
 # MAIN DAEMON LOOP
 
-oldepoch = time.time()
+oldepoch = time.time() - 30
 # Loop forever, doing something useful hopefully:
 while True:
 	epoch = time.time() #get current unix timestamp
@@ -105,10 +105,10 @@ while True:
 		#print "This is a print"
 		
 		command_line = "mosquitto_pub -t '/minion/machines/" + str(id) + "' -m '{\"status\":\"daemon loop " + str(epoch) + "\"}' -h '" + broker + "' -u '" + username + "'"
-	    args = shlex.split(command_line)
+		args = shlex.split(command_line)
 
-	    # Set up the echo command and direct the output to a pipe
-	    p1 = subprocess.Popen(args, stdout=subprocess.PIPE)
+		# Set up the echo command and direct the output to a pipe
+		p1 = subprocess.Popen(args, stdout=subprocess.PIPE)
 
 		# Run the command
 		output = p1.communicate()[0]
