@@ -6,7 +6,7 @@ import argparse
 import sys
 import time  # this is only being used as part of the example
 import ConfigParser # read in config file
-from subprocess import call
+import subprocess
 
 # Deafults
 CONF_FILENAME = "/etc/openmqtt/openmqtt.conf"
@@ -97,13 +97,10 @@ while True:
 	#logger.info("The counter is now " + str(i))
 	#print "This is a print"
 	
-	args = "-t /minion/machines/" + id + "/ -m '{\"status\":\"daemon loop\"}' -h '" + broker + "' -u '" + username + "'"
-	print 'mosquitto_pub ' + args
-
-	#call(["mosquitto_pub", args])
+	cmd = "mosquitto_pub -t '/minion/machines/" + id + "'' -m '{\"status\":\"daemon loop " + i + "\"}' -h '" + broker + "' -u '" + username + "'"
 
 	# Set up the echo command and direct the output to a pipe
-	p1 = subprocess.Popen(['mosquitto_pub', args], stdout=subprocess.PIPE)
+	p1 = subprocess.Popen([cmd], stdout=subprocess.PIPE)
 
 	# Run the command
 	output = p1.communicate()[0]
