@@ -6,6 +6,11 @@ CPATH="/etc/openmqtt"
 LOGPATH="/var/log/openmqtt"
 
 
+echo "* Stoping OpenMQTT"
+service openmqtt stop
+
+
+
 
 #============================================================
 #fix outdated conf location

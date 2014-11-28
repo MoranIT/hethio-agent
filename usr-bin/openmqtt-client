@@ -5,19 +5,47 @@ import logging.handlers
 import argparse
 import sys
 import time  # this is only being used as part of the example
+import ConfigParser # read in config file
+
 
 # Deafults
+CONF_FILENAME = "/etc/openmqtt/openmqtt.conf"
 LOG_FILENAME = "/var/log/openmqtt/client.log"
 LOG_LEVEL = logging.INFO  # Could be e.g. "DEBUG" or "WARNING"
 
 # Define and parse command line arguments
 parser = argparse.ArgumentParser(description="OpenMQTT - Systems Management Service")
+parser.add_argument("-c", "--conf", help="configuration file to read from (default '" + CONF_FILENAME + "')")
 parser.add_argument("-l", "--log", help="file to write log to (default '" + LOG_FILENAME + "')")
 
 # If the log file is specified on the command line then override the default
 args = parser.parse_args()
+if args.conf:
+	CONF_FILENAME = args.conf
 if args.log:
 	LOG_FILENAME = args.log
+
+
+
+
+
+#=======================================================================================================================
+# CONFIG
+
+#user defined configuration variables
+id = 0
+
+# Read in configuration file
+configParser = ConfigParser.RawConfigParser()   
+configParser.read(CONF_FILENAME)
+id = configParser.get('Global', 'ID')
+
+
+
+
+
+#=======================================================================================================================
+# LOGGER
 
 # Configure logging to log to a file, making a new file at midnight and keeping the last 3 day's data
 # Give the logger a unique name (good practice)
@@ -50,12 +78,36 @@ sys.stdout = MyLogger(logger, logging.INFO)
 # Replace stderr with logging to file at ERROR level
 sys.stderr = MyLogger(logger, logging.ERROR)
 
-i = 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Loop forever, doing something useful hopefully:
 while True:
-	logger.info("The counter is now " + str(i))
-	print "This is a print"
+	#logger.info("The counter is now " + str(i))
+	#print "This is a print"
+	
+	print id
+
+	#from subprocess import call
+	#call(["mosquitto_pub", "-t /minion/machines/"])
+
+
 	i += 1
 	time.sleep(10)
 #	if i == 3:
