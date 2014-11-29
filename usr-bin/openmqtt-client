@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import logging
 import logging.handlers
 import argparse
@@ -9,22 +10,36 @@ import ConfigParser # read in config file
 import subprocess # for executing other command line programs
 import shlex # for spliting strings
 
+
+from subprocess import PIPE, Popen
+from threading  import Thread
+
+try:
+    from Queue import Queue, Empty
+except ImportError:
+    from queue import Queue, Empty  # python 3.x
+
+ON_POSIX = 'posix' in sys.builtin_module_names
+
+
 # Deafults
+global LOG_FILEPATH
 CONF_FILENAME = "/etc/openmqtt/openmqtt.conf"
-LOG_FILENAME = "/var/log/openmqtt/client.log"
+LOG_FILEPATH = "/var/log/openmqtt"
 LOG_LEVEL = logging.INFO  # Could be e.g. "DEBUG" or "WARNING"
 
 # Define and parse command line arguments
 parser = argparse.ArgumentParser(description="OpenMQTT - Systems Management Service")
 parser.add_argument("-c", "--conf", help="configuration file to read from (default '" + CONF_FILENAME + "')")
-parser.add_argument("-l", "--log", help="file to write log to (default '" + LOG_FILENAME + "')")
+parser.add_argument("-l", "--log", help="file to write log to (default '" + LOG_FILEPATH + "')")
+#parser.add_argument('--speedtest', action="store_true", default=False)
 
 # If the log file is specified on the command line then override the default
 args = parser.parse_args()
 if args.conf:
 	CONF_FILENAME = args.conf
 if args.log:
-	LOG_FILENAME = args.log
+	LOG_FILEPATH = args.log
 
 
 
@@ -58,7 +73,7 @@ logger = logging.getLogger(__name__)
 # Set the log level to LOG_LEVEL
 logger.setLevel(LOG_LEVEL)
 # Make a handler that writes to a file, making a new file at midnight and keeping 3 backups
-handler = logging.handlers.TimedRotatingFileHandler(LOG_FILENAME, when="midnight", backupCount=3)
+handler = logging.handlers.TimedRotatingFileHandler(LOG_FILEPATH + "/client.log", when="midnight", backupCount=3)
 # Format each log message like this
 formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
 # Attach the formatter to the handler
@@ -77,6 +92,9 @@ class MyLogger(object):
 		# Only log if there is a message (not just a new line)
 		if message.rstrip() != "":
 			self.logger.log(self.level, message.rstrip())
+
+	def flush(self):
+		pass
 
 # Replace stdout with logging to file at INFO level
 sys.stdout = MyLogger(logger, logging.INFO)
@@ -97,14 +115,10 @@ def register(epoch):
 
 	command_line = "mosquitto_pub -t '/minion/machines/" + str(id) + "' -m '{\"status\":\"daemon loop " + str(epoch) + "\"}' -h '" + broker + "' -u '" + username + "'"
 	args = shlex.split(command_line)
-
-	# Set up the echo command and direct the output to a pipe
 	p1 = subprocess.Popen(args, stdout=subprocess.PIPE)
-
-	# Run the command
 	output = p1.communicate()[0]
+	
 	print str(epoch) + "  " + output
-
 	return;
 
 
@@ -113,14 +127,7 @@ def register(epoch):
 
 
 
-
-
-
-
-
-
-
-
+#=======================================================================================================================
 
 
 
@@ -145,13 +152,12 @@ def every_hour(epoch, oldepoch):
 	return;
 
 
-
 #=======================================================================================================================
 # MAIN DAEMON LOOP
 
 oldepoch = int(time.time()) - 3600
 # Loop forever, doing something useful hopefully:
-while true:
+while True:
 	epoch = int(time.time()) #get current unix timestamp
 
 	every_hour(epoch, oldepoch)
