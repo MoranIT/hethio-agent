@@ -138,7 +138,7 @@ def publish(topic, msg):
 # REGISTER WITH THE BROKER NETWORK
 def register():
 	global i, id, logger, TIMESTAMP
-	output = publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"register loop" + str(i) + "\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+	output = publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"register loop" + str(i) + "\"}")
 	print output
 	return;
 
@@ -181,7 +181,7 @@ def every_hour():
 #=======================================================================================================================
 # MAIN DAEMON LOOP
 
-publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon started\"}")
 
 
 	
@@ -199,7 +199,7 @@ while True:
 	time.sleep(60)
 	
 
-publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon stopped\"}")
 
 
 
