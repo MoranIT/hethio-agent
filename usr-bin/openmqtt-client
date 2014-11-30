@@ -125,9 +125,9 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 #=======================================================================================================================
 # FUNCTIONALITY
 
-def publish(msg):
-	global id, broker, username, logger
-	command_line = "mosquitto_pub -t '/minion/machines/" + str(id) + "' -m '" + msg + "' -h '" + broker + "' -u '" + username + "'"
+def publish(topic, msg):
+	global broker, username, logger
+	command_line = "mosquitto_pub -t '/" + username + topic + "' -m '" + msg + "' -h '" + broker + "' -u '" + username + "'"
 	logger.info(command_line)
 	args = shlex.split(command_line)
 	p1 = subprocess.Popen(args, stdout=subprocess.PIPE)
@@ -138,10 +138,9 @@ def publish(msg):
 
 # REGISTER WITH THE BROKER NETWORK
 def register():
-	global i, logger
-	logger.info("Registering Endpoint with " + broker)
-	output = publish("{\"status\":\"daemon loop" + str(i) + "\"}")
-	print str(i) + "  " + output
+	global i, id, logger
+	output = publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"register loop" + str(i) + "\"}")
+	print output
 	return;
 
 
@@ -183,7 +182,7 @@ def every_hour():
 #=======================================================================================================================
 # MAIN DAEMON LOOP
 
-publish("{\"status\":\"openmqtt daemon started\"}")
+publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"openmqtt daemon started\"}")
 
 oldepoch = int(time.time()) - 3600
 # Loop forever, doing something useful hopefully:
@@ -198,7 +197,7 @@ while True:
 	time.sleep(60)
 	
 
-publish("{\"status\":\"openmqtt daemon stopped\"}")
+publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"openmqtt daemon stopped\"}")
 
 
 

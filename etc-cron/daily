@@ -23,4 +23,8 @@ if [ -f "/etc/openmqtt/openmqtt.conf" ]; then
 		$MPATH/bin/publicip-log-rotator
 	fi
 
+	if [ -f /usr/bin/openmqtt-client ]; bin
+		service openmqtt restart
+	fi
+
 fi
