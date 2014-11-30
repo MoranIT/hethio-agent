@@ -78,6 +78,7 @@ if configParser.has_section('Global'):
 
 #=======================================================================================================================
 # LOGGER
+global logger
 
 # Configure logging to log to a file, making a new file at midnight and keeping the last 3 day's data
 # Give the logger a unique name (good practice)
@@ -125,8 +126,9 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 # FUNCTIONALITY
 
 def publish(msg):
-	global id, broker, username	
+	global id, broker, username, logger
 	command_line = "mosquitto_pub -t '/minion/machines/" + str(id) + "' -m '" + msg + "' -h '" + broker + "' -u '" + username + "'"
+	logger.info(command_line)
 	args = shlex.split(command_line)
 	p1 = subprocess.Popen(args, stdout=subprocess.PIPE)
 	output = p1.communicate()[0]
@@ -136,7 +138,7 @@ def publish(msg):
 
 # REGISTER WITH THE BROKER NETWORK
 def register():
-	global i
+	global i, logger
 	logger.info("Registering Endpoint with " + broker)
 	output = publish("{\"status\":\"daemon loop" + str(i) + "\"}")
 	print str(i) + "  " + output
