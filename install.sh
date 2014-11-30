@@ -27,10 +27,6 @@ if [ -f "/opt/minion/key.pub" ]; then
 	mv /opt/minion/key.pub "$CPATH/key.pub"
 fi
 rm /etc/motd
-rm /etc/cron.hourly/minion
-rm /etc/cron.daily/minion
-rm /etc/cron.weekly/minion
-rm /etc/cron.monthly/minion
 
 if [ -d "/etc/minion" ]; then
 	mv /etc/minion /etc/openmqtt
@@ -46,9 +42,27 @@ fi
 #Read install path from conf file or create it with defaults
 if [ -f "$CPATH/openmqtt.conf" ]; then
 	echo "Upgrading OpenMQTT"
+
+	MPATH='/opt/openmqtt'
+	if [ -f "/etc/openmqtt/openmqtt.conf" ]; then
+		MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/openmqtt/openmqtt.conf)
+	fi
+
+	ID=''
+	if [ -f "/etc/openmqtt/openmqtt.conf" ]; then
+		ID=$(awk -F "=" '/ID/ {print $2}' /etc/openmqtt/openmqtt.conf)
+	fi
+
+
+	echo "[Global]" > "/etc/openmqtt/openmqtt.conf"
+	echo "ID=$ID" > "/etc/openmqtt/openmqtt.conf"
+	echo "PATH=$MPATH" > "/etc/openmqtt/openmqtt.conf"
+
 else
 	echo "Installing OpenMQTT"
 	echo "[Global]" > "/etc/openmqtt/openmqtt.conf"
+	echo "ID=0" > "/etc/openmqtt/openmqtt.conf"
+	echo "PATH=/opt/openmqtt" > "/etc/openmqtt/openmqtt.conf"
 fi
 
 
@@ -123,17 +137,17 @@ if [ ! -f /usr/bin/python ]; then
 	apt-get install python -y
 fi
 
-## PERL
-#if [ ! -f /usr/bin/perl ]; then
-#	echo "* Installing Perl"
-#	apt-get install perl -y
-#fi
+# PERL
+if [ ! -f /usr/bin/perl ]; then
+	echo "* Installing Perl"
+	apt-get install perl -y
+fi
 
-## RUBY
-#if [ ! -f /usr/bin/ruby ]; then
-#	echo "* Installing Ruby"
-#	apt-get install ruby -y
-#fi
+# RUBY
+if [ ! -f /usr/bin/ruby ]; then
+	echo "* Installing Ruby"
+	apt-get install ruby -y
+fi
 
 # MOSQUITTO
 if [ ! -f /etc/apt/sources.list.d/mosquitto-stable.list ]; then
@@ -155,32 +169,47 @@ fi
 
 
 #============================================================
-# INSTALL openmqtt APPLICATION
+# INSTALL OLD - openmqtt APPLICATION
+MPATH='/opt/openmqtt'
+
+if [ ! -d $MPATH ]; then
+	mkdir $MPATH
+	mkdir $MPATH/bin
+	mkdir $MPATH/log
+fi
+
+echo "* Copying Bin Utilities and Scripts"
+rm -rf $MPATH/bin
+cp -rf opt-openmqtt-bin/ $MPATH/
+
+echo "* Fixing Permissions"
+chgrp -R openmqtt $MPATH
+chmod -R 775 $MPATH
 
 
-#echo "* Copying Bin Utilities and Scripts"
-#rm -rf $MPATH/bin
-#cp -rf bin/ $MPATH/
-
-#echo "* Copying Configurations"
-#rm -rf $MPATH/conf
-#cp -rf conf/ $MPATH/
-
-#echo "* Configuring Cron"
-##add hourly script
-#cp -f cron/hourly /etc/cron.hourly/openmqtt
-#chmod +x /etc/cron.hourly/openmqtt
-##add daily script
-#cp -f cron/daily /etc/cron.daily/openmqtt
-#chmod +x /etc/cron.daily/openmqtt
-##add weekly script
-#cp -f cron/weekly /etc/cron.weekly/openmqtt
-#chmod +x /etc/cron.weekly/openmqtt
-##add monthly script
-#cp -f cron/monthly /etc/cron.monthly/openmqtt
-#chmod +x /etc/cron.monthly/openmqtt
+echo "* Configuring Cron"
+#add hourly script
+cp -f etc-cron/hourly /etc/cron.hourly/openmqtt
+chmod +x /etc/cron.hourly/openmqtt
+#add daily script
+cp -f etc-cron/daily /etc/cron.daily/openmqtt
+chmod +x /etc/cron.daily/openmqtt
+#add weekly script
+cp -f etc-cron/weekly /etc/cron.weekly/openmqtt
+chmod +x /etc/cron.weekly/openmqtt
+#add monthly script
+cp -f etc-cron/monthly /etc/cron.monthly/openmqtt
+chmod +x /etc/cron.monthly/openmqtt
 
 
+echo "* Restarting Cron"
+service cron restart
+
+
+
+
+#============================================================
+# INSTALL NEW - openmqtt APPLICATION
 
 # install client
 mv usr-bin/openmqtt-client /usr/bin/openmqtt-client
@@ -241,24 +270,7 @@ fi
 
 
 
-#echo "* Fixing Permissions"
-#chgrp -R openmqtt $MPATH
-#chmod -R 775 $MPATH
-#chmod 600 $MPATH/key
 
-
-#echo "* Starting Cron"
-#service cron restart
-
-
-
-##============================================================
-## REGISTER SYSTEM UPON INSTALLATION
-#if [ -f $MPATH/bin/register ]; then
-#	cd $MPATH/bin
-#	echo "Register system"
-#	$MPATH/bin/register
-#fi
 
 
 

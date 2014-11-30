@@ -3,8 +3,8 @@
 # Minion Hourly Script
 #
 
-if [ -f "/etc/minion/minion.conf" ]; then
-	MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/minion/minion.conf)
+if [ -f "/etc/openmqtt/openmqtt.conf" ]; then
+	MPATH=$(awk -F "=" '/PATH/ {print $2}' /etc/openmqtt/openmqtt.conf)
 
 	cd $MPATH/bin
 
@@ -18,8 +18,8 @@ if [ -f "/etc/minion/minion.conf" ]; then
 		$MPATH/bin/speedtest
 	fi
 
-	if [ -f $MPATH/bin/generalinfo ]; then
-		echo "General Information"
+	if [ -f $MPATH/bin/system-info ]; then
+		echo "System Information"
 		$MPATH/bin/system-info
 	fi
 

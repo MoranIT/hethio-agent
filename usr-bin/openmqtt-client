@@ -6,7 +6,7 @@ import logging.handlers
 import argparse
 import sys
 import time  # this is only being used as part of the example
-import ConfigParser # read in config file
+from ConfigParser import SafeConfigParser # read in config file
 import subprocess # for executing other command line programs
 import shlex # for spliting strings
 
@@ -28,6 +28,7 @@ global LOG_FILEPATH
 CONF_FILENAME = "/etc/openmqtt/openmqtt.conf"
 LOG_FILEPATH = "/var/log/openmqtt"
 LOG_LEVEL = logging.INFO  # Could be e.g. "DEBUG" or "WARNING"
+
 
 # Define and parse command line arguments
 parser = argparse.ArgumentParser(description="OpenMQTT - Systems Management Service")
@@ -51,17 +52,25 @@ if args.log:
 
 #user defined configuration variables
 global id, broker, username, i
-
-i = 0
 id = 0
-broker = "broker.openmqtt.org"
-username = "minion"
+broker = 'broker.openmqtt.org'
+username = 'minion'
 
 # Read in configuration file
-configParser = ConfigParser.RawConfigParser()   
-configParser.read(CONF_FILENAME)
-id = configParser.get('Global', 'ID')
+configParser = SafeConfigParser()   
 
+try:
+    configParser.read(CONF_FILENAME)
+except IOError:
+    logger.error("Unable to open " + CONF_FILENAME)
+
+if configParser.has_section('Global'):
+	if configParser.has_option('Global','ID'):
+		id = configParser.get('Global','ID')
+	if configParser.has_option('Global','broker'):
+		broker = configParser.get('Global','broker')
+	if configParser.has_option('Global','username'):
+		username = configParser.get('Global','username')
 
 
 
@@ -108,6 +117,9 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 
 
 
+
+
+
 #=======================================================================================================================
 # FUNCTIONALITY
 
@@ -135,10 +147,12 @@ def register():
 
 
 
+
+
+
+
+
 #=======================================================================================================================
-
-
-
 
 
 # THIS FUNCTION IS EXECUTED EVERY MINUTE
@@ -166,6 +180,8 @@ def every_hour():
 #=======================================================================================================================
 # MAIN DAEMON LOOP
 
+publish("{\"status\":\"openmqtt daemon started\"}")
+
 oldepoch = int(time.time()) - 3600
 # Loop forever, doing something useful hopefully:
 while True:
@@ -178,6 +194,9 @@ while True:
 	oldepoch = epoch
 	time.sleep(60)
 	
+
+publish("{\"status\":\"openmqtt daemon stopped\"}")
+
 
 
 

@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+# Minion Monthly Tasks
+#
+
+if [ -f "/etc/openmqtt/openmqtt.conf" ]; then
+	MPATH=$(awk -F "=" '/PATH/ {print $2}' /etc/openmqtt/openmqtt.conf)
+
+	cd $MPATH/bin
+
+
+
+fi
