@@ -9,11 +9,8 @@ import time  # this is only being used as part of the example
 from ConfigParser import SafeConfigParser # read in config file
 import subprocess # for executing other command line programs
 import shlex # for spliting strings
+import datetime
 
-
-
-from subprocess import PIPE, Popen
-from threading  import Thread
 
 try:
     from Queue import Queue, Empty
@@ -51,7 +48,8 @@ if args.log:
 # CONFIG
 
 #user defined configuration variables
-global id, broker, username, i
+global id, broker, username, i, TIMESTAMP
+TIMESTAMP = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 i = 0
 id = 0
 broker = 'broker.openmqtt.org'
@@ -138,8 +136,8 @@ def publish(topic, msg):
 
 # REGISTER WITH THE BROKER NETWORK
 def register():
-	global i, id, logger
-	output = publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"register loop" + str(i) + "\"}")
+	global i, id, logger, TIMESTAMP
+	output = publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"register loop" + str(i) + "\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 	return;
 
@@ -182,12 +180,15 @@ def every_hour():
 #=======================================================================================================================
 # MAIN DAEMON LOOP
 
-publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon started\"}")
+publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 
+
+	
 oldepoch = int(time.time()) - 3600
 # Loop forever, doing something useful hopefully:
 while True:
 	epoch = int(time.time()) #get current unix timestamp
+	TIMESTAMP = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
 	if epoch - oldepoch >= 60: # EVERY MINUTE
 		every_hour()
@@ -197,7 +198,7 @@ while True:
 	time.sleep(60)
 	
 
-publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon stopped\"}")
+publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 
 
 
