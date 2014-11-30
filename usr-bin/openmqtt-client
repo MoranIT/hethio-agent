@@ -10,6 +10,8 @@ import ConfigParser # read in config file
 import subprocess # for executing other command line programs
 import shlex # for spliting strings
 
+from apscheduler.scheduler import Scheduler
+
 
 from subprocess import PIPE, Popen
 from threading  import Thread
@@ -128,27 +130,29 @@ def register(epoch):
 
 
 #=======================================================================================================================
-
+global i
+i = 0
 
 
 
 
 # THIS FUNCTION IS EXECUTED EVERY MINUTE
-def every_minute(epoch, oldepoch):
-	if epoch - oldepoch >= 60: # EVERY MINUTE
-		logger.info("Minute Elapsed")
-		#logger.info("The counter is now " + str(i))
-		#print "This is a print"
+def every_minute():
+	logger.info("Minute Elapsed")
+	#logger.info("The counter is now " + str(i))
+	#print "This is a print"
 		
+	i = i + 1
 	return;
 
 # THIS FUNCTION IS EXECUTED EVERY HOUR
-def every_hour(epoch, oldepoch):
-	if epoch - oldepoch >= 3600: # EVERY HOUR
+def every_hour():
+	if i >= 60: # EVERY HOUR
 		logger.info("Hour Elapsed")
 
 		register(epoch)
 
+		i = 0
 	return;
 
 
@@ -160,9 +164,9 @@ oldepoch = int(time.time()) - 3600
 while True:
 	epoch = int(time.time()) #get current unix timestamp
 
-	every_hour(epoch, oldepoch)
-
-	every_minute(epoch, oldepoch)
+	if epoch - oldepoch >= 60: # EVERY MINUTE
+		every_hour()
+		every_minute()
 
 	oldepoch = epoch
 	time.sleep(60)
