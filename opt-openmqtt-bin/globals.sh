@@ -23,8 +23,8 @@ HOSTNAME=`hostname -f`
 # PUBLISH A MESSAGE TO THE MQTT BROKER
 publish () 
 { # Send message to our mqtt broker
-	echo "/openmqtt/$1 => $2"
-	mosquitto_pub -t "/openmqtt/$1" -m "$2" -h $BROKER
+	echo "/minion/$1 => $2"
+	mosquitto_pub -t "/minion/$1" -m "$2" -h $BROKER
 
 	if [ -f "$MPATH/log/openmqtt.log" ]; then
 		echo "$DATETIME [0] Registering Device" >> $MPATH/log/openmqtt.log
@@ -35,8 +35,8 @@ publish ()
 # SUBSCRIBE TO A TOPIC ON THE MQTT BROKER
 subscribe () 
 { # Send message to our mqtt broker
-	echo "Subscribe to /openmqtt/$1 > $2"
-	mosquitto_sub -t "/openmqtt/$1" -h $BROKER > $2 &
+	echo "Subscribe to /minion/$1 > $2"
+	mosquitto_sub -t "/minion/$1" -h $BROKER > $2 &
 
 	if [ -f "$MPATH/log/openmqtt.log" ]; then
 		echo "$DATETIME [0] Registering Device" >> $MPATH/log/openmqtt.log
