@@ -10,7 +10,6 @@ import ConfigParser # read in config file
 import subprocess # for executing other command line programs
 import shlex # for spliting strings
 
-from apscheduler.scheduler import Scheduler
 
 
 from subprocess import PIPE, Popen
@@ -51,8 +50,9 @@ if args.log:
 # CONFIG
 
 #user defined configuration variables
-global id, broker, username
+global id, broker, username, i
 
+i = 0
 id = 0
 broker = "broker.openmqtt.org"
 username = "minion"
@@ -111,16 +111,22 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 #=======================================================================================================================
 # FUNCTIONALITY
 
-# REGISTER WITH THE BROKER NETWORK
-def register(epoch):
-	logger.info("Registering Endpoint with " + broker)
-
-	command_line = "mosquitto_pub -t '/minion/machines/" + str(id) + "' -m '{\"status\":\"daemon loop " + str(epoch) + "\"}' -h '" + broker + "' -u '" + username + "'"
+def publish(msg):
+	global id, broker, username	
+	command_line = "mosquitto_pub -t '/minion/machines/" + str(id) + "' -m '" + msg + "' -h '" + broker + "' -u '" + username + "'"
 	args = shlex.split(command_line)
 	p1 = subprocess.Popen(args, stdout=subprocess.PIPE)
 	output = p1.communicate()[0]
+	return output
 	
-	print str(epoch) + "  " + output
+
+
+# REGISTER WITH THE BROKER NETWORK
+def register():
+	global i
+	logger.info("Registering Endpoint with " + broker)
+	output = publish("{\"status\":\"daemon loop" + str(i) + "\"}")
+	print str(i) + "  " + output
 	return;
 
 
@@ -130,14 +136,14 @@ def register(epoch):
 
 
 #=======================================================================================================================
-global i
-i = 0
+
 
 
 
 
 # THIS FUNCTION IS EXECUTED EVERY MINUTE
 def every_minute():
+	global i
 	logger.info("Minute Elapsed")
 	#logger.info("The counter is now " + str(i))
 	#print "This is a print"
@@ -147,10 +153,11 @@ def every_minute():
 
 # THIS FUNCTION IS EXECUTED EVERY HOUR
 def every_hour():
+	global i
 	if i >= 60: # EVERY HOUR
 		logger.info("Hour Elapsed")
 
-		register(epoch)
+		register()
 
 		i = 0
 	return;
