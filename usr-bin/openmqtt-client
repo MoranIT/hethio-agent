@@ -9,8 +9,8 @@ import time  # this is only being used as part of the example
 from ConfigParser import SafeConfigParser # read in config file
 import subprocess # for executing other command line programs
 import shlex # for spliting strings
-import time
-from datetime import date
+from datetime import datetime
+
 
 
 try:
@@ -50,7 +50,7 @@ if args.log:
 
 #user defined configuration variables
 global id, broker, username, i, TIMESTAMP
-TIMESTAMP = date.fromtimestamp(date.now()).strftime('%Y-%m-%d %H:%M:%S')
+TIMESTAMP = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 i = 0
 id = 0
 broker = 'broker.openmqtt.org'
@@ -189,7 +189,7 @@ oldepoch = int(time.time()) - 3600
 # Loop forever, doing something useful hopefully:
 while True:
 	epoch = int(time.time()) #get current unix timestamp
-	TIMESTAMP = date.datetime.fromtimestamp(date.now()).strftime('%Y-%m-%d %H:%M:%S')
+	TIMESTAMP = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
 	if epoch - oldepoch >= 60: # EVERY MINUTE
 		every_hour()
