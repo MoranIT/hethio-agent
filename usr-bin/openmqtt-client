@@ -52,6 +52,7 @@ if args.log:
 
 #user defined configuration variables
 global id, broker, username, i
+i = 0
 id = 0
 broker = 'broker.openmqtt.org'
 username = 'minion'

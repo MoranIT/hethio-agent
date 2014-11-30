@@ -55,14 +55,14 @@ if [ -f "$CPATH/openmqtt.conf" ]; then
 
 
 	echo "[Global]" > "/etc/openmqtt/openmqtt.conf"
-	echo "ID=$ID" > "/etc/openmqtt/openmqtt.conf"
-	echo "PATH=$MPATH" > "/etc/openmqtt/openmqtt.conf"
+	echo "ID=$ID" >> "/etc/openmqtt/openmqtt.conf"
+	echo "PATH=$MPATH" >> "/etc/openmqtt/openmqtt.conf"
 
 else
 	echo "Installing OpenMQTT"
 	echo "[Global]" > "/etc/openmqtt/openmqtt.conf"
-	echo "ID=0" > "/etc/openmqtt/openmqtt.conf"
-	echo "PATH=/opt/openmqtt" > "/etc/openmqtt/openmqtt.conf"
+	echo "ID=0" >> "/etc/openmqtt/openmqtt.conf"
+	echo "PATH=/opt/openmqtt" >> "/etc/openmqtt/openmqtt.conf"
 fi
 
 
@@ -181,6 +181,7 @@ fi
 echo "* Copying Bin Utilities and Scripts"
 rm -rf $MPATH/bin
 cp -rf opt-openmqtt-bin/ $MPATH/
+mv $MPATH/opt-openmqtt-bin $MPATH/bin
 
 echo "* Fixing Permissions"
 chgrp -R openmqtt $MPATH
