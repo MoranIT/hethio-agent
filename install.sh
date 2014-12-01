@@ -33,7 +33,9 @@ if [ -d "/etc/minion" ]; then
 	mv /etc/openmqtt/minion.conf /etc/openmqtt/openmqtt.conf
 fi
 
-
+if [ -d "/opt/minion" ]; then
+	mv /opt/minion /opt/openmqtt
+fi
 
 
 
