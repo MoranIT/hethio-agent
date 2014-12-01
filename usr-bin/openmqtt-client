@@ -137,8 +137,8 @@ def publish(topic, msg):
 
 # REGISTER WITH THE BROKER NETWORK
 def register():
-	global i, id, logger, TIMESTAMP
-	output = publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"register loop" + str(i) + "\"}")
+	global id, logger, TIMESTAMP
+	output = publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"hourly registration loop\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 	return;
 
