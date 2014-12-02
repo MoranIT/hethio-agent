@@ -10,7 +10,7 @@ from ConfigParser import SafeConfigParser # read in config file
 import subprocess # for executing other command line programs
 import shlex # for spliting strings
 from datetime import datetime
-
+import string
 
 
 try:
@@ -49,8 +49,9 @@ if args.log:
 # CONFIG
 
 #user defined configuration variables
-global id, broker, username, i, TIMESTAMP
+global id, broker, username, i, TIMESTAMP, USERS
 TIMESTAMP = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+USERS = ""
 i = 0
 id = 0
 broker = 'broker.openmqtt.org'
@@ -117,7 +118,10 @@ sys.stderr = MyLogger(logger, logging.ERROR)
 
 
 
-
+def deduplicate(seq):
+    seen = set()
+    seen_add = seen.add
+    return [ x for x in seq if not (x in seen or seen_add(x))]
 
 
 
@@ -145,10 +149,31 @@ def register():
 
 
 
+#determine who is currently logged in, deduplicate and report if different than last runtime
+def logged_in_users():
+	global id, logger, TIMESTAMP, USERS
+	command_line = "who"
+	args = shlex.split(command_line)
+	p1 = subprocess.Popen(args,stdout=subprocess.PIPE)
+	output = p1.communicate()[0].splitlines()
 
+	users = []
+	j = -1
+	for line in output:
+		j = j + 1
+		users.append( line.split()[0] )
+	users = deduplicate(users)
+	logger.info(command_line + " => " + string.join(users))
 
+	if string.join(users) != USERS:
+		USERS = string.join(users)
+		msg = "{\"logged in users\":["
+		for user in users:
+			msg = msg + "{\"username\":\"" + user + "\"}"
+		msg = msg + "],\"timestamp\":\"" + TIMESTAMP + "\"}"
+		publish("/machines/" + str(id), msg)
 
-
+	return;
 
 
 
@@ -162,7 +187,9 @@ def every_minute():
 	logger.info("Minute Elapsed")
 	#logger.info("The counter is now " + str(i))
 	#print "This is a print"
-		
+	
+	logged_in_users()
+
 	i = i + 1
 	return;
 
