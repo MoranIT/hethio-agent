@@ -93,7 +93,9 @@ fi
 
 
 #Read install path from conf file or create it with defaults
-mkdir $CPATH
+if [ -d "$CPATH" ]; then
+	mkdir $CPATH
+fi
 if [ -f "$CPATH/hethio.conf" ]; then
 	echo "Upgrading HethIO"
 
