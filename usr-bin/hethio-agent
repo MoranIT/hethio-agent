@@ -23,13 +23,13 @@ ON_POSIX = 'posix' in sys.builtin_module_names
 
 # Deafults
 global LOG_FILEPATH
-CONF_FILENAME = "/etc/openmqtt/openmqtt.conf"
-LOG_FILEPATH = "/var/log/openmqtt"
+CONF_FILENAME = "/etc/hethio/hethio.conf"
+LOG_FILEPATH = "/var/log/hethio"
 LOG_LEVEL = logging.INFO  # Could be e.g. "DEBUG" or "WARNING"
 
 
 # Define and parse command line arguments
-parser = argparse.ArgumentParser(description="OpenMQTT - Systems Management Service")
+parser = argparse.ArgumentParser(description="HethIO - Systems Management Service")
 parser.add_argument("-c", "--conf", help="configuration file to read from (default '" + CONF_FILENAME + "')")
 parser.add_argument("-l", "--log", help="file to write log to (default '" + LOG_FILEPATH + "')")
 #parser.add_argument('--speedtest', action="store_true", default=False)
@@ -54,8 +54,8 @@ TIMESTAMP = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 USERS = ""
 i = 0
 id = 0
-broker = 'broker.openmqtt.org'
-username = 'minion'
+broker = 'broker.moranit.com'
+username = 'hethio'
 
 # Read in configuration file
 configParser = SafeConfigParser()   
@@ -142,7 +142,7 @@ def publish(topic, msg):
 # REGISTER WITH THE BROKER NETWORK
 def register():
 	global id, logger, TIMESTAMP
-	output = publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"hourly registration loop\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+	output = publish("/machines/" + str(id) + "/hethio", "{\"status\":\"hourly registration loop\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 	return;
 
@@ -208,7 +208,7 @@ def every_hour():
 #=======================================================================================================================
 # MAIN DAEMON LOOP
 
-publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon started\"}")
+publish("/machines/" + str(id) + "/hethio", "{\"status\":\"daemon started\"}")
 
 
 	
@@ -226,7 +226,7 @@ while True:
 	time.sleep(60)
 	
 
-publish("/machines/" + str(id) + "/openmqtt", "{\"status\":\"daemon stopped\"}")
+publish("/machines/" + str(id) + "/hethio", "{\"status\":\"daemon stopped\"}")
 
 
 

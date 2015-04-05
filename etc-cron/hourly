@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# Minion Hourly Script
+# HethIO Hourly Script
 #
 
-if [ -f "/etc/openmqtt/openmqtt.conf" ]; then
-	MPATH=$(awk -F "=" '/PATH/ {print $2}' /etc/openmqtt/openmqtt.conf)
+if [ -f "/etc/hethio/hethio.conf" ]; then
+	MPATH=$(awk -F "=" '/PATH/ {print $2}' /etc/hethio/hethio.conf)
 
 	cd $MPATH/bin
 

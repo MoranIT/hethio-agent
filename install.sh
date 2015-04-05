@@ -2,39 +2,39 @@
 #
 #
 #
-CPATH="/etc/openmqtt"
-LOGPATH="/var/log/openmqtt"
+CPATH="/etc/hethio"
+LOGPATH="/var/log/hethio"
 
 
-echo "* Stoping OpenMQTT"
-service openmqtt stop
+echo "* Stoping HethIO"
+service hethio stop
 
 
 
 
 #============================================================
 #fix outdated conf location
-if [ -f "/etc/minion.conf" ]; then
-	if [ ! -d /etc/openmqtt ]; then
-		mkdir /etc/openmqtt
+if [ -f "/etc/hethio.conf" ]; then
+	if [ ! -d /etc/hethio ]; then
+		mkdir /etc/hethio
 	fi
-	mv /etc/minion.conf /etc/openmqtt/openmqtt.conf
+	mv /etc/hethio.conf /etc/hethio/hethio.conf
 fi 
-if [ -f "/opt/minion/key" ]; then
-	mv /opt/minion/key "$CPATH/key"
+if [ -f "/opt/hethio/key" ]; then
+	mv /opt/hethio/key "$CPATH/key"
 fi
-if [ -f "/opt/minion/key.pub" ]; then
-	mv /opt/minion/key.pub "$CPATH/key.pub"
+if [ -f "/opt/hethio/key.pub" ]; then
+	mv /opt/hethio/key.pub "$CPATH/key.pub"
 fi
 rm /etc/motd
 
-if [ -d "/etc/minion" ]; then
-	mv /etc/minion /etc/openmqtt
-	mv /etc/openmqtt/minion.conf /etc/openmqtt/openmqtt.conf
+if [ -d "/etc/hethio" ]; then
+	mv /etc/hethio /etc/hethio
+	mv /etc/hethio/hethio.conf /etc/hethio/hethio.conf
 fi
 
-if [ -d "/opt/minion" ]; then
-	mv /opt/minion /opt/openmqtt
+if [ -d "/opt/hethio" ]; then
+	mv /opt/hethio /opt/hethio
 fi
 
 
@@ -42,42 +42,42 @@ fi
 
 
 #Read install path from conf file or create it with defaults
-if [ -f "$CPATH/openmqtt.conf" ]; then
-	echo "Upgrading OpenMQTT"
+if [ -f "$CPATH/hethio.conf" ]; then
+	echo "Upgrading HethIO"
 
-	MPATH='/opt/openmqtt'
-	if [ -f "/etc/openmqtt/openmqtt.conf" ]; then
-		MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/openmqtt/openmqtt.conf)
+	MPATH='/opt/hethio'
+	if [ -f "/etc/hethio/hethio.conf" ]; then
+		MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/hethio/hethio.conf)
 	fi
 
 	ID=''
-	if [ -f "/etc/openmqtt/openmqtt.conf" ]; then
-		ID=$(awk -F "=" '/ID/ {print $2}' /etc/openmqtt/openmqtt.conf)
+	if [ -f "/etc/hethio/hethio.conf" ]; then
+		ID=$(awk -F "=" '/ID/ {print $2}' /etc/hethio/hethio.conf)
 	fi
 
 
-	echo "[Global]" > "/etc/openmqtt/openmqtt.conf"
-	echo "ID=$ID" >> "/etc/openmqtt/openmqtt.conf"
-	echo "PATH=$MPATH" >> "/etc/openmqtt/openmqtt.conf"
+	echo "[Global]" > "/etc/hethio/hethio.conf"
+	echo "ID=$ID" >> "/etc/hethio/hethio.conf"
+	echo "PATH=$MPATH" >> "/etc/hethio/hethio.conf"
 
 else
-	echo "Installing OpenMQTT"
-	echo "[Global]" > "/etc/openmqtt/openmqtt.conf"
-	echo "ID=0" >> "/etc/openmqtt/openmqtt.conf"
-	echo "PATH=/opt/openmqtt" >> "/etc/openmqtt/openmqtt.conf"
+	echo "Installing HethIO"
+	echo "[Global]" > "/etc/hethio/hethio.conf"
+	echo "ID=0" >> "/etc/hethio/hethio.conf"
+	echo "PATH=/opt/hethio" >> "/etc/hethio/hethio.conf"
 fi
 
 
 
 #============================================================
 # SETUP PROPER USER GROUP
-# openmqtt USER GROUP
-/bin/egrep  -i "^openmqtt" /etc/group
+# hethio USER GROUP
+/bin/egrep  -i "^hethio" /etc/group
 if [ $? -eq 0 ]; then
-   echo "* User Group 'openmqtt' already exists, nothing to do."
+   echo "* User Group 'hethio' already exists, nothing to do."
 else
-   echo "* User Group 'openmqtt' does not exist, creating now."
-   groupadd openmqtt
+   echo "* User Group 'hethio' does not exist, creating now."
+   groupadd hethio
 fi
 
 
@@ -86,7 +86,7 @@ fi
 if [ ! -d "$LOGPATH" ]; then
 	echo "Adding Logging"
 	mkdir $LOGPATH
-	chgrp -R openmqtt $LOGPATH
+	chgrp -R hethio $LOGPATH
 	chmod -R 775 $LOGPATH
 fi
 
@@ -97,7 +97,7 @@ fi
 # SSL CERTIFICATE
 
 if [ ! -f $CPATH/key ]; then
-	echo "* Generating openmqtt Key, this may take a while..."
+	echo "* Generating hethio Key, this may take a while..."
 	ssh-keygen -b 4096 -N "" -O clear -O permit-port-forwarding -t rsa -f "$CPATH/key"
 	chmod 600 $CPATH/key
 fi
@@ -171,8 +171,8 @@ fi
 
 
 #============================================================
-# INSTALL OLD - openmqtt APPLICATION
-MPATH='/opt/openmqtt'
+# INSTALL OLD - hethio APPLICATION
+MPATH='/opt/hethio'
 
 if [ ! -d $MPATH ]; then
 	mkdir $MPATH
@@ -182,27 +182,27 @@ fi
 
 echo "* Copying Bin Utilities and Scripts"
 rm -rf $MPATH/bin
-cp -rf opt-openmqtt-bin/ $MPATH/
-mv $MPATH/opt-openmqtt-bin $MPATH/bin
+cp -rf opt-hethio-bin/ $MPATH/
+mv $MPATH/opt-hethio-bin $MPATH/bin
 
 echo "* Fixing Permissions"
-chgrp -R openmqtt $MPATH
+chgrp -R hethio $MPATH
 chmod -R 775 $MPATH
 
 
 echo "* Configuring Cron"
 #add hourly script
-cp -f etc-cron/hourly /etc/cron.hourly/openmqtt
-chmod +x /etc/cron.hourly/openmqtt
+cp -f etc-cron/hourly /etc/cron.hourly/hethio
+chmod +x /etc/cron.hourly/hethio
 #add daily script
-cp -f etc-cron/daily /etc/cron.daily/openmqtt
-chmod +x /etc/cron.daily/openmqtt
+cp -f etc-cron/daily /etc/cron.daily/hethio
+chmod +x /etc/cron.daily/hethio
 #add weekly script
-cp -f etc-cron/weekly /etc/cron.weekly/openmqtt
-chmod +x /etc/cron.weekly/openmqtt
+cp -f etc-cron/weekly /etc/cron.weekly/hethio
+chmod +x /etc/cron.weekly/hethio
 #add monthly script
-cp -f etc-cron/monthly /etc/cron.monthly/openmqtt
-chmod +x /etc/cron.monthly/openmqtt
+cp -f etc-cron/monthly /etc/cron.monthly/hethio
+chmod +x /etc/cron.monthly/hethio
 
 
 echo "* Restarting Cron"
@@ -212,17 +212,17 @@ service cron restart
 
 
 #============================================================
-# INSTALL NEW - openmqtt APPLICATION
+# INSTALL NEW - hethio APPLICATION
 
 # install client
-mv usr-bin/openmqtt-client /usr/bin/openmqtt-client
-chmod +x /usr/bin/openmqtt-client
+mv usr-bin/hethio-client /usr/bin/hethio-client
+chmod +x /usr/bin/hethio-client
 
 
 #install service
-mv init.d/openmqtt /etc/init.d/openmqtt
-chmod +x /etc/init.d/openmqtt
-update-rc.d openmqtt defaults
+mv init.d/hethio /etc/init.d/hethio
+chmod +x /etc/init.d/hethio
+update-rc.d hethio defaults
 
 
 
@@ -278,11 +278,11 @@ fi
 
 
 #============================================================
-#rm -rf /opt/openmqtt
+#rm -rf /opt/hethio
 
 
-echo "* Starting OpenMQTT"
-service openmqtt start
+echo "* Starting HethIO"
+service hethio start
 
 
-echo "Installation Complete... Enjoy your openmqtt!"
+echo "Installation Complete... Enjoy your hethio-agent!"

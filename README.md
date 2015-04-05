@@ -1,13 +1,13 @@
-# OpenMQTT-Client
-This application is a daemon that runs on Raspberry PIs, Ubuntu systems and others.  It is designed to push information and events to the main OpenMQTT broker network for management by the main OpenMQTT website.
+# heth.io Agent
+This application is a daemon that runs on Raspberry PIs, Ubuntu systems and others.  It is designed to monitor various aspects of a users LAN network.
 
 ## Installing or Updating
 
->$ wget https://github.com/openmqtt/openmqtt-client/tarball/master
+>$ wget https://github.com/moranit/hethio-agent/tarball/master
 
 >$ tar -xpvf master
 
->$ cd openmqtt*
+>$ cd hethio*
 
 
 The following command will determine if we're upgrading or installing new.
@@ -18,9 +18,9 @@ The following command will determine if we're upgrading or installing new.
 ## File Structure
 To help you understand what is going on and know how to extend this project, here is the file structure I'm using.
 
-/etc/openmqtt
-/usr/bin/openmqtt-client
-/var/log/openmqtt/client.log
+/etc/hethio
+/usr/bin/hethio
+/var/log/hethio/client.log
 
 ## Main Features
 
