@@ -3,7 +3,7 @@
 # HethIO Globals
 #
 
-BROKER='broker.moranit.com'
+BROKER='heth.io'
 
 MPATH='/opt/hethio'
 if [ -f "/etc/hethio/hethio.conf" ]; then

@@ -14,27 +14,17 @@ service hethio stop
 
 #============================================================
 #fix outdated conf location
-if [ -f "/etc/hethio.conf" ]; then
-	if [ ! -d /etc/hethio ]; then
-		mkdir /etc/hethio
-	fi
-	mv /etc/hethio.conf /etc/hethio/hethio.conf
-fi 
-if [ -f "/opt/hethio/key" ]; then
-	mv /opt/hethio/key "$CPATH/key"
-fi
-if [ -f "/opt/hethio/key.pub" ]; then
-	mv /opt/hethio/key.pub "$CPATH/key.pub"
-fi
-rm /etc/motd
-
-if [ -d "/etc/hethio" ]; then
-	mv /etc/hethio /etc/hethio
-	mv /etc/hethio/hethio.conf /etc/hethio/hethio.conf
+if [ -d "/etc/openmqtt" ]; then
+	mv /etc/openmqtt /etc/hethio
+	mv /etc/hethio/openmqtt.conf /etc/hethio/hethio.conf
 fi
 
-if [ -d "/opt/hethio" ]; then
-	mv /opt/hethio /opt/hethio
+if [ -d "/opt/openmqtt" ]; then
+	mv /opt/openmqtt /opt/hethio
+fi
+
+if [ -d "/var/log/openmqtt" ]; then
+	mv /var/log/openmqtt /var/log/hethio
 fi
 
 

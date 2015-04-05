@@ -54,7 +54,7 @@ TIMESTAMP = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 USERS = ""
 i = 0
 id = 0
-broker = 'broker.moranit.com'
+broker = 'heth.io'
 username = 'hethio'
 
 # Read in configuration file
