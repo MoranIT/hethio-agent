@@ -93,6 +93,7 @@ fi
 
 
 #Read install path from conf file or create it with defaults
+mkdir $CPATH
 if [ -f "$CPATH/hethio.conf" ]; then
 	echo "Upgrading HethIO"
 
@@ -112,6 +113,7 @@ if [ -f "$CPATH/hethio.conf" ]; then
 	echo "PATH=$MPATH" >> "/etc/hethio/hethio.conf"
 
 else
+
 	echo "Installing HethIO"
 	echo "[Global]" > "/etc/hethio/hethio.conf"
 	echo "ID=0" >> "/etc/hethio/hethio.conf"
