@@ -27,6 +27,63 @@ if [ -d "/var/log/openmqtt" ]; then
 	mv /var/log/openmqtt /var/log/hethio
 fi
 
+if [ -f "/etc/init.d/openmqtt" ]; then
+	rm /etc/init.d/openmqtt
+fi
+
+if [ -f "/etc/init.d/minion" ]; then
+	rm /etc/init.d/minion
+fi
+
+if [ -f "/etc/rc0.d/K20minion" ]; then
+	rm /etc/rc0.d/K20minion
+fi
+if [ -f "/etc/rc0.d/K20openmqtt" ]; then
+	rm /etc/rc0.d/K20openmqtt
+fi
+if [ -f "/etc/rc1.d/K20minion" ]; then
+	rm /etc/rc1.d/K20minion
+fi
+if [ -f "/etc/rc1.d/K20openmqtt" ]; then
+	rm /etc/rc1.d/K20openmqtt
+fi
+if [ -f "/etc/rc2.d/K20minion" ]; then
+	rm /etc/rc2.d/K20minion
+fi
+if [ -f "/etc/rc2.d/K20openmqtt" ]; then
+	rm /etc/rc2.d/K20openmqtt
+fi
+if [ -f "/etc/rc3.d/K20minion" ]; then
+	rm /etc/rc3.d/K20minion
+fi
+if [ -f "/etc/rc3.d/K20openmqtt" ]; then
+	rm /etc/rc3.d/K20openmqtt
+fi
+if [ -f "/etc/rc4.d/K20minion" ]; then
+	rm /etc/rc4.d/K20minion
+fi
+if [ -f "/etc/rc4.d/K20openmqtt" ]; then
+	rm /etc/rc4.d/K20openmqtt
+fi
+if [ -f "/etc/rc5.d/K20minion" ]; then
+	rm /etc/rc5.d/K20minion
+fi
+if [ -f "/etc/rc5.d/K20openmqtt" ]; then
+	rm /etc/rc5.d/K20openmqtt
+fi
+if [ -f "/etc/rc6.d/K20minion" ]; then
+	rm /etc/rc6.d/K20minion
+fi
+if [ -f "/etc/rc6.d/K20openmqtt" ]; then
+	rm /etc/rc6.d/K20openmqtt
+fi
+
+
+
+
+
+
+
 
 
 

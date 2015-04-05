@@ -7,7 +7,7 @@ This application is a daemon that runs on Raspberry PIs, Ubuntu systems and othe
 
 >$ tar -xpvf master
 
->$ cd hethio*
+>$ cd MoranIT*
 
 
 The following command will determine if we're upgrading or installing new.
