@@ -23,7 +23,7 @@ if [ -f "/etc/hethio/hethio.conf" ]; then
 		$MPATH/bin/publicip-log-rotator
 	fi
 
-	if [ -f /usr/bin/hethio-client ]; then
+	if [ -f /usr/bin/hethio-agent ]; then
 		service hethio restart
 	fi
 

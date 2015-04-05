@@ -79,6 +79,10 @@ if [ -f "/etc/rc6.d/K20openmqtt" ]; then
 fi
 
 
+if [ -f "/usr/bin/openmqtt-client" ]; then
+	rm /usr/bin/openmqtt-client
+fi
+
 
 
 
@@ -262,8 +266,8 @@ service cron restart
 # INSTALL NEW - hethio APPLICATION
 
 # install client
-mv usr-bin/hethio-client /usr/bin/hethio-client
-chmod +x /usr/bin/hethio-client
+mv usr-bin/hethio-agent /usr/bin/hethio-agent
+chmod +x /usr/bin/hethio-agent
 
 
 #install service
