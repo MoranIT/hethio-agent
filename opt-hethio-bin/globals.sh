@@ -7,7 +7,10 @@ BROKER='heth.io'
 
 MPATH='/opt/hethio'
 if [ -f "/etc/hethio/hethio.conf" ]; then
-	MPATH=$(awk -F "=" '/PATH/ {print $2}' /etc/hethio/hethio.conf)
+	MPATH2=$(awk -F "=" '/PATH/ {print $2}' /etc/hethio/hethio.conf)
+	if [[ ! -z $MPATH2 ]]; then
+		MPATH=$MPATH2
+	fi
 fi
 
 ID=''
