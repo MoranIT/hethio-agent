@@ -13,10 +13,10 @@ if [ -f "/etc/hethio/hethio.conf" ]; then
 		$MPATH/bin/temperature
 	fi
 
-	if [ -f $MPATH/bin/speedtest ]; then
-		echo "Run Internet Speedtest every hour"
-		$MPATH/bin/speedtest
-	fi
+	#if [ -f $MPATH/bin/speedtest ]; then
+	#	echo "Run Internet Speedtest every hour"
+	#	$MPATH/bin/speedtest
+	#fi
 
 	if [ -f $MPATH/bin/system-info ]; then
 		echo "System Information"
