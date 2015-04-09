@@ -93,7 +93,7 @@ fi
 
 
 #Read install path from conf file or create it with defaults
-if [ -d "$CPATH" ]; then
+if [ ! -d "$CPATH" ]; then
 	mkdir $CPATH
 fi
 if [ -f "$CPATH/hethio.conf" ]; then
@@ -101,7 +101,7 @@ if [ -f "$CPATH/hethio.conf" ]; then
 
 	MPATH='/opt/hethio'
 	if [ -f "/etc/hethio/hethio.conf" ]; then
-		MPATH=$(awk -F "=" '/MPATH/ {print $2}' /etc/hethio/hethio.conf)
+		MPATH=$(awk -F "=" '/PATH/ {print $2}' /etc/hethio/hethio.conf)
 	fi
 
 	ID=''
