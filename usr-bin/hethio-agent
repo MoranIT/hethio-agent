@@ -195,7 +195,7 @@ TIMESTAMP = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 USERS = ""
 __minute = 0
 __hour = 0
-id = 0
+id = -1
 
 def read_config():
     global id,LOG_LEVEL,LOG_FILEPATH,__BROKER,__USERNAME
