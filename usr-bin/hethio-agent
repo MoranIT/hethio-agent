@@ -831,9 +831,9 @@ def speedtest():
 
 
     # NOW PUBLISH 
-    dlspeedk = int(round((dlspeed / 1000 / 1000) * 8, 2))
+    dlspeedk = round((dlspeed / 1000 / 1000) * 8, 2)
     ping = int(round(best['latency'], 0))
-    ulspeedk = int(round((ulspeed / 1000 / 1000) * 8, 2))
+    ulspeedk = round((ulspeed / 1000 / 1000) * 8, 2)
 
     msg = "{\"internet\":{"
     msg = msg + "\"download\":\"" + str(dlspeedk) + "\","
