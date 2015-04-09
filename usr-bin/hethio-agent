@@ -198,35 +198,35 @@ __hour = 0
 id = -1
 
 def read_config():
-    global id,LOG_LEVEL,LOG_FILEPATH,__BROKER,__USERNAME
-    # Read in configuration file
-    configParser = SafeConfigParser()   
-    try:
-    	configParser.read(CONF_FILENAME)
+	global CONF_FILENAME,id,LOG_LEVEL,LOG_FILEPATH,__BROKER,__USERNAME
+	# Read in configuration file
+	configParser = SafeConfigParser()   
+	try:
+		configParser.read(CONF_FILENAME)
 
-        # Read global section from config file
-    	if configParser.has_section('Global'):
-    		if configParser.has_option('Global','ID'):
-    			id = configParser.get('Global','ID')
-    		if configParser.has_option('Global','LogLevel'):
-                LOG_LEVEL = configParser.get('Global','LogLevel')
-            if configParser.has_option('Global','LogPath'):
-                LOG_FILEPATH = configParser.get('Global','LogPath')
+		# Read global section from config file
+		if configParser.has_section('Global'):
+			if configParser.has_option('Global','ID'):
+				id = configParser.get('Global','ID')
+			if configParser.has_option('Global','LogLevel'):
+				LOG_LEVEL = configParser.get('Global','LogLevel')
+			if configParser.has_option('Global','LogPath'):
+				LOG_FILEPATH = configParser.get('Global','LogPath')
 
-    	# Read overrides to broker defaults from config file
-    	if configParser.has_section('Broker'):
-    		if configParser.has_option('Broker','broker'):
-    			__BROKER = configParser.get('Broker','broker')
-    		if configParser.has_option('Broker','username'):
-    			__USERNAME = configParser.get('Broker','username')
+		# Read overrides to broker defaults from config file
+		if configParser.has_section('Broker'):
+			if configParser.has_option('Broker','broker'):
+				__BROKER = configParser.get('Broker','broker')
+			if configParser.has_option('Broker','username'):
+				__USERNAME = configParser.get('Broker','username')
 
-    except IOError:
-        print "Unable to open " + CONF_FILENAME
+	except IOError:
+		print "Unable to open " + CONF_FILENAME
 
 
-    #create logging path if it doesn't exist
-    if not os.path.exists(LOG_FILEPATH):
-        os.makedirs(LOG_FILEPATH)
+	#create logging path if it doesn't exist
+	if not os.path.exists(LOG_FILEPATH):
+	    os.makedirs(LOG_FILEPATH)
 
 read_config()
 
@@ -831,9 +831,9 @@ def speedtest():
 
 
     # NOW PUBLISH 
-    dlspeedk = int(round((dlspeed / 1000) * 8, 0))
+    dlspeedk = int(round((dlspeed / 1000 / 1000) * 8, 0))
     ping = int(round(best['latency'], 0))
-    ulspeedk = int(round((ulspeed / 1000) * 8, 0))
+    ulspeedk = int(round((ulspeed / 1000 / 1000) * 8, 0))
 
     msg = "{\"internet\":{"
     msg = msg + "\"download\":\"" + str(dlspeedk) + "\","
@@ -876,7 +876,7 @@ def every_minute():
 	#logger.info("The counter is now " + str(i))
 	#print "This is a print"
 	
-    read_config() #reload config every minute
+	read_config() #reload config every minute
 
 	logged_in_users()
 
