@@ -109,10 +109,17 @@ if [ -f "$CPATH/hethio.conf" ]; then
 		ID=$(awk -F "=" '/ID/ {print $2}' /etc/hethio/hethio.conf)
 	fi
 
+	spEnabled=''
+	if [ -f "/etc/hethio/hethio.conf" ]; then
+		ID=$(awk -F "=" '/ENABLED/ {print $2}' /etc/hethio/hethio.conf)
+	fi
+
 
 	echo "[Global]" > "/etc/hethio/hethio.conf"
 	echo "ID=$ID" >> "/etc/hethio/hethio.conf"
 	echo "PATH=$MPATH" >> "/etc/hethio/hethio.conf"
+	echo "[SpeedTest]" > "/etc/hethio/hethio.conf"
+	echo "ENABLED=$spEnabled" >> "/etc/hethio/hethio.conf"
 
 else
 
@@ -120,6 +127,8 @@ else
 	echo "[Global]" > "/etc/hethio/hethio.conf"
 	echo "ID=0" >> "/etc/hethio/hethio.conf"
 	echo "PATH=/opt/hethio" >> "/etc/hethio/hethio.conf"
+	echo "[SpeedTest]" >> "/etc/hethio/hethio.conf"
+	echo "ENABLED=True" >> "/etc/hethio/hethio.conf"
 fi
 
 

@@ -146,14 +146,15 @@ LOG_LEVEL = logging.INFO  # Could be e.g. "DEBUG" or "WARNING"
 
 
 #MQTT Variables
-global __PUBLISH, __SUBSCRIBE, __USERNAME, __BROKER
+global __PUBLISH, __SUBSCRIBE, __USERNAME, __BROKER, __SPENABLED
 CONF_FILENAME = "/etc/hethio/hethio.conf"
 LOG_FILEPATH = "/var/log/hethio"
 __PUBLISH = "/usr/bin/mosquitto_pub"
 __SUBSCRIBE = "/usr/bin/mosquitto_sub"
+
 __BROKER = "heth.io"
 __USERNAME = "hethio"
-
+__SPENABLED = True
 
 
 # Define and parse command line arguments
@@ -198,7 +199,7 @@ __hour = 0
 id = -1
 
 def read_config():
-	global CONF_FILENAME,id,LOG_LEVEL,LOG_FILEPATH,__BROKER,__USERNAME
+	global CONF_FILENAME,id,LOG_LEVEL,LOG_FILEPATH,__BROKER,__USERNAME,__SPENABLED
 	# Read in configuration file
 	configParser = SafeConfigParser()   
 	try:
@@ -212,6 +213,11 @@ def read_config():
 				LOG_LEVEL = configParser.get('Global','LogLevel')
 			if configParser.has_option('Global','LogPath'):
 				LOG_FILEPATH = configParser.get('Global','LogPath')
+
+        if configParser.has_section('SpeedTest'):
+            if configParser.has_option('SpeedTest','ENABLED'):
+                __SPENABLED = configParser.get('SpeedTest','ENABLED')
+            
 
 		# Read overrides to broker defaults from config file
 		if configParser.has_section('Broker'):
@@ -885,15 +891,13 @@ def every_minute():
 
 # THIS FUNCTION IS EXECUTED EVERY HOUR
 def every_hour():
-	global logger,__minute, __hour
+	global logger,__minute, __hour, __SPENABLED
 	if __minute >= 60: # EVERY HOUR
 		logger.info("Hour Elapsed")
 
 		register()
-		try:
+		if __SPENABLED:
 			speedtest()
-		except KeyboardInterrupt:
-			logger.warning('Cancelling... in progress SpeedTest')
 
 		__minute = 0
 		__hour = __hour + 1
