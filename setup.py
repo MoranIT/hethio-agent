@@ -27,6 +27,6 @@ setup(
 	author_email='daniel@moranit.com',
 	url='http://github.com/moranit/hethio-agent',
 	description='Internet monitoring agent',
-	long_description=read('README.md'),
+	long_description=read('README.rst'),
 	license='GPLv3'
 )
