@@ -12,17 +12,22 @@ def read(fname):
 setup(
 	name='hethio-agent',
 	version=read('VERSION.txt'),
-	install_requires = [],
+	install_requires = [
+		'mosquitto'
+		],
 
 	packages = find_packages(),
 	py_modules = ['hethio-agent'],
-	scripts=['usr-bin/hethio-agent'],
+	scripts=[
+		'usr-bin/hethio-agent'
+		],
 	data_files = [
-		('share/hethio-agent/', glob.glob('hethio_data/*'))
-	],
+		('share/hethio-agent/', glob.glob('hethio_data/*')),
+		('/etc/init.d/', glob.glob('init.d/*'))
+		],
 	package_data = {
         'hethio_data': ['*.png'],
-    },
+    	},
     include_package_data = True, 
     zip_safe = True,
 

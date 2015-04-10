@@ -250,9 +250,9 @@ logger.setLevel(LOG_LEVEL)
 
 # Make a handler that writes to a file, making a new file at midnight and keeping 3 backups
 try :
-	handler = logging.handlers.TimedRotatingFileHandler(LOG_FILEPATH + "/client.log", when="midnight", backupCount=3)
+	handler = logging.handlers.TimedRotatingFileHandler(LOG_FILEPATH + "/agent.log", when="midnight", backupCount=3)
 except IOError:
-	touch(LOG_FILEPATH + "/client.log")
+	touch(LOG_FILEPATH + "/agent.log")
 # Format each log message like this
 formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
 # Attach the formatter to the handler
