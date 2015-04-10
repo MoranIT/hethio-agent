@@ -128,13 +128,13 @@ except ImportError:
 	from queue import Queue, Empty  # python 3.x
 
 
-__author__ = "Daniel H Moran"
+__author__ = "Daniel Moran"
 __copyright__ = "Copyright 2015, Moran, Inc."
-__credits__ = ["Daniel H Moran"]
+__credits__ = ["Daniel Moran"]
 __license__ = "GPL"
 __version__ = "1.0.0"
-__maintainer__ = "Daniel H Moran"
-__email__ = "daniel@moranit.com"
+__maintainer__ = "Daniel Moran"
+__email__ = "danielheth@hotmail.com"
 __status__ = "Development"
 
 ON_POSIX = 'posix' in sys.builtin_module_names

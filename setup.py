@@ -27,7 +27,7 @@ setup(
     zip_safe = True,
 
 
-	author='Daniel H Moran',
+	author='Daniel Moran',
 	author_email='danielheth@hotmail.com',
 	url='http://github.com/moranit/hethio-agent',
 	description='Internet monitoring agent',
