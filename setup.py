@@ -33,10 +33,4 @@ setup(
 	description='Internet monitoring agent',
 	long_description=read('README.rst'),
 	license='GPLv3',
-    
-    classifiers=[
-        'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-    ],
 )
