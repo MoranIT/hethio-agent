@@ -36,11 +36,14 @@ echo '3.0 (native)' > debian/source/format
 python setup.py sdist
 mv dist/hethio-agent-$VERSION.tar.gz ./hethio-agent-$VERSION.orig.tar.gz
 
+cd debian
+debuild -S -sa -y
+
 
 # ===================================
 # OUTPUT BUILD SCRIPT TO CONSOLE
-#echo '------------------' | cat - ../hethio-agent*.build > temp && mv temp ../hethio-agent*.build && echo '------------------' >> ../hethio-agent*.build
-#cat ../hethio-agent*.build
+echo '------------------' | cat - ../hethio-agent*.build > temp && mv temp ../hethio-agent*.build && echo '------------------' >> ../hethio-agent*.build
+cat ../hethio-agent*.build
 
 
 # ===================================
@@ -48,7 +51,7 @@ mv dist/hethio-agent-$VERSION.tar.gz ./hethio-agent-$VERSION.orig.tar.gz
 #  By convention, an 'exit 0' indicates success,
 #+ while a non-zero exit value means an error or anomalous condition.
 #  See the "Exit Codes With Special Meanings" appendix.
-#BUILD=`cat ../hethio-agent*.build`
-#if [[ $BUILD == *"error"* ]]; then
-#	exit 1
-#fi
+BUILD=`cat ../hethio-agent*.build`
+if [[ $BUILD == *"error"* ]]; then
+	exit 1
+fi
