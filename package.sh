@@ -19,7 +19,7 @@ do
   fi
 done
 echo "" >> debian/changelog
-echo $BOTTOMLINE >> debian/changelog
+echo " $BOTTOMLINE" >> debian/changelog
 
 
 VERSION=`cat VERSION.txt`
