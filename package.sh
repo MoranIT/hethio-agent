@@ -2,17 +2,13 @@
 # see http://www.wefearchange.org/2010/05/from-python-package-to-ubuntu-package.html
 
 
-# ===================================
-# DELETE OLD ARTIFACTS
-rm ../hethio-agent_*
-
-
-
 
 python setup.py \
 --command-packages=stdeb.command debianize \
 --suite `lsb_release -sc`
 
+python setup.py \
+--command-packages=stdeb.command bdist_deb
 
 # ===================================
 # ADD COMMIT MESSAGES TO CHANGELOG
