@@ -51,7 +51,7 @@ mv dist/hethio-agent-$VERSION.tar.gz ../hethio-agent_$VERSION.orig.tar.gz
 
 # ===================================
 # SIGN AND PACKAGE
-debuild -us -uc
+debuild -S -sa
 
 
 # ===================================
