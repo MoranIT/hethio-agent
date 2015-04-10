@@ -2,4 +2,8 @@
 
 VERSION=`cat VERSION.txt`
 
-dput ppa:danielheth/hethio-agent ./hethio-agent_$VERSION\~ppa4_source.changes
+CHANGES=`git shortlog $VERSION..HEAD`
+echo $CHANGES > ppa4_source.changes
+
+
+dput ppa:danielheth/hethio-agent ./ppa4_source.changes
