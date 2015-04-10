@@ -28,3 +28,5 @@ cp debian/changelog ./$VERSION.changes
 python setup.py sdist
 mv dist/hethio-agent* ./
 
+
+cat ../hethio-agent*.build
