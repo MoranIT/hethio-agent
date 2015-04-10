@@ -36,7 +36,11 @@ echo '3.0 (native)' > debian/source/format
 python setup.py sdist
 mv dist/hethio-agent-$VERSION.tar.gz ./hethio-agent_$VERSION.orig.tar.gz
 
-cd debian
+
+
+
+# ===================================
+# SIGN AND PACKAGE
 debuild -S -sa -y
 
 
