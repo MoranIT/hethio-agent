@@ -15,9 +15,11 @@ setup(
 	packages = find_packages(),
 	py_modules = ['hethio-agent'],
 	scripts=['usr-bin/hethio-agent'],
-	data_files = [],
+	data_files = [
+		('share/hethio-agent/', glob.glob('hethio_data/*'))
+	],
 	package_data = {
-        'hethio_data': ['*.ui', '*.png'],
+        'hethio_data': ['*.png'],
     },
     include_package_data = True, 
     zip_safe = True,
