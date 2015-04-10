@@ -27,7 +27,7 @@ echo "$BOTTOMLINE" >> debian/changelog
 
 
 VERSION=`cat VERSION.txt`
-cp debian/changelog ./$VERSION.changes
+cp debian/changelog ./hethio-agent_$VERSION.changes
 
 
 # ===================================
