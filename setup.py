@@ -7,9 +7,12 @@ import glob
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+def read_version(fname):
+    return '"' + open(os.path.join(os.path.dirname(__file__), fname)).read() + '"'
+
 setup(
 	name='hethio-agent',
-	version="0.0.1",
+	version=read_version('VERSION.txt'),
 	install_requires = [],
 
 	packages = find_packages(),
