@@ -1,4 +1,6 @@
 #! /bin/bash
+# see http://www.wefearchange.org/2010/05/from-python-package-to-ubuntu-package.html
+
 
 python setup.py \
 --command-packages=stdeb.command debianize \
@@ -31,7 +33,7 @@ cp debian/changelog ./$VERSION.changes
 # ===================================
 # RUN SETUP
 python setup.py sdist
-mv dist/hethio-agent* ./
+mv dist/hethio-agent-$VERSION.tar.gz ./hethio-agent-$VERSION.orig.tar.gz
 
 
 # ===================================
