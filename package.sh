@@ -2,6 +2,16 @@
 # see http://www.wefearchange.org/2010/05/from-python-package-to-ubuntu-package.html
 
 
+# ===================================
+# MOVE ARTIFACTS INTO PLACE
+if [ ! -d ../hethio-agent_artifacts ]; then
+	mkdir ../hethio-agent_artifacts
+fi
+mv ../hethio-agent_* ../hethio-agent_artifacts/
+
+
+
+
 python setup.py \
 --command-packages=stdeb.command debianize \
 --suite `lsb_release -sc`
@@ -61,11 +71,5 @@ if [[ $BUILD == *"error"* ]]; then
 fi
 
 
-if [ ! -d ../hethio-agent_artifacts ]; then
-	mkdir ../hethio-agent_artifacts
-fi
-
-mkdir ../hethio-agent_artifacts/$VERSION
-mv ../hethio-agent_$VERSION* ../hethio-agent_artifacts/$VERSION
 
 
