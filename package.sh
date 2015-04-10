@@ -34,7 +34,7 @@ cp debian/changelog ./hethio-agent_$VERSION.changes
 # RUN SETUP
 echo '3.0 (native)' > debian/source/format
 python setup.py sdist
-mv dist/hethio-agent-$VERSION.tar.gz ./hethio-agent_$VERSION.orig.tar.gz
+mv dist/hethio-agent-$VERSION.tar.gz ../hethio-agent_$VERSION.orig.tar.gz
 
 
 
