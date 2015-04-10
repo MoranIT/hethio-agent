@@ -29,7 +29,7 @@ python setup.py sdist
 mv dist/hethio-agent* ./
 
 
-echo '------------------' | cat - ../hethio-agent*.build > temp && mv temp ../hethio-agent*.build
+echo '------------------\nBUILD RESULTS' | cat - ../hethio-agent*.build > temp && mv temp ../hethio-agent*.build && echo '------------------' >> ../hethio-agent*.build
 cat ../hethio-agent*.build
 
 
