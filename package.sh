@@ -62,7 +62,7 @@ fi
 
 
 if [ ! -d ../hethio-agent_artifacts ]; then
-	mkdir hethio-agent_artifacts
+	mkdir ../hethio-agent_artifacts
 fi
 
 mkdir ../hethio-agent_artifacts/$VERSION
