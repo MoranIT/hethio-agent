@@ -61,7 +61,7 @@ if [[ $BUILD == *"error"* ]]; then
 fi
 
 
-if [ -d ../hethio-agent_artifacts ]; then
+if [ ! -d ../hethio-agent_artifacts ]; then
 	mkdir hethio-agent_artifacts
 fi
 
