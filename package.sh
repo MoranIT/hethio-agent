@@ -13,7 +13,7 @@ BOTTOMLINE=`tail -n 1 debian/changelog`
 
 echo $TOPLINE > debian/changelog
 echo "" >> debian/changelog
-for CHANGE in ${CHANGES//\\n/ } ; do
+for CHANGE in $CHANGES; do
     echo "  * $CHANGE" >> debian/changelog
 done
 echo "" >> debian/changelog
