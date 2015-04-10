@@ -3,11 +3,8 @@
 
 
 # ===================================
-# MOVE ARTIFACTS INTO PLACE
-if [ ! -d ../hethio-agent_artifacts ]; then
-	mkdir ../hethio-agent_artifacts
-fi
-mv ../hethio-agent_* ../hethio-agent_artifacts/
+# DELETE OLD ARTIFACTS
+rm ../hethio-agent_*
 
 
 
