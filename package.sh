@@ -42,10 +42,6 @@ cp dist/hethio-agent-$VERSION.tar.gz ../hethio-agent_$VERSION.orig.tar.gz
 # BUILD DEB PACKAGE FOR TESTING
 cd deb_dist/hethio-agent-$VERSION
 dpkg-buildpackage -rfakeroot -uc -us
-cd ..
-if [ ! -f hethio-agent_$VERSION-1_all.deb ]; then
-	exit(1)
-fi
 
 
 
