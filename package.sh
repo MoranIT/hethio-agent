@@ -15,7 +15,7 @@ echo "" >> debian/changelog
 git shortlog $VERSION..HEAD | tail -n+2 | while read line
 do
   if [ -n "$line" ]; then
-    echo "  * $line" >> changelog
+    echo "  * $line" >> debian/changelog
   fi
 done
 echo "" >> debian/changelog
