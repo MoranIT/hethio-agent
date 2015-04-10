@@ -59,3 +59,13 @@ BUILD=`cat ../hethio-agent*.build`
 if [[ $BUILD == *"error"* ]]; then
 	exit 1
 fi
+
+
+if [ -d ../hethio-agent_artifacts ]; then
+	mkdir hethio-agent_artifacts
+fi
+
+mkdir ../hethio-agent_artifacts/$VERSION
+mv ../hethio-agent_$VERSION* ../hethio-agent_artifacts/$VERSION
+
+
