@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
 	name='hethio-agent',
-	version='0.0.1',
+	version=read('VERSION.txt'),
 	install_requires = [],
 
 	packages = find_packages(),
