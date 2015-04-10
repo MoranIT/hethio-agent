@@ -22,6 +22,9 @@ echo "" >> debian/changelog
 echo $BOTTOMLINE >> debian/changelog
 
 
+VERSION=`cat VERSION.txt`
+cp debian/changelog ./$VERSION.changes
+
 python setup.py sdist
 mv dist/hethio-agent* ./
 

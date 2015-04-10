@@ -1,6 +1,5 @@
 #! /bin/bash
 
+VERSION=`cat VERSION.txt`
 
-
-
-dput ppa:danielheth/hethio-agent ./ppa4_source.changes
+dput ppa:danielheth/hethio-agent ./$VERSION.changes
