@@ -26,7 +26,7 @@ setup(
 
 
 	author='Daniel H Moran',
-	author_email='daniel@moranit.com',
+	author_email='danielheth@hotmail.com',
 	url='http://github.com/moranit/hethio-agent',
 	description='Internet monitoring agent',
 	long_description=read('README.rst'),
