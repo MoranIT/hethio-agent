@@ -1,0 +1,5 @@
+#!/bin/sh
+
+#Create configuration path
+mkdir -p /etc/hethio
+
