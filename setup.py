@@ -9,7 +9,6 @@ def read(fname):
 
 setup(
 	name='hethio-agent',
-	version=read('VERSION.txt'),
 	install_requires = [],
 
 	packages = find_packages(),
@@ -28,5 +27,7 @@ setup(
 	url='http://github.com/moranit/hethio-agent',
 	description='Internet monitoring agent',
 	long_description=read('README.rst'),
-	license='GPLv3'
+	license='GPLv3',
+	
+	version=read('VERSION.txt')
 )
