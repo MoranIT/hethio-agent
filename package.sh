@@ -6,15 +6,17 @@ python setup.py \
 
 
 VERSION=`git tag | tail -n 1`
-CHANGES=`git shortlog $VERSION..HEAD`
 
 TOPLINE=`head -n 1 debian/changelog`
 BOTTOMLINE=`tail -n 1 debian/changelog`
 
 echo $TOPLINE > debian/changelog
 echo "" >> debian/changelog
-for CHANGE in $CHANGES; do
-    echo "  * $CHANGE" >> debian/changelog
+git shortlog $VERSION..HEAD | tail -n+2 | while read line
+do
+  if [ -n "$line" ]; then
+    echo "  * $line" >> changelog
+  fi
 done
 echo "" >> debian/changelog
 echo $BOTTOMLINE >> debian/changelog
