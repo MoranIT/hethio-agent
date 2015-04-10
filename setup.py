@@ -3,10 +3,12 @@
 from setuptools import setup, find_packages
 import os
 import glob
+from distutils.core import setup
+import sys
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read().rstrip()
-
+    
 setup(
 	name='hethio-agent',
 	version=read('VERSION.txt'),
