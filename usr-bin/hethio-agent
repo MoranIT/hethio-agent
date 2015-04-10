@@ -922,7 +922,7 @@ def every_day():
 
 def main():
 	global logger,TIMESTAMP
-	output = publish("/machines/" + str(id) + "/hethio", "{\"status\":\"daemon started\"}")
+	output = publish("/machines/" + str(id) + "/hethio", "{\"status\":\"daemon started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 
 			
@@ -941,7 +941,7 @@ def main():
 		time.sleep(60)
 		
 
-	output = publish("/machines/" + str(id) + "/hethio", "{\"status\":\"daemon stopped\"}")
+	output = publish("/machines/" + str(id) + "/hethio", "{\"status\":\"daemon stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 
 
