@@ -29,14 +29,14 @@ python setup.py sdist
 mv dist/hethio-agent* ./
 
 
-BUILD=`cat ../hethio-agent*.build`
-echo $BUILD
 
+cat ../hethio-agent*.build
 
 
 #  By convention, an 'exit 0' indicates success,
 #+ while a non-zero exit value means an error or anomalous condition.
 #  See the "Exit Codes With Special Meanings" appendix.
+BUILD=`cat ../hethio-agent*.build`
 if [[ $BUILD == *"error"* ]]; then
 	exit 1
 fi
