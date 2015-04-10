@@ -7,8 +7,6 @@ python setup.py \
 --command-packages=stdeb.command debianize \
 --suite `lsb_release -sc`
 
-python setup.py \
---command-packages=stdeb.command bdist_deb
 
 # ===================================
 # ADD COMMIT MESSAGES TO CHANGELOG
@@ -37,8 +35,17 @@ cp debian/changelog ./hethio-agent_$VERSION.changes
 # RUN SETUP
 echo '3.0 (native)' > debian/source/format
 python setup.py sdist
-mv dist/hethio-agent-$VERSION.tar.gz ../hethio-agent_$VERSION.orig.tar.gz
+cp dist/hethio-agent-$VERSION.tar.gz ../hethio-agent_$VERSION.orig.tar.gz
 
+
+# ===================================
+# BUILD DEB PACKAGE FOR TESTING
+cd deb_dist/hethio-agent-$VERSION
+dpkg-buildpackage -rfakeroot -uc -us
+cd ..
+if [ ! -f hethio-agent_$VERSION-1_all.deb ]; then
+	exit(1)
+fi
 
 
 
