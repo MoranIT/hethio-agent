@@ -1,7 +1,8 @@
 #! /bin/bash
 # see http://www.wefearchange.org/2010/05/from-python-package-to-ubuntu-package.html
 
-
+# Zip up man page for installation
+gzip /usr/share/man/man8/hethio-agent.8
 
 python setup.py \
 --command-packages=stdeb.command debianize \

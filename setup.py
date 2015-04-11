@@ -13,7 +13,7 @@ setup(
 	name='hethio-agent',
 	version=read('VERSION.txt'),
 	install_requires = [
-		'mosquitto'
+		'mosquitto-clients'
 		],
 
 	packages = find_packages(),
@@ -23,7 +23,8 @@ setup(
 		],
 	data_files = [
 		('share/hethio-agent/', glob.glob('hethio_data/*')),
-		('/etc/init.d/', glob.glob('init.d/*'))
+		('/etc/init.d/', glob.glob('etc-init.d/*')),
+		('/usr/share/man/man8/', glob.glob('usr-share-man-man8/*.gz'))
 		],
 	package_data = {
         'hethio_data': ['*.png'],
