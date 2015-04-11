@@ -15,7 +15,6 @@ setup(
 	name='hethio-agent',
 	version=read('VERSION.txt'),
 	install_requires = [
-		'mosquitto-clients'
 		],
 
 	packages = find_packages(),
