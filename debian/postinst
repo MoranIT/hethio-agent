@@ -9,6 +9,9 @@
 # installed or upgraded.
 #
 
+# Rename service file to match agent executable
+mv /etc/init.d/hethio /etc/init.d/hethio-agent
+
 # Create configuration path
 mkdir -p /etc/hethio
 
