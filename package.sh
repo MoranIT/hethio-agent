@@ -40,11 +40,13 @@ cp dist/hethio-agent-$VERSION.tar.gz ../hethio-agent_$VERSION.orig.tar.gz
 
 
 # ===================================
+# BUILD DEB PACKAGE FOR TESTING
+dpkg-buildpackage -rfakeroot -uc -us
+
+
+# ===================================
 # SIGN AND PACKAGE
 debuild -S -sa
-
-
-
 
 
 # ===================================
@@ -65,10 +67,6 @@ fi
 
 
 
-# ===================================
-# BUILD DEB PACKAGE FOR TESTING
-cd deb_dist/hethio-agent-$VERSION
-dpkg-buildpackage -rfakeroot -uc -us
 
 
 
