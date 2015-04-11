@@ -14,7 +14,7 @@ def read(fname):
 setup(
 	name='hethio-agent',
 	version=read('VERSION.txt'),
-	install_requires = [],  #python dependencies
+	install_requires = [],  # python dependencies
 
 	packages = find_packages(),
 	py_modules = ['hethio-agent'],
@@ -26,7 +26,7 @@ setup(
 		('/etc/init.d/', glob.glob('etc-init.d/*')),
 		('/usr/share/man/man8/', glob.glob('usr-share-man-man8/*.gz'))
 		],
-	package_data = {
+	package_data = {  # Files moved into /usr/share/hethio/
         'hethio_data': ['*.png'],
     	},
     include_package_data = True, 
