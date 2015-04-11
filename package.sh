@@ -38,6 +38,11 @@ cp debian/changelog ./hethio-agent_$VERSION.changes
 # PREPARE AND COMPILE MAN PAGES
 find ./usr-share-man-man8 -type f -exec sed -i "s/{VERSION}/$VERSION/g" {} +
 
+IFS='_' read -a array <<< "$BUILD_ID"
+DATESTAMP=`date -d ${array[0]} +"%d %b %Y"`
+find ./usr-share-man-man8 -type f -exec sed -i "s/{DATESTAMP}/$DATESTAMP/g" {} +
+
+
 # Zip up man page for installation
 gzip usr-share-man-man8/hethio-agent.8
 
