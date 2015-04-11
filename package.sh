@@ -39,11 +39,12 @@ python setup.py sdist
 cp dist/hethio-agent-$VERSION.tar.gz ../hethio-agent_$VERSION.orig.tar.gz
 
 
-
-
 # ===================================
 # SIGN AND PACKAGE
 debuild -S -sa
+
+
+
 
 
 # ===================================
@@ -62,6 +63,12 @@ if [[ $BUILD == *"error"* ]]; then
 	exit 1
 fi
 
+
+
+# ===================================
+# BUILD DEB PACKAGE FOR TESTING
+cd deb_dist/hethio-agent-$VERSION
+dpkg-buildpackage -rfakeroot -uc -us
 
 
 
