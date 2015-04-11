@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# This script typically modifies links or other files associated with foo, 
+# and/or removes files created by the package.
+#
+
+# Delete config directory if it exists
+if [ -d /etc/hethio ]; then
+	rm -rf /etc/hethio
+fi
+
+# Remove hethio at startup
+update-rc.d hethio-agent remove
+

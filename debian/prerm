@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# This script typically stops any daemons which are associated with a package. 
+# It is executed before the removal of files associated with the package.
+#
+
+# Stop hethio-agent service if it exists
+if [ -f /etc/init.d/hethio-agent ]; then
+	/etc/init.d/hethio-agent stop
+fi
