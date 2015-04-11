@@ -1,9 +1,10 @@
 #! /bin/bash
 # see http://www.wefearchange.org/2010/05/from-python-package-to-ubuntu-package.html
 
-# Zip up man page for installation
-gzip usr-share-man-man8/hethio-agent.8
 
+
+#====================================
+# PRE-COMPILE
 python setup.py \
 --command-packages=stdeb.command debianize \
 --suite `lsb_release -sc`
@@ -30,6 +31,17 @@ echo "$BOTTOMLINE" >> debian/changelog
 
 VERSION=`cat VERSION.txt`
 cp debian/changelog ./hethio-agent_$VERSION.changes
+
+
+
+#====================================
+# PREPARE AND COMPILE MAN PAGES
+find ./usr-share-man-man8 -type f -exec sed -i 's/{VERSION}/$VERSION/g' {} +
+
+# Zip up man page for installation
+gzip usr-share-man-man8/hethio-agent.8
+
+
 
 
 # ===================================
