@@ -10,5 +10,10 @@ if [ -d /etc/hethio ]; then
 fi
 
 # Remove hethio at startup
-update-rc.d hethio-agent remove
+update-rc.d -f hethio-agent remove
+
+# Remove Service Script
+if [ -d /etc/init.d/hethio-agent ]; then
+	rm -rf /etc/init.d/hethio-agent
+fi
 
