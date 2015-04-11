@@ -14,8 +14,7 @@ def read(fname):
 setup(
 	name='hethio-agent',
 	version=read('VERSION.txt'),
-	install_requires = [
-		],
+	install_requires = [],  #python dependencies
 
 	packages = find_packages(),
 	py_modules = ['hethio-agent'],
@@ -36,7 +35,7 @@ setup(
 
 	author='Daniel Moran',
 	author_email='danielheth@hotmail.com',
-	url='http://github.com/moranit/hethio-agent',
+	url='https://heth.io',
 	description='Internet monitoring agent',
 	long_description=read('README.rst'),
 	license='GPLv3',
