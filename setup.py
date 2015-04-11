@@ -6,6 +6,8 @@ import glob
 from distutils.core import setup
 import sys
 
+# http://pythonhosted.org/setuptools/setuptools.html#new-and-changed-setup-keywords
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read().rstrip()
     
