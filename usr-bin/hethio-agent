@@ -897,7 +897,10 @@ def every_hour():
 
 		register()
 		if __SPENABLED:
-			speedtest()
+			try:
+				speedtest()
+			except TestError:
+				logger.error(TestError)
 
 		__minute = 0
 		__hour = __hour + 1

@@ -17,3 +17,6 @@ if [ -d /etc/init.d/hethio-agent ]; then
 	rm -rf /etc/init.d/hethio-agent
 fi
 
+if [ -d /var/log/hethio ]; then
+	rm -rf /var/log/hethio
+fi
