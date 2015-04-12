@@ -13,7 +13,7 @@ fi
 update-rc.d -f hethio-agent remove
 
 # Remove Service Script
-if [ -d /etc/init.d/hethio-agent ]; then
+if [ -f /etc/init.d/hethio-agent ]; then
 	rm -rf /etc/init.d/hethio-agent
 fi
 

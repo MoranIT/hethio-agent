@@ -11,7 +11,7 @@
 
 
 # Create configuration path
-CONF_FILENAME = "/etc/hethio/hethio.conf"
+CONF_FILENAME="/etc/hethio/hethio.conf"
 if [ ! -d /etc/hethio ]; then
 	mkdir -p /etc/hethio
 	echo "[Global]" > $CONF_FILENAME
@@ -34,7 +34,12 @@ fi
 
 
 # Rename service file to match agent executable
-mv /etc/init.d/hethio /etc/init.d/hethio-agent
+if [ -f /etc/init.d/hethio-agent-servicefile ]; then
+	if [ -f /etc/init.d/hethio-agent ]; then
+		rm /etc/init.d/hethio-agent
+	fi
+	mv /etc/init.d/hethio-agent-servicefile /etc/init.d/hethio-agent
+fi
 
 # Add hethio at startup
 update-rc.d hethio-agent defaults
