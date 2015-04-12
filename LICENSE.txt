@@ -1,5 +1,5 @@
 hethio-agent
-Copyright (C) 2015 Daniel Moran
+Copyright (C) 2015 DMoran, Inc.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

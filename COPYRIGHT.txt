@@ -1,10 +1,10 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: hethio-agent
-Upstream-Contact: Daniel Moran
+Upstream-Contact: Daniel H Moran
 Source: http://launchpad.net/~danielheth
 
 Files: *
-Copyright: 2015 and onwards, Daniel Moran <danielheth@hotmail.com>
+Copyright: 2015 and onwards, Daniel H Moran <daniel@moranit.com>
 License: GPL-3
 
 License: GPL-3
