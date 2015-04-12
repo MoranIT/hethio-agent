@@ -33,7 +33,7 @@ setup(
     zip_safe = True,
 
 
-	author='Daniel H Moran',
+	author='Daniel Moran',
 	author_email='danielheth@hotmail.com',
 	url='https://heth.io',
 	description='Internet monitoring agent',
