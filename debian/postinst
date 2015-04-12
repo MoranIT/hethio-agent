@@ -11,7 +11,7 @@
 
 
 # Create configuration path
-CONF_FILENAME="/etc/hethio/hethio.conf"
+CONF_FILENAME="/etc/hethio/agent.conf"
 if [ ! -d /etc/hethio ]; then
 	mkdir -p /etc/hethio
 	echo "[Global]" > $CONF_FILENAME

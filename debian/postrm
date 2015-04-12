@@ -6,7 +6,9 @@
 
 # Delete config directory if it exists
 if [ -d /etc/hethio ]; then
-	rm -rf /etc/hethio
+	if [ !-f /etc/hethio/server.conf ]; then
+		rm -rf /etc/hethio
+	fi
 fi
 
 # Remove hethio at startup
@@ -18,5 +20,7 @@ if [ -f /etc/init.d/hethio-agent ]; then
 fi
 
 if [ -d /var/log/hethio ]; then
-	rm -rf /var/log/hethio
+	if [ !-f /var/log/hethio/server.log ]; then
+		rm -rf /var/log/hethio
+	fi
 fi
