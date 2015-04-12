@@ -147,7 +147,7 @@ LOG_LEVEL = logging.INFO  # Could be e.g. "DEBUG" or "WARNING"
 
 #MQTT Variables
 global __PUBLISH, __SUBSCRIBE, __USERNAME, __BROKER, __SPENABLED
-CONF_FILENAME = "/etc/hethio/hethio.conf"
+CONF_FILENAME = "/etc/hethio/agent.conf"
 LOG_FILEPATH = "/var/log/hethio"
 __PUBLISH = "/usr/bin/mosquitto_pub"
 __SUBSCRIBE = "/usr/bin/mosquitto_sub"
