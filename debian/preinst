@@ -10,3 +10,4 @@
 if [ -f /etc/init.d/hethio-agent ]; then
 	/etc/init.d/hethio-agent stop
 fi
+

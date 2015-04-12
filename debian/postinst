@@ -9,11 +9,32 @@
 # installed or upgraded.
 #
 
-# Rename service file to match agent executable
-mv /etc/init.d/hethio /etc/init.d/hethio-agent
 
 # Create configuration path
-mkdir -p /etc/hethio
+CONF_FILENAME = "/etc/hethio/hethio.conf"
+if [ ! -d /etc/hethio ]; then
+	mkdir -p /etc/hethio
+	echo "[Global]" > $CONF_FILENAME
+	echo "id=-1" >> $CONF_FILENAME
+	#echo "LogPath=/var/log/hethio" >> $CONF_FILENAME
+	#echo "LogLevel=1" >> $CONF_FILENAME
+	#echo "" >> $CONF_FILENAME
+	#echo "[SpeedTest]" >> $CONF_FILENAME
+	#echo "Enabled=True" >> $CONF_FILENAME
+	#echo "" >> $CONF_FILENAME
+	#echo "[Broker]" >> $CONF_FILENAME
+	#echo "broker=heth.io" >> $CONF_FILENAME
+	#echo "username=hethio" >> $CONF_FILENAME
+	echo "" >> $CONF_FILENAME
+	
+fi
+
+
+
+
+
+# Rename service file to match agent executable
+mv /etc/init.d/hethio /etc/init.d/hethio-agent
 
 # Add hethio at startup
 update-rc.d hethio-agent defaults
