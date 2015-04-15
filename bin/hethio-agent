@@ -284,7 +284,7 @@ def publish(topic, msg):
 	"""Publish specified msg to specified topic using mosquitto tools"""
 	global __BROKER, __USERNAME, logger, __PUBLISH, os
 	if os.path.isfile(__PUBLISH):
-		command_line = __PUBLISH + " -t '/" + __USERNAME + topic + "' -m '" + msg + "' -h '" + __BROKER + "' -u '" + __USERNAME + "'"
+		command_line = __PUBLISH + " -t '" + topic + "' -m '" + msg + "' -h '" + __BROKER + "' -u '" + __USERNAME + "'"
 		logger.info(command_line)
 		args = shlex.split(command_line)
 		p1 = subprocess.Popen(args, stdout=subprocess.PIPE)
