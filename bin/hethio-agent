@@ -298,10 +298,10 @@ def publish(topic, msg):
 
 #########################################################################################################
 # REGISTER WITH THE BROKER NETWORK
-def register():
+def heartbeat():
 	"""Sends a heartbeat to the broker network."""
 	global id, logger, TIMESTAMP
-	output = publish("/machines/" + str(id) + "/hethio", "{\"status\":\"hourly registration loop\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+	output = publish("/heartbeat", "{\"agent\":\"" + str(id) + "\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	return output
 #########################################################################################################
 
@@ -832,14 +832,15 @@ def speedtest():
 	ping = int(round(best['latency'], 0))
 	ulspeedk = round((ulspeed / 1000 / 1000) * 8, 2)
 
-	msg = "{\"internet\":{"
+	msg = "{"
+	msg = msg + "\"agent\":\"" + str(id) + "\","
 	msg = msg + "\"download\":\"" + str(dlspeedk) + "\","
 	msg = msg + "\"upload\":\"" + str(ulspeedk) + "\","
 	msg = msg + "\"ping\":\"" + str(ping) + "\","
 	msg = msg + ("\"isp\":\"%(isp)s\"," % config['client'])
-	msg = msg + ("\"ip\":\"%(ip)s\"" % config['client'])
-	msg = msg + "},\"timestamp\":\"" + TIMESTAMP + "\"}"
-	output = publish("/machines/" + str(id), msg)
+	msg = msg + ("\"ip\":\"%(ip)s\"," % config['client'])
+	msg = msg + "\"timestamp\":\"" + TIMESTAMP + "\"}"
+	output = publish("/speedtest", msg)
 	print output
 
 	## Build the request to send results back to speedtest.net
@@ -886,7 +887,7 @@ def every_hour():
 	if __minute >= 60: # EVERY HOUR
 		logger.info("Hour Elapsed")
 
-		register()
+		heartbeat()
 		if __SPENABLED:
 			try:
 				speedtest()
@@ -916,7 +917,7 @@ def every_day():
 
 def main():
 	global logger,TIMESTAMP
-	output = publish("/machines/" + str(id) + "/hethio", "{\"status\":\"daemon started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+	output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"daemon started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 
 			
@@ -935,7 +936,7 @@ def main():
 		time.sleep(60)
 		
 
-	output = publish("/machines/" + str(id) + "/hethio", "{\"status\":\"daemon stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+	output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"daemon stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 
 
