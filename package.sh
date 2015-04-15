@@ -36,14 +36,14 @@ cp debian/changelog ./hethio-agent_$VERSION.changes
 
 #====================================
 # PREPARE AND COMPILE MAN PAGES
-find ./usr-share-man-man8 -type f -exec sed -i "s/{VERSION}/$VERSION/g" {} +
+find ./man -type f -exec sed -i "s/{VERSION}/$VERSION/g" {} +
 
 DATESTAMP=`date +"%d %b %Y"`
-find ./usr-share-man-man8 -type f -exec sed -i "s/{DATESTAMP}/$DATESTAMP/g" {} +
+find ./man -type f -exec sed -i "s/{DATESTAMP}/$DATESTAMP/g" {} +
 
 
 # Zip up man page for installation
-gzip usr-share-man-man8/hethio-agent.8
+gzip man/hethio-agent.8
 
 
 

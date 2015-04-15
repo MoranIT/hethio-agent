@@ -3,29 +3,37 @@
 # This script typically modifies links or other files associated with foo, 
 # and/or removes files created by the package.
 #
+echo "<postrm>"
 
 # Delete config directory if it exists
 if [ -d /etc/hethio ]; then
-	#don't remove directory if server is installed
-	if [ !-f /etc/hethio/server.conf ]; then
+	#don't remove directory if agent is installed
+	if [ ! -f /etc/hethio/server.conf ]; then
+		echo "Removing conf directory."
 		rm -rf /etc/hethio
 	else
+		echo "Removing agent.conf only, since server is currently installed."
 		rm /etc/hethio/agent.conf
 	fi
 fi
 
-# Remove hethio at startup
-update-rc.d -f hethio-agent remove
 
 # Remove Service Script
 if [ -f /etc/init.d/hethio-agent ]; then
-	rm -rf /etc/init.d/hethio-agent
+	# Remove hethio at startup
+	echo "Removing startup scripts."
+	chmod +x /etc/init.d/hethio-agent
+	update-rc.d -f hethio-agent remove
+
+	rm /etc/init.d/hethio-agent
 fi
 
 if [ -d /var/log/hethio ]; then
-	if [ !-f /var/log/hethio/server.log ]; then
+	if [ ! -f /var/log/hethio/server.log ]; then
+		echo "Removing logs directory."
 		rm -rf /var/log/hethio
 	else
+		echo "Removing server logs only, since server is currently installed."
 		rm /var/log/hethio/agent*
 	fi
 fi

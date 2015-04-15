@@ -3,8 +3,11 @@
 # This script typically stops any daemons which are associated with a package. 
 # It is executed before the removal of files associated with the package.
 #
+echo "<prerm>"
 
 # Stop hethio-agent service if it exists
 if [ -f /etc/init.d/hethio-agent ]; then
+	echo "Stopping service."
+	chmod +x /etc/init.d/hethio-agent
 	/etc/init.d/hethio-agent stop
 fi

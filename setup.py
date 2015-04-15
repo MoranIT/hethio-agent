@@ -18,18 +18,12 @@ setup(
 
 	packages = find_packages(),
 	py_modules = ['hethio-agent'],
-	scripts=[
-		'usr-bin/hethio-agent'
-		],
+	scripts=glob.glob('bin/*'),
 	data_files = [
-		('share/hethio-agent/', glob.glob('hethio_data/*')),
-		('/etc/init.d/', glob.glob('etc-init.d/*')),
-		('/usr/share/man/man8/', glob.glob('usr-share-man-man8/*.gz'))
+		('share/hethio-agent', glob.glob('hethio_data/*')),
+		('/usr/share/man/man8', glob.glob('man/*.gz'))
 		],
-	package_data = {  # Files moved into /usr/share/hethio/
-        'hethio_data': ['*.png'],
-    	},
-    include_package_data = True, 
+	include_package_data = True, 
     zip_safe = True,
 
 

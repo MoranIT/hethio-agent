@@ -9,10 +9,18 @@
 # installed or upgraded.
 #
 
+echo "<postinst>"
+
+if [ -f /usr/bin/hethio-agent ]; then
+	chmod +x /usr/bin/hethio-agent
+else
+	echo "ERROR: Service Missing!"
+fi
 
 # Create configuration path
 CONF_FILENAME="/etc/hethio/agent.conf"
 if [ ! -d /etc/hethio ]; then
+	echo "Writing Initial Configuration"
 	mkdir -p /etc/hethio
 	echo "[Global]" > $CONF_FILENAME
 	echo "id=-1" >> $CONF_FILENAME
@@ -31,20 +39,23 @@ fi
 
 
 
+# Rename service file to match server executable
+echo "Moving Init Script"
+cp /usr/share/hethio-agent/init-script /etc/init.d/hethio-agent
+chmod +x /etc/init.d/hethio-agent
 
 
-# Rename service file to match agent executable
-if [ -f /etc/init.d/hethio-agent-servicefile ]; then
-	if [ -f /etc/init.d/hethio-agent ]; then
-		rm /etc/init.d/hethio-agent
-	fi
-	mv /etc/init.d/hethio-agent-servicefile /etc/init.d/hethio-agent
+
+if [ -f /etc/init.d/hethio-agent ]; then
+	# Add hethio at startup
+	echo "Configuring Service to run at Startup"
+	update-rc.d hethio-agent defaults
+
+	# Start our service
+	echo "Starting Service"
+	/etc/init.d/hethio-agent start
+else
+	echo "ERROR:  Unable to find servicefile!"
+	exit 1
 fi
-
-# Add hethio at startup
-update-rc.d hethio-agent defaults
-
-# Start our service
-/etc/init.d/hethio-agent start
-
 

@@ -5,9 +5,12 @@
 # which are being upgraded until their installation or upgrade is completed 
 # (following the successful execution of the 'postinst' script).
 #
+echo "<preinst>"
 
 # Stop hethio-agent service if it exists
 if [ -f /etc/init.d/hethio-agent ]; then
+	echo "Stopping service."
+	chmod +x /etc/init.d/hethio-agent
 	/etc/init.d/hethio-agent stop
 fi
 
