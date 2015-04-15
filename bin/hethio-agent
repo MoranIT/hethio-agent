@@ -7,11 +7,10 @@ along with reporting other statistical information to help
 customers understand what they are paying for.
 """
 
-import os
+import os,signal,sys
 import logging
 import logging.handlers
 import argparse
-import sys
 import time  # this is only being used as part of the example
 from ConfigParser import SafeConfigParser # read in config file
 import subprocess # for executing other command line programs
@@ -22,7 +21,6 @@ import string
 #----------------------
 # adding for speedtest
 import threading
-import signal
 import math
 import socket
 import timeit
@@ -914,6 +912,11 @@ def every_day():
 
 
 
+def set_exit_handler(func):
+    signal.signal(signal.SIGTERM, func)
+def on_exit(sig, func=None):
+    print "exit handler triggered"
+    sys.exit(1)
 
 #=======================================================================================================================
 # MAIN DAEMON LOOP
@@ -923,26 +926,26 @@ def main():
 	output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"daemon started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 
-			
-	oldepoch = int(time.time()) - 3600
-	# Loop forever, doing something useful hopefully:
-	while True:
-		epoch = int(time.time()) #get current unix timestamp
-		TIMESTAMP = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+	try:
+		oldepoch = int(time.time()) - 3600
+		# Loop forever, doing something useful hopefully:
+		while True:
+			epoch = int(time.time()) #get current unix timestamp
+			TIMESTAMP = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
-		if epoch - oldepoch >= 60: # EVERY MINUTE
-			every_hour()
-			every_minute()
-			every_day()
+			if epoch - oldepoch >= 60: # EVERY MINUTE
+				every_hour()
+				every_minute()
+				every_day()
 
-		oldepoch = epoch
-		time.sleep(60)
-		
-
-	output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"daemon stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
-	print output
+			oldepoch = epoch
+			time.sleep(60)
+	except:
+		output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"daemon stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+		print output
 
 
 
 if __name__ == '__main__':
+	set_exit_handler(on_exit)
 	main()
