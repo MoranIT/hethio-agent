@@ -327,11 +327,13 @@ def logged_in_users():
 
 	if string.join(users) != USERS:
 		USERS = string.join(users)
-		msg = "{\"agent\":\"" + str(id) + "\",\"users\":\"["
-		for user in users:
-			msg = msg + user + ","
-		msg = msg[:-1]
-		msg = msg + "]\",\"timestamp\":\"" + TIMESTAMP + "\"}"
+		msg = "{\"agent\":\"" + str(id) + "\",\"users\":["
+		if len(users) > 0:
+			for user in users:
+				msg = msg + "\"" + user + "\","
+			msg = msg[:-1]
+
+		msg = msg + "],\"timestamp\":\"" + TIMESTAMP + "\"}"
 		output = publish("/logged_in_users", msg)
 		print output
 	return;
