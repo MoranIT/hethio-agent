@@ -20,7 +20,7 @@ setup(
 	py_modules = ['hethio-agent'],
 	scripts=glob.glob('bin/*'),
 	data_files = [
-		('share/hethio-agent', glob.glob('hethio_data/*')),
+		('share/hethio-agent', glob.glob('data/*')),
 		('/usr/share/man/man8', glob.glob('man/*.gz'))
 		],
 	include_package_data = True, 
