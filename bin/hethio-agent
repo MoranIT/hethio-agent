@@ -566,7 +566,7 @@ def getConfig():
 				'upload': getAttributesByTagName(root, 'upload')}
 	except SyntaxError:
 		print_('Failed to parse speedtest.net configuration')
-		sys.exit(1)
+		#sys.exit(1)
 	del root
 	del configxml
 	return config
@@ -594,7 +594,7 @@ def closestServers(client, all=False):
 			elements = root.getElementsByTagName('server')
 	except SyntaxError:
 		print_('Failed to parse list of speedtest.net servers')
-		sys.exit(1)
+		#sys.exit(1)
 	servers = {}
 	for server in elements:
 		try:
@@ -923,7 +923,7 @@ def on_exit(sig, func=None):
 
 def main():
 	global logger,TIMESTAMP
-	output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"daemon started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+	output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"agent started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 
 	try:
@@ -941,7 +941,7 @@ def main():
 			oldepoch = epoch
 			time.sleep(60)
 	except:
-		output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"daemon stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+		output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"agent stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 		print output
 
 
