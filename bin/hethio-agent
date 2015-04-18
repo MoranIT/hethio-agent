@@ -566,7 +566,7 @@ def getConfig():
 				'upload': getAttributesByTagName(root, 'upload')}
 	except SyntaxError:
 		print_('Failed to parse speedtest.net configuration')
-		#sys.exit(1)
+		return None #sys.exit(1)
 	del root
 	del configxml
 	return config
@@ -594,7 +594,7 @@ def closestServers(client, all=False):
 			elements = root.getElementsByTagName('server')
 	except SyntaxError:
 		print_('Failed to parse list of speedtest.net servers')
-		#sys.exit(1)
+		return None #sys.exit(1)
 	servers = {}
 	for server in elements:
 		try:
