@@ -792,9 +792,6 @@ def on_exit(sig, func=None):
 # MAIN DAEMON LOOP
 
 
-speedtest()
-
-
 def main():
 	global logger,TIMESTAMP
 	output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"agent started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
