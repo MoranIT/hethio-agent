@@ -174,7 +174,19 @@ def deduplicate(seq):
 	seen_add = seen.add
 	return [ x for x in seq if not (x in seen or seen_add(x))]
 
-
+def version():
+	global logger
+	share_dir = '/usr/share/hethio-agent'
+	if os.path.isdir(share_dir):
+		version_file = share_dir + '/VERSION.txt'
+		if os.path.isfile(version_file):
+			with open (version_file, "r") as myversion:
+				return myversion.read().replace('\n', '')
+		else:
+			logger.warning("Missing VERSION File: " + version_file)
+	else:
+		logger.warning("Missing Share Directory: " + share_dir)
+	return "Unknown"
 
 #=======================================================================================================================
 # CONFIG
@@ -794,7 +806,7 @@ def on_exit(sig, func=None):
 
 def main():
 	global logger,TIMESTAMP
-	output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"agent started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+	output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"agent v" + version() + " started\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 	print output
 
 	try:
@@ -812,7 +824,7 @@ def main():
 			oldepoch = epoch
 			time.sleep(60)
 	except:
-		output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"agent stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
+		output = publish("/agent", "{\"agent\":\"" + str(id) + "\",\"status\":\"agent v" + version() + " stopped\",\"timestamp\":\"" + TIMESTAMP + "\"}")
 		print output
 
 
