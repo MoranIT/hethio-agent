@@ -4,6 +4,7 @@
 
 #===========================
 # Add Mosquitto repo
+# http://jpmens.net/2013/09/01/installing-mosquitto-on-a-raspberry-pi/
 curl -O http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
 apt-key add mosquitto-repo.gpg.key
 rm mosquitto-repo.gpg.key
@@ -37,6 +38,7 @@ fi
 
 #===========================
 # Remove unNeeded Packages
+# http://blog.samat.org/2015/02/05/slimming-an-existing-raspbian-install/
 if [ -f /etc/init.d/raspi-config ]; then
 	# GUI-related packages
 	pkgs="
